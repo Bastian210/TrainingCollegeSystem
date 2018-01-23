@@ -14,7 +14,6 @@
       http://www.springframework.org/schema/cache
       http://www.springframework.org/schema/cache/spring-cache.xsd">
 
-    <bean id="UserService" class="service.UserSerciveImpl">
-    </bean>
+    <bean id="UserService" class="service.UserSerciveImpl"></bean>
 
 </beans>

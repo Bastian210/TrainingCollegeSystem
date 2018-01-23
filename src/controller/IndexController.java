@@ -2,6 +2,7 @@ package controller;
 
 import dao.UserDao;
 import dao.UserDaoImpl;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -43,6 +44,12 @@ public class IndexController {
         System.out.println(getUserService().getPasswordByUserid("100001"));
         JSONObject json = new JSONObject();
         json.put("result","success");
+        json.put("num",12);
+        JSONArray array = new JSONArray();
+        array.put("12121");
+        array.put("1u2");
+        json.put("array",array);
+        System.out.println(json.toString());
         return json.toString();
     }
 }
