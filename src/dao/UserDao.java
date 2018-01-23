@@ -7,7 +7,7 @@ public interface UserDao {
 
     public void delete(String userid);
 
-    public void findUserByUserid(String userid);
+    public User findUserByUserid(String userid);
 
-    public void findPasswordByUserid(String userid);
+    public String findPasswordByUserid(String userid);
 }
