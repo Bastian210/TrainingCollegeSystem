@@ -17,10 +17,18 @@ public class IndexController {
     private static ApplicationContext applicationContext;
     private static UserService userService;
 
-    public void init(){
-        applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
-        userService = (UserService) applicationContext.getBean("UserService");
-        System.out.println("hello");
+    private static ApplicationContext getApplicationContext(){
+        if(applicationContext==null){
+            applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+        }
+        return applicationContext;
+    }
+
+    private static UserService getUserService(){
+        if(userService==null){
+            userService = (UserService) getApplicationContext().getBean("UserService");
+        }
+        return userService;
     }
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
@@ -31,13 +39,10 @@ public class IndexController {
     @ResponseBody
     @RequestMapping(value = "/index",method = RequestMethod.POST)
     public String doLogin(@RequestParam(value = "userid")String userid,@RequestParam(value = "password")String password){
-        applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
-        userService = (UserService) applicationContext.getBean("UserService");
         System.out.println(userid+"  "+password);
-        System.out.println(userService.getPasswordByUserid("100001"));
+        System.out.println(getUserService().getPasswordByUserid("100001"));
         JSONObject json = new JSONObject();
         json.put("result","success");
-        String result = json.toString();
-        return result;
+        return json.toString();
     }
 }
