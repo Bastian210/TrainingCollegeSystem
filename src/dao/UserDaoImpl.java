@@ -6,16 +6,13 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 import utils.HibernateUtil;
 
 import java.util.List;
 
+@Repository
 public class UserDaoImpl implements UserDao {
-    private static UserDaoImpl userDao = new UserDaoImpl();
-
-    public static UserDaoImpl getInstance() {
-        return userDao;
-    }
 
     @Override
     public void save(User user) {
@@ -36,7 +33,7 @@ public class UserDaoImpl implements UserDao {
     public String findPasswordByUserid(String userid) {
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
-        String hql = "from model.User as u where u.userid='" + userid + "'";
+        String hql = String.format("from model.User as u where u.userid='%s'", userid);
         Query query = session.createQuery(hql);
         List list = query.list();
         User user = (User) list.get(0);
