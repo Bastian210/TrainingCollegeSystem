@@ -7,8 +7,10 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     @Id
     @Column(name = "userid")
     private String userid;
@@ -18,14 +20,33 @@ public class User implements Serializable {
     private String password;
     @Column(name = "email")
     private String email;
+    @Column(name = "level")
+    private int level;
+    @Column(name = "points")
+    private int points;
+    @Column(name = "payid")
+    private String payid;
+    @Column(name = "writeoff")
+    private int writeoff;
+    @Column(name = "isadmin")
+    private int isadmin;
 
     public User(){}
 
-    public User(String userid, String username, String password, String email) {
+    public User(String userid, String username, String password, String email, int level, int points, String payid, int writeoff, int isadmin) {
         this.userid = userid;
         this.username = username;
         this.password = password;
         this.email = email;
+        this.level = level;
+        this.points = points;
+        this.payid = payid;
+        this.writeoff = writeoff;
+        this.isadmin = isadmin;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
     public String getUserid() {
@@ -58,5 +79,45 @@ public class User implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    public String getPayid() {
+        return payid;
+    }
+
+    public void setPayid(String payid) {
+        this.payid = payid;
+    }
+
+    public int getWriteoff() {
+        return writeoff;
+    }
+
+    public void setWriteoff(int writeoff) {
+        this.writeoff = writeoff;
+    }
+
+    public int getIsadmin() {
+        return isadmin;
+    }
+
+    public void setIsadmin(int isadmin) {
+        this.isadmin = isadmin;
     }
 }
