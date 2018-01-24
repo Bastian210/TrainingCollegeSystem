@@ -29,17 +29,18 @@ public class UserDaoImpl implements UserDao {
         return null;
     }
 
-    @Override
-    public String findPasswordByUserid(String userid) {
+    public String findPasswordByEmail(String email){
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
-        String hql = String.format("from model.User as u where u.userid='%s'", userid);
+        String hql = String.format("from model.User as u where u.email = '%s'", email);
         Query query = session.createQuery(hql);
         List list = query.list();
-        User user = (User) list.get(0);
-        String password = user.getPassword();
         transaction.commit();
         session.close();
-        return password;
+        if(list.size()==0){
+            return null;
+        }else{
+            return ((User)list.get(0)).getPassword();
+        }
     }
 }

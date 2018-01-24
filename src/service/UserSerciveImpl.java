@@ -12,7 +12,17 @@ public class UserSerciveImpl implements UserService {
     private UserDao userDao;
 
     @Override
-    public String getPasswordByUserid(String userid) {
-        return userDao.findPasswordByUserid(userid);
+    public String login(String email, String password) {
+        String cor_password = userDao.findPasswordByEmail(email);
+
+        String result = "";
+        if(cor_password==null){
+            result = "wrong email";
+        }else if(cor_password.equals(password)){
+            result = "success";
+        }else{
+            result = "wrong password";
+        }
+        return result;
     }
 }

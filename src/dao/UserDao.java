@@ -9,5 +9,5 @@ public interface UserDao {
 
     public User findUserByUserid(String userid);
 
-    public String findPasswordByUserid(String userid);
+    public String findPasswordByEmail(String email);
 }
