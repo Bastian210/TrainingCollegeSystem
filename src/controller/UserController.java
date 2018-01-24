@@ -35,7 +35,16 @@ public class UserController {
     @ResponseBody
     @RequestMapping(value = "/login.action",method = RequestMethod.POST)
     public String doLogin(@RequestParam(value = "email")String email, @RequestParam(value = "password")String password){
-        String result = getUserService().login(email,password);
+        String result = getUserService().Login(email,password);
+        JSONObject json = new JSONObject();
+        json.put("result",result);
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/register.action",method = RequestMethod.POST)
+    public String doRegister(@RequestParam(value = "username")String username, @RequestParam(value = "email")String email,@RequestParam(value = "password")String password){
+        String result = getUserService().Register(username,email,password);
         JSONObject json = new JSONObject();
         json.put("result",result);
         return json.toString();

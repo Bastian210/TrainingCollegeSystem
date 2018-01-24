@@ -17,4 +17,9 @@ public class ViewController {
     public String getLogin(ModelMap model){
         return "login";
     }
+
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
+    public String getRegister(ModelMap model){
+        return "register";
+    }
 }

@@ -16,7 +16,8 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void save(User user) {
-
+        Session session = HibernateUtil.getSession();
+        session.save(user);
     }
 
     @Override
@@ -42,5 +43,16 @@ public class UserDaoImpl implements UserDao {
         }else{
             return ((User)list.get(0)).getPassword();
         }
+    }
+
+    @Override
+    public String getMaxUserid() {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        String hql = "from model.User";
+        Query query = session.createQuery(hql);
+        List list = query.list();
+        User user = (User) list.get(list.size()-1);
+        return user.getUserid();
     }
 }

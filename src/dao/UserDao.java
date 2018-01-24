@@ -10,4 +10,6 @@ public interface UserDao {
     public User findUserByUserid(String userid);
 
     public String findPasswordByEmail(String email);
+
+    public String getMaxUserid();
 }
