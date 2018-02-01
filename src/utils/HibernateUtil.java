@@ -1,6 +1,6 @@
 package utils;
 
-import model.User;
+import model.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -15,6 +15,15 @@ public class HibernateUtil {
 				Configuration config;
 				ServiceRegistry serviceRegistry;
 				config = new Configuration().configure();
+				config.addAnnotatedClass(Checkin.class);
+				config.addAnnotatedClass(Institution.class);
+				config.addAnnotatedClass(Lesson.class);
+				config.addAnnotatedClass(Ordermessage.class);
+				config.addAnnotatedClass(Orders.class);
+				config.addAnnotatedClass(Payment.class);
+				config.addAnnotatedClass(Plans.class);
+				config.addAnnotatedClass(SecurityCode.class);
+				config.addAnnotatedClass(Teachers.class);
 				config.addAnnotatedClass(User.class);
 				serviceRegistry =new StandardServiceRegistryBuilder().applySettings(config.getProperties()).build();
 				sessionFactory=config.buildSessionFactory(serviceRegistry);	

@@ -40,4 +40,8 @@
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/register.action</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/getCode.action</url-pattern>
+    </servlet-mapping>
 </web-app>

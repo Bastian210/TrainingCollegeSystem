@@ -29,4 +29,10 @@ public interface UserDao {
      * @return
      */
     public void saveCode(String email, String code);
+
+    /**
+     * 取出验证码
+     * @param email
+     */
+    public String getCode(String email);
 }

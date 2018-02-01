@@ -33,16 +33,20 @@ public class UserSerciveImpl implements UserService {
         int num = (int) (Math.random()*900000+100000);
         String code = String.valueOf(num);
         String content = "您用于注册Training College的验证码为"+code+"。";
-//        userDao.saveCode(email,code);
+        userDao.saveCode(email,code);
         MailUtil.sendMail(email,"邮箱验证",content);
     }
 
     @Override
-    public String Register(String username, String email, String password) {
+    public String Register(String username, String email, String password, String code) {
+        String cor_code = userDao.getCode(email);
         String cor_password = userDao.findPasswordByEmail(email);
         String result = "";
+        if(!cor_code.equals(code)){
+            return "wrong code";
+        }
         if(cor_password!=null){
-            result = "has register";
+            return "has register";
         }
         int num = Integer.parseInt(userDao.getMaxUserid())+1;
         String userid = String.valueOf(num);

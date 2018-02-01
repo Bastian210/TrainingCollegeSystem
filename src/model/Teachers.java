@@ -11,7 +11,7 @@ public class Teachers implements Serializable {
 
     @Id
     @Column(name = "institutionid")
-    private String institution;
+    private String institutionid;
     @Id
     @Column(name = "name")
     private String name;
@@ -23,8 +23,8 @@ public class Teachers implements Serializable {
     public Teachers() {
     }
 
-    public Teachers(String institution, String name, String gender, String type) {
-        this.institution = institution;
+    public Teachers(String institutionid, String name, String gender, String type) {
+        this.institutionid = institutionid;
         this.name = name;
         this.gender = gender;
         this.type = type;
@@ -34,12 +34,12 @@ public class Teachers implements Serializable {
         return serialVersionUID;
     }
 
-    public String getInstitution() {
-        return institution;
+    public String getInstitutionid() {
+        return institutionid;
     }
 
-    public void setInstitution(String institution) {
-        this.institution = institution;
+    public void setInstitutionid(String institutionid) {
+        this.institutionid = institutionid;
     }
 
     public String getName() {

@@ -16,7 +16,10 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void save(User user) {
         Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
         session.save(user);
+        transaction.commit();
+        session.close();
     }
 
     @Override
@@ -71,5 +74,16 @@ public class UserDaoImpl implements UserDao {
         }
         transaction.commit();
         session.close();
+    }
+
+    @Override
+    public String getCode(String email) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        SecurityCode securityCode = session.get(SecurityCode.class,email);
+        if(securityCode==null){
+            return null;
+        }
+        return securityCode.getCode();
     }
 }
