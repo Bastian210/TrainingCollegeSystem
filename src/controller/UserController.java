@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +39,15 @@ public class UserController {
         String result = getUserService().Login(email,password);
         JSONObject json = new JSONObject();
         json.put("result",result);
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getCode.action",method = RequestMethod.POST)
+    public String doGetCode(@RequestParam(value = "email")String email){
+        getUserService().SendCode(email);
+        JSONObject json = new JSONObject();
+        json.put("result","success");
         return json.toString();
     }
 

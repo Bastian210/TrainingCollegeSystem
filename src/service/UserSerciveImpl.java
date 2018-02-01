@@ -5,6 +5,7 @@ import dao.UserDaoImpl;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import utils.MailUtil;
 
 @Service
 public class UserSerciveImpl implements UserService {
@@ -25,6 +26,15 @@ public class UserSerciveImpl implements UserService {
             result = "wrong password";
         }
         return result;
+    }
+
+    @Override
+    public void SendCode(String email){
+        int num = (int) (Math.random()*900000+100000);
+        String code = String.valueOf(num);
+        String content = "您用于注册Training College的验证码为"+code+"。";
+//        userDao.saveCode(email,code);
+        MailUtil.sendMail(email,"邮箱验证",content);
     }
 
     @Override

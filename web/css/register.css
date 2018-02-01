@@ -6,19 +6,50 @@
     right: 0;
 }
 
-.register-div input{
+.register-div .my-input{
     width: 300px;
     height: 50px;
     margin: 10px 0 10px 0;
 }
 
-.register-div button{
+.register-div .my-button{
     width: 130px;
     height: 35px;
-    margin-top: 10px;
+    margin-top: 20px;
     margin-left: 85px;
 }
 
 h2{
     text-align: center;
+}
+
+.my-input1{
+    font-size: 14px;
+    background-color: #fff;
+    border-radius: 4px;
+    border: 1px solid #d8dce5;
+    box-sizing: border-box;
+    color: #5a5e66;
+    line-height: 1;
+    outline: none;
+    padding: 0 15px;
+    transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+    width: 170px;
+    height: 50px;
+    margin: 10px 5px 10px 0;
+}
+
+.my-button1{
+    color: #fff;
+    background-color: #409EFF;
+    line-height: 1;
+    cursor: pointer;
+    border: 1px solid #409EFF;
+    text-align: center;
+    font-weight: 500;
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 4px;
+    width: 120px;
+    height: 40px;
 }
