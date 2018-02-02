@@ -64,4 +64,8 @@
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/manager</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/accountManagement</url-pattern>
+    </servlet-mapping>
 </web-app>

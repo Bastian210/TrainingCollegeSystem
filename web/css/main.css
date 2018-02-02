@@ -90,6 +90,49 @@ input:focus{
     color:rgb(255, 208, 75);
 }
 
+.my-nav span{
+    margin-left: 100px;
+    color: white;
+    font-size: 16px;
+    float:left;
+}
+
+.my-nav ul {
+    margin-left: 50px;
+    float:left;
+}
+
+.my-nav .a-right{
+    margin-right: 100px;
+    float:right;
+}
+
+.my-nav .a-right:hover{
+    cursor: pointer;
+}
+
+.my-nav input{
+    font-size: 14px;
+    background-color: #fff;
+    border-radius: 2px;
+    border: 1px solid #d8dce5;
+    color: #5a5e66;
+    width: 150px;
+    margin: 0 20px;
+}
+
+.my-nav button{
+    color: #fff;
+    background-color: #409EFF;
+    line-height: 1;
+    cursor: pointer;
+    border: 1px solid #409EFF;
+    font-weight: 500;
+    padding: 5px 20px;
+    font-size: 14px;
+    border-radius: 2px;
+}
+
 .my-modal{
     position: absolute;
     top: 50%;
