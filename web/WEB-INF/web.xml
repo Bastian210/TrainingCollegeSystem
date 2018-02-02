@@ -56,4 +56,12 @@
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/register.institution</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/institution</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/manager</url-pattern>
+    </servlet-mapping>
 </web-app>

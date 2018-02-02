@@ -48,6 +48,7 @@ $(function () {
                         setTimeout(function(){$("#login-error").hide();},1000);
                     }else{
                         //登录成功
+                        window.open("/index","_self");
                     }
                 },
             });
@@ -75,6 +76,12 @@ $(function () {
             $("#register-error").show();
             setTimeout(function(){$("#register-error").hide();},1000);
         }else{
+            $("#send-code-btn").attr("disabled",true);
+            $("#send-code-btn").attr("class","my-button1 disable-button");
+            setTimeout(function () {
+                $("#send-code-btn").attr("class","my-button1");
+                $("#send-code-btn").removeAttr("disabled");
+            },10000);
             $.ajax({
                 url: "/register.getCode",
                 type: "post",
@@ -83,12 +90,6 @@ $(function () {
                     email: email
                 },
                 success: function (data) {
-                    $("#send-code-btn").attr("disabled",true);
-                    $("#send-code-btn").attr("class","my-button1 disable-button");
-                    setTimeout(function () {
-                        $("#send-code-btn").attr("class","my-button1");
-                        $("#send-code-btn").removeAttr("disabled");
-                    },10000);
                 }
             });
         }
@@ -149,10 +150,19 @@ $(function () {
                         setTimeout(function(){$("#register-error").hide();},1000);
                     }else{
                         //显示注册成功
+                        $("#userReg-success-modal").modal("show");
                     }
                 }
             })
         }
+    });
+
+    /**
+     * 转到登录界面
+     */
+    $("#goto-login-btn").click(function () {
+        $("#userReg-success-modal").modal("hide");
+        window.open("/login","_self");
     });
 
     $("#user-register-a").click(function () {
@@ -233,6 +243,7 @@ $(function () {
                         },1000);
                     }else{
                         //登录成功
+                        window.open("/manager","_self");
                     }
                 }
             });

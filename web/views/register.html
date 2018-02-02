@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="/css/register.css">
 </head>
 <body background="/image/background.jpg">
-<nav class="my-nav">
+<nav class="wel-nav">
     <ul>
         <li><a href="/login">登录</a></li>
         <li><a class="active" href="/register">注册</a></li>
@@ -58,5 +58,41 @@
         </div>
     </div>
 </div>
+
+<!--<button data-toggle="modal" data-target="#insReg-success-modal">演示</button>-->
+
+<div class="modal fade" id="userReg-success-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="my-modal">
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                &times;
+            </button>
+            <div class="my-modal-header">
+                <p class="text-center">注册成功，转去登录！</p>
+            </div>
+            <div class="my-modal-footer">
+                <button type="button" class="single-button" id="goto-login-btn">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="insReg-success-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="my-modal">
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                &times;
+            </button>
+            <div class="my-modal-header">
+                <p class="text-center" id="ins-id"></p>
+                <p class="text-center">管理员审核后，凭识别码登录！</p>
+            </div>
+            <div class="my-modal-footer">
+                <button type="button" class="single-button" id="confirm-insRegSuc-btn">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

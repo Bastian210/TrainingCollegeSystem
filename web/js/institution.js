@@ -56,13 +56,18 @@ $(function () {
                             $("#institution-register-error").hide();
                         },1000);
                     }else{
-                        console.log(result);
                         //显示识别码，并让其等待审核
+                        $("#ins-id").html("此机构识别码为"+result+"！");
+                        $("#insReg-success-modal").modal("show");
                     }
                 }
             });
         }
     });
+
+    $("#confirm-insRegSuc-btn").click(){
+        $("#insReg-success-modal").modal("hide");
+    }
 
     $("#institution-login-btn").click(function () {
         var id = $("#enter-institution-id").val();
@@ -104,6 +109,7 @@ $(function () {
                         },1000);
                     }else{
                         //登录成功
+                        window.open("/institution","_self");
                     }
                 }
             });

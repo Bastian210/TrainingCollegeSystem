@@ -59,7 +59,6 @@ public class MailUtil {
 
         Session session = Session.getDefaultInstance(prop, auth);
         senderImpl.setSession(session);
-        // senderImpl.setJavaMailProperties(prop);
         // 发送邮件
         senderImpl.send(mailMessage);
     }

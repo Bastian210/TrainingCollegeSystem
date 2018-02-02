@@ -10,7 +10,6 @@ public class MyAuthenticator extends Authenticator {
 
     /**
      *
-     * @author panliang
      * @param username
      * @param password
      */

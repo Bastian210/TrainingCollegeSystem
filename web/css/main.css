@@ -29,7 +29,7 @@ input:focus{
     box-shadow: none;
 }
 
-.my-nav{
+.wel-nav{
     background-color: rgb(84, 92, 100);
     padding: 8px;
     height: 40px;
@@ -37,7 +37,7 @@ input:focus{
 }
 
 
-.my-nav ul{
+.wel-nav ul{
     width: 440px;
     position: absolute;
     margin: auto;
@@ -45,14 +45,14 @@ input:focus{
     right: 0;
 }
 
-.my-nav li{
+.wel-nav li{
     width: 200px;
     list-style: none;
     float: left;
     text-align:center;
 }
 
-.my-nav a{
+.wel-nav a{
     font-size: 18px;
     font-weight: 100;
     color: white;
@@ -60,7 +60,94 @@ input:focus{
     text-align:center;
 }
 
-.my-nav a.active{
+.wel-nav a.active{
     color:rgb(255, 208, 75);
     border-bottom-color:rgb(255, 208, 75);
+}
+
+.my-nav{
+    background-color: rgb(84, 92, 100);
+    padding: 8px;
+    height: 40px;
+    margin-bottom: 20px;
+}
+
+.my-nav li{
+    width: 100px;
+    list-style: none;
+    float: left;
+    text-align: center;
+}
+
+.my-nav a{
+    font-size: 18px;
+    font-weight: 100;
+    color: white;
+    text-decoration: none;
+}
+
+.my-nav a.active{
+    color:rgb(255, 208, 75);
+}
+
+.my-modal{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    width: 400px;
+    border-radius: 10px;
+}
+
+.my-modal-header{
+    font-size: 22px;
+    height: 100px;
+    padding-top: 30px;
+}
+
+.my-modal-content{
+    height: 100px;
+}
+
+.my-modal-content input {
+    font-size: 14px;
+    background-color: #fff;
+    border-radius: 4px;
+    border: 1px solid #d8dce5;
+    box-sizing: border-box;
+    color: #5a5e66;
+    height: 40px;
+    line-height: 1;
+    outline: none;
+    padding: 0 15px;
+    transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+    margin: 0px 40px 0px 40px;
+    width: 80%;
+}
+
+.my-modal-footer{
+    height: 80px;
+    padding: 0px 85px 0px 85px;
+}
+
+.my-modal-footer button {
+    margin: 0px 20px 0px 20px;
+}
+
+.my-modal-footer .single-button{
+    color: #fff;
+    background-color: #409EFF;
+    line-height: 1;
+    cursor: pointer;
+    border: 1px solid #409EFF;
+    text-align: center;
+    font-weight: 500;
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 4px;
+    margin-left: 70px;
 }
