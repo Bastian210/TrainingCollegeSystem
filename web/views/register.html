@@ -25,12 +25,13 @@
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a>登录</a></li>
-                <li><a>注册</a></li>
+                <li><a href="index">首页</a></li>
+                <li><a href="login">登录</a></li>
+                <li class="active"><a href="register">注册</a></li>
             </ul>
             <form class="navbar-form navbar-left">
                 <div class="form-group" id="search-container">
-                    <input>
+                    <input type="text" placeholder="课程">
                     <button type="button" class="my-button" id="search-label-button"><i class="el-icon-search"></i>搜索</button>
                 </div>
             </form>
@@ -48,19 +49,39 @@
 <div class="container">
     <div class="row">
         <div class="register-div">
-            <h2>账户注册</h2>
-            <input type="text" class="my-input" id="enter-username" placeholder="用户名" >
-            <br>
-            <input type="text" class="my-input" id="enter-email" placeholder="邮箱">
-            <br>
-            <input type="password" class="my-input" id="enter-password1" placeholder="登录密码">
-            <br>
-            <input type="password" class="my-input" id="enter-password2" placeholder="确认密码">
-            <br>
-            <input type="text" class="my-input1" id="enter-code" placeholder="验证码">
-            <button class="my-button1" id="send-code-btn">获取验证码</button>
-            <div class="alert alert-danger" id="register-error" hidden="hidden"></div>
-            <button class="my-button" id="register-btn">立即登录</button>
+            <div class="reg-tabs">
+                <ul>
+                    <li><a class="active" id="user-register-a">学生注册</a></li>
+                    <li><a id="institution-register-a">教育机构注册</a></li>
+                </ul>
+            </div>
+            <div id="user-register-div">
+                <label>用户名</label><input type="text" class="my-input" id="enter-username" placeholder="请填入用户名" >
+                <br>
+                <label>邮箱</label><input type="text" class="my-input" id="enter-email" placeholder="请填入邮箱">
+                <br>
+                <label>密码</label><input type="password" class="my-input" id="enter-password1" placeholder="6~16个字符">
+                <br>
+                <label>确认密码</label><input type="password" class="my-input" id="enter-password2" placeholder="请再次填入密码">
+                <br>
+                <label>验证码</label><input type="text" class="my-input1" id="enter-code" placeholder="请填入验证码">
+                <button class="my-button1" id="send-code-btn">获取验证码</button>
+                <div class="alert alert-danger" id="register-error" hidden="hidden"></div>
+                <button class="my-button" id="register-btn">立即注册</button>
+            </div>
+            <div id="institution-register-div" hidden="hidden">
+                <label>名称</label><input type="text" class="my-input" id="enter-institution-name" placeholder="请填入机构名称">
+                <br>
+                <label>地址</label><input type="text" class="my-input" id="enter-address" placeholder="请填入机构地址">
+                <br>
+                <label>联系方式</label><input type="text" class="my-input" id="enter-phone" placeholder="请填入联系方式">
+                <br>
+                <label>密码</label><input type="password" class="my-input" id="enter-institution-password1" placeholder="6~16个字符">
+                <br>
+                <label>确认密码</label><input type="password" class="my-input" id="enter-institution-password2" placeholder="请再次填入密码">
+                <div class="alert alert-danger" id="institution-register-error" hidden="hidden"></div>
+                <button class="my-button" id="institution-register-btn">立即注册</button>
+            </div>
         </div>
     </div>
 </div>

@@ -90,11 +90,15 @@ $(function () {
         var code = $("#enter-code").val();
         var reg = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
         if(username==""||email==""||password1==""||password2==""){
-            $("#register-error").html("用户名、密码、邮箱不能为空！");
+            $("#register-error").html("注册信息填写不完整！");
             $("#register-error").show();
             setTimeout(function(){$("#register-error").hide();},1000);
         }else if(code==""){
             $("#register-error").html("验证码不能为空！");
+            $("#register-error").show();
+            setTimeout(function(){$("#register-error").hide();},1000);
+        }else if(password1.length<6||password1.length>16){
+            $("#register-error").html("密码长度不规范！");
             $("#register-error").show();
             setTimeout(function(){$("#register-error").hide();},1000);
         }else if(password1!=password2) {
@@ -128,9 +132,85 @@ $(function () {
                         $("#register-error").html("验证码不正确！");
                         $("#register-error").show();
                         setTimeout(function(){$("#register-error").hide();},1000);
+                    }else{
+                        //显示注册成功
                     }
                 }
             })
+        }
+    });
+
+    $("#user-register-a").click(function () {
+        $("#user-register-div").show();
+        $("#institution-register-div").hide();
+        $("#user-register-a").attr("class","active");
+        $("#institution-register-a").removeAttr("class");
+    });
+
+    $("#institution-register-a").click(function () {
+        $("#user-register-div").hide();
+        $("#institution-register-div").show();
+        $("#institution-register-a").attr("class","active");
+        $("#user-register-a").removeAttr("class");
+    });
+
+    $("#institution-register-btn").click(function () {
+        var name = $("#enter-institution-name").val();
+        var address = $("#enter-address").val();
+        var phone = $("#enter-phone").val();
+        var password1 = $("#enter-institution-password1").val();
+        var password2 = $("#enter-institution-password2").val();
+        var reg1 = /^1(3|4|5|7|8)\\d{9}$/;
+        var reg2 = /^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/;
+        if(name==""||address==""||phone==""||password1==""||password2==""){
+            $("#institution-register-error").html("请将注册信息填写完整！");
+            $("#institution-register-error").show();
+            setTimeout(function () {
+                $("#institution-register-error").hide();
+            },1000);
+        }else if(password1.length<6||password1.length>16){
+            $("#institution-register-error").html("密码长度不规范！");
+            $("#institution-register-error").show();
+            setTimeout(function () {
+                $("#institution-register-error").hide();
+            },1000);
+        }else if(password2!=password1){
+            $("#institution-register-error").html("两次密码不相同！");
+            $("#institution-register-error").show();
+            setTimeout(function () {
+                $("#institution-register-error").hide();
+            },1000);
+        }else if(!(reg1.test(phone)||reg2.test(phone))){
+            $("#institution-register-error").html("联系方式填写不正确！");
+            $("#institution-register-error").show();
+            setTimeout(function () {
+                $("#institution-register-error").hide();
+            },1000);
+        }else{
+            $.ajax({
+                url: "/register.institution",
+                type: "post",
+                data: {
+                    name: name,
+                    address: address,
+                    phone: phone,
+                    password: password1
+                },
+                dataType: "json",
+                success: function (data) {
+                    var result = data["result"];
+                    if(result=="has register"){
+                        $("#institution-register-error").html("该机构已被注册！");
+                        $("#institution-register-error").show();
+                        setTimeout(function () {
+                            $("#institution-register-error").hide();
+                        },1000);
+                    }else{
+                        console.log(result);
+                        //显示识别码，并让其等待审核
+                    }
+                }
+            });
         }
     });
 });
