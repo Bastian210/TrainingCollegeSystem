@@ -30,6 +30,15 @@ public class InstitutionController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/login.institution",method = RequestMethod.POST)
+    public String doLogin(@RequestParam(name = "id")String id, @RequestParam(name = "password")String password){
+        String result = getInstitutionService().Login(id, password);
+        JSONObject json = new JSONObject();
+        json.put("result",result);
+        return json.toString();
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/register.institution",method = RequestMethod.POST)
     public String doRegister(@RequestParam(name = "name")String name,@RequestParam(name = "address")String address,@RequestParam(name = "phone")String phone,@RequestParam(name = "password")String password){
         String result = getInstitutionService().Register(name,address,phone,password);

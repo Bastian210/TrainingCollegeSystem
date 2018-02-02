@@ -12,6 +12,21 @@ public class InstitutionServiceImpl implements InstitutionService {
     private InstitutionDao institutionDao;
 
     @Override
+    public String Login(String id, String password) {
+        Institution institution = institutionDao.findInstitutionById(id);
+        if(institution==null){
+            return "wrong id";
+        }
+        if(!institution.getPassword().equals(password)){
+            return "wrong password";
+        }
+        if(institution.getState().equals("not checked")){
+            return "still in check";
+        }
+        return "success";
+    }
+
+    @Override
     public String Register(String name, String address, String phone, String password) {
         Institution old = institutionDao.findInstitutionByPhone(phone);
         if(old!=null){

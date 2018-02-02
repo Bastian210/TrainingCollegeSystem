@@ -34,7 +34,7 @@ public class UserController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/login.action",method = RequestMethod.POST)
+    @RequestMapping(value = "/login.user",method = RequestMethod.POST)
     public String doLogin(@RequestParam(value = "email")String email, @RequestParam(value = "password")String password){
         String result = getUserService().Login(email,password);
         JSONObject json = new JSONObject();
@@ -43,7 +43,16 @@ public class UserController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getCode.action",method = RequestMethod.POST)
+    @RequestMapping(value = "/login.manager",method = RequestMethod.POST)
+    public String doManagerLogin(@RequestParam(name = "id")String id,@RequestParam(name = "password")String password){
+        String result = getUserService().ManagerLogin(id,password);
+        JSONObject json = new JSONObject();
+        json.put("result",result);
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/register.getCode",method = RequestMethod.POST)
     public String doGetCode(@RequestParam(value = "email")String email){
         getUserService().SendCode(email);
         JSONObject json = new JSONObject();
@@ -52,7 +61,7 @@ public class UserController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/register.action",method = RequestMethod.POST)
+    @RequestMapping(value = "/register.user",method = RequestMethod.POST)
     public String doRegister(@RequestParam(value = "username")String username, @RequestParam(value = "email")String email,@RequestParam(value = "password")String password,@RequestParam(name = "code")String code){
         String result = getUserService().Register(username,email,password,code);
         JSONObject json = new JSONObject();

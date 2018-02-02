@@ -16,7 +16,6 @@ public class UserSerciveImpl implements UserService {
     @Override
     public String Login(String email, String password) {
         String cor_password = userDao.findPasswordByEmail(email);
-
         String result = "";
         if(cor_password==null){
             result = "wrong email";
@@ -26,6 +25,18 @@ public class UserSerciveImpl implements UserService {
             result = "wrong password";
         }
         return result;
+    }
+
+    @Override
+    public String ManagerLogin(String id, String password) {
+        User user = userDao.findUserByUserid(id);
+        if(user.getIsadmin()!=1){
+            return "wrong id";
+        }
+        if(!user.getPassword().equals(password)){
+            return "wrong password";
+        }
+        return "success";
     }
 
     @Override

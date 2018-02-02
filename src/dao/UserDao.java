@@ -7,6 +7,11 @@ public interface UserDao {
 
     public void delete(String userid);
 
+    /**
+     * 根据id查找用户
+     * @param userid
+     * @return
+     */
     public User findUserByUserid(String userid);
 
     /**

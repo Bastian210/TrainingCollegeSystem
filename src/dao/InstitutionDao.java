@@ -5,6 +5,8 @@ import model.Institution;
 public interface InstitutionDao {
     public void save(Institution institution);
 
+    public Institution findInstitutionById(String id);
+
     /**
      * 得到当前最大的机构识别码
      * @return

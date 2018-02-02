@@ -1,5 +1,6 @@
 .login-div{
-    width: 300px;
+    width: 600px;
+    padding: 0 100px;
     margin: auto;
     position: absolute;
     left: 0;
@@ -16,9 +17,50 @@
     width: 130px;
     height: 35px;
     margin-top: 20px;
-    margin-left: 85px;
+    margin-left: 100px;
+}
+
+.login-div label{
+    width: 100px;
+    padding-right:30px;
+    text-align:right;
+    font-weight: inherit;
 }
 
 h2{
     text-align: center;
+}
+
+.log-tabs{
+    width: 400px;
+    height: 50px;
+    padding-left: 60px;
+}
+
+.log-tabs ul{
+    padding: 0px 20px;
+}
+
+.log-tabs li{
+    list-style: none;
+    float: left;
+}
+
+.log-tabs a{
+    font-size: 16px;
+    color: #555;
+    width: 120px;
+    padding: 10px 10px;
+    border-radius: 4px;
+    border: 1px solid #d8dce5;
+}
+
+.log-tabs a:hover{
+    text-decoration:none;
+    cursor: pointer;
+}
+
+.log-tabs a.active{
+    background-color: #409EFF;
+    color: #FFF;
 }

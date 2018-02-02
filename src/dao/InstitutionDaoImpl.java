@@ -21,6 +21,16 @@ public class InstitutionDaoImpl implements InstitutionDao {
     }
 
     @Override
+    public Institution findInstitutionById(String id) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        Institution institution = session.get(Institution.class,id);
+        transaction.commit();
+        session.close();
+        return institution;
+    }
+
+    @Override
     public int getMaxId() {
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
@@ -43,6 +53,8 @@ public class InstitutionDaoImpl implements InstitutionDao {
         String hql = String.format("from model.Institution as ins where ins.phone='%s'", phone);
         Query query = session.createQuery(hql);
         List list = query.list();
+        transaction.commit();
+        session.close();
         if(list.size()==0){
             return null;
         }

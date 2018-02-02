@@ -7,6 +7,7 @@
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="/js/user.js"></script>
+    <script src="/js/institution.js"></script>
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/login.css">
 </head>
@@ -49,13 +50,35 @@
 <div class="container">
     <div class="row">
         <div class="login-div">
-            <h2>欢迎登录</h2>
-            <input type="email" class="my-input" id="enter-email" placeholder="邮箱">
-            <br>
-            <input type="password" class="my-input" id="enter-password" placeholder="登录密码">
-            <br>
-            <div class="alert alert-danger" id="login-error" hidden="hidden"></div>
-            <button class="my-button" id="login-btn">立即注册</button>
+            <div class="log-tabs">
+                <ul>
+                    <li><a class="active" id="user-login-a">学生登录</a></li>
+                    <li><a id="institution-login-a">教育机构登录</a></li>
+                    <li><a id="manager-login-a">经理登录</a></li>
+                </ul>
+            </div>
+            <div id="user-login-div">
+                <label>邮箱</label><input type="email" class="my-input" id="enter-email" placeholder="请填入邮箱">
+                <br>
+                <label>密码</label><input type="password" class="my-input" id="enter-password" placeholder="请填入登录密码">
+                <br>
+                <div class="alert alert-danger" id="login-error" hidden="hidden"></div>
+                <button class="my-button" id="login-btn">立即登录</button>
+            </div>
+            <div id="institution-login-div" hidden="hidden">
+                <label>识别码</label><input type="text" class="my-input" id="enter-institution-id" placeholder="请填入机构识别码">
+                <br>
+                <label>密码</label><input type="password" class="my-input" id="enter-institution-password" placeholder="请填入登录密码">
+                <div class="alert alert-danger" id="institution-login-error" hidden="hidden"></div>
+                <button class="my-button" id="institution-login-btn">立即登录</button>
+            </div>
+            <div id="manager-login-div" hidden="hidden">
+                <label>经理号</label><input type="text" class="my-input" id="enter-manager-id" placeholder="请填入经理号">
+                <br>
+                <label>密码</label><input type="password" class="my-input" id="enter-manager-password" placeholder="请填入登录密码">
+                <div class="alert alert-danger" id="manager-login-error" hidden="hidden"></div>
+                <button class="my-button" id="manager-login-btn">立即登录</button>
+            </div>
         </div>
     </div>
 </div>

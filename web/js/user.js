@@ -4,6 +4,9 @@ $(function () {
     $(document).ready(function(){
     });
 
+    /**
+     * 学生登录
+     */
     $("#login-btn").click(function(){
         var email = $("#enter-email").val();
         var password = $("#enter-password").val();
@@ -26,7 +29,7 @@ $(function () {
             setTimeout(function(){$("#login-error").hide();},1000);
         }else{
             $.ajax({
-                url:"/login.action",
+                url:"/login.user",
                 dataType: 'json',
                 type: 'post',
                 data: {
@@ -39,12 +42,21 @@ $(function () {
                         $("#login-error").html("该邮箱没有被注册！");
                         $("#login-error").show();
                         setTimeout(function(){$("#login-error").hide();},1000);
+                    }else if(result=="wrong password"){
+                        $("#login-error").html("密码错误！");
+                        $("#login-error").show();
+                        setTimeout(function(){$("#login-error").hide();},1000);
+                    }else{
+                        //登录成功
                     }
                 },
             });
         }
     });
 
+    /**
+     * 邮箱验证
+     */
     $("#send-code-btn").click(function () {
         var email = $("#enter-email").val();
         var password1 = $("#enter-password1").val();
@@ -64,7 +76,7 @@ $(function () {
             setTimeout(function(){$("#register-error").hide();},1000);
         }else{
             $.ajax({
-                url: "/getCode.action",
+                url: "/register.getCode",
                 type: "post",
                 dataType: "json",
                 data:{
@@ -82,6 +94,9 @@ $(function () {
         }
     });
 
+    /**
+     * 学生注册
+     */
     $("#register-btn").click(function () {
         var username = $("#enter-username").val();
         var email = $("#enter-email").val();
@@ -113,7 +128,7 @@ $(function () {
             setTimeout(function(){$("#register-error").hide();},1000);
         }else{
             $.ajax({
-                url: "/register.action",
+                url: "/register.user",
                 type: "post",
                 data: {
                     username: username,
@@ -154,60 +169,70 @@ $(function () {
         $("#user-register-a").removeAttr("class");
     });
 
-    $("#institution-register-btn").click(function () {
-        var name = $("#enter-institution-name").val();
-        var address = $("#enter-address").val();
-        var phone = $("#enter-phone").val();
-        var password1 = $("#enter-institution-password1").val();
-        var password2 = $("#enter-institution-password2").val();
-        var reg1 = /^1(3|4|5|7|8)\\d{9}$/;
-        var reg2 = /^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/;
-        if(name==""||address==""||phone==""||password1==""||password2==""){
-            $("#institution-register-error").html("请将注册信息填写完整！");
-            $("#institution-register-error").show();
+    $("#user-login-a").click(function () {
+        $("#user-login-div").show();
+        $("#institution-login-div").hide();
+        $("#manager-login-div").hide();
+        $("#user-login-a").attr("class","active");
+        $("#institution-login-a").removeAttr("class");
+        $("#manager-login-a").removeAttr("class");
+    });
+
+    $("#institution-login-a").click(function () {
+        $("#user-login-div").hide();
+        $("#institution-login-div").show();
+        $("#manager-login-div").hide();
+        $("#institution-login-a").attr("class","active");
+        $("#user-login-a").removeAttr("class");
+        $("#manager-login-a").removeAttr("class");
+    });
+
+    $("#manager-login-a").click(function () {
+        $("#user-login-div").hide();
+        $("#institution-login-div").hide();
+        $("#manager-login-div").show();
+        $("#manager-login-a").attr("class","active");
+        $("#institution-login-a").removeAttr("class");
+        $("#user-login-a").removeAttr("class");
+    });
+
+    /**
+     * 经理登录
+     */
+    $("#manager-login-btn").click(function () {
+        var id = $("#enter-manager-id").val();
+        var password = $("#enter-manager-password").val();
+        if(id==""||password==""){
+            $("#manager-login-error").html("登录信息填写不完整！");
+            $("#manager-login-error").show();
             setTimeout(function () {
-                $("#institution-register-error").hide();
-            },1000);
-        }else if(password1.length<6||password1.length>16){
-            $("#institution-register-error").html("密码长度不规范！");
-            $("#institution-register-error").show();
-            setTimeout(function () {
-                $("#institution-register-error").hide();
-            },1000);
-        }else if(password2!=password1){
-            $("#institution-register-error").html("两次密码不相同！");
-            $("#institution-register-error").show();
-            setTimeout(function () {
-                $("#institution-register-error").hide();
-            },1000);
-        }else if(!(reg1.test(phone)||reg2.test(phone))){
-            $("#institution-register-error").html("联系方式填写不正确！");
-            $("#institution-register-error").show();
-            setTimeout(function () {
-                $("#institution-register-error").hide();
+                $("#manager-login-error").hide();
             },1000);
         }else{
             $.ajax({
-                url: "/register.institution",
+                url: "/login.manager",
                 type: "post",
                 data: {
-                    name: name,
-                    address: address,
-                    phone: phone,
-                    password: password1
+                    id: id,
+                    password: password
                 },
                 dataType: "json",
                 success: function (data) {
                     var result = data["result"];
-                    if(result=="has register"){
-                        $("#institution-register-error").html("该机构已被注册！");
-                        $("#institution-register-error").show();
+                    if(result=="wrong id"){
+                        $("#manager-login-error").html("经理号错误！");
+                        $("#manager-login-error").show();
                         setTimeout(function () {
-                            $("#institution-register-error").hide();
+                            $("#manager-login-error").hide();
+                        },1000);
+                    }else if(result=="wrong password"){
+                        $("#manager-login-error").html("密码错误！");
+                        $("#manager-login-error").show();
+                        setTimeout(function () {
+                            $("#manager-login-error").hide();
                         },1000);
                     }else{
-                        console.log(result);
-                        //显示识别码，并让其等待审核
+                        //登录成功
                     }
                 }
             });

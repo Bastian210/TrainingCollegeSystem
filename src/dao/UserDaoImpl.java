@@ -29,7 +29,12 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findUserByUserid(String userid) {
-        return null;
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        User user = session.get(User.class,userid);
+        transaction.commit();
+        session.close();
+        return user;
     }
 
     public String findPasswordByEmail(String email){
@@ -84,6 +89,8 @@ public class UserDaoImpl implements UserDao {
         if(securityCode==null){
             return null;
         }
+        transaction.commit();
+        session.close();
         return securityCode.getCode();
     }
 }

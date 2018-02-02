@@ -11,6 +11,14 @@ public interface UserService {
     public String Login(String email, String password);
 
     /**
+     * 经理登录
+     * @param id
+     * @param password
+     * @return
+     */
+    public String ManagerLogin(String id, String password);
+
+    /**
      * 发送验证码
      * @param email
      */
