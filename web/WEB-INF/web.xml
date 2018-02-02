@@ -17,7 +17,7 @@
     </servlet>
 
     <welcome-file-list>
-        <welcome-file>index</welcome-file>
+        <welcome-file>login</welcome-file>
     </welcome-file-list>
 
     <servlet-mapping>

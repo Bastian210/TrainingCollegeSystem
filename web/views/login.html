@@ -11,45 +11,17 @@
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/login.css">
 </head>
-<body>
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">欢迎来到Training College</a>
-        </div>
-
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li><a href="index">首页</a></li>
-                <li class="active"><a href="login">登录</a></li>
-                <li><a href="register">注册</a></li>
-            </ul>
-            <form class="navbar-form navbar-left">
-                <div class="form-group" id="search-container">
-                    <input type="text" placeholder="课程">
-                    <button type="button" class="my-button" id="search-label-button"><i class="el-icon-search"></i>搜索</button>
-                </div>
-            </form>
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="username-label"><span class="glyphicon glyphicon-user"></span><span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a id="logout-button">退出登录</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </div>
+<body background="/image/background.jpg";>
+<nav class="my-nav">
+    <ul>
+        <li><a class="active" href="/login">登录</a></li>
+        <li><a href="/register">注册</a></li>
+    </ul>
 </nav>
 <div class="container">
     <div class="row">
         <div class="login-div">
+            <h2>欢迎来到Training College</h2>
             <div class="log-tabs">
                 <ul>
                     <li><a class="active" id="user-login-a">学生登录</a></li>

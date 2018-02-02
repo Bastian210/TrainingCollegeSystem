@@ -28,3 +28,39 @@ input:focus{
     border-color: #409EFF;
     box-shadow: none;
 }
+
+.my-nav{
+    background-color: rgb(84, 92, 100);
+    padding: 8px;
+    height: 40px;
+    margin-bottom: 20px;
+}
+
+
+.my-nav ul{
+    width: 440px;
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+}
+
+.my-nav li{
+    width: 200px;
+    list-style: none;
+    float: left;
+    text-align:center;
+}
+
+.my-nav a{
+    font-size: 18px;
+    font-weight: 100;
+    color: white;
+    text-decoration:none;
+    text-align:center;
+}
+
+.my-nav a.active{
+    color:rgb(255, 208, 75);
+    border-bottom-color:rgb(255, 208, 75);
+}
