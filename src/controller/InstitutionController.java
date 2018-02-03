@@ -59,6 +59,8 @@ public class InstitutionController {
         json.put("name",map.get("name"));
         json.put("address",map.get("address"));
         json.put("phone",map.get("phone"));
+        json.put("payid",map.get("payid"));
+        json.put("balance",map.get("balance"));
         return json.toString();
     }
 
@@ -68,6 +70,33 @@ public class InstitutionController {
         getInstitutionService().ChangeInsMess(Param.getInstitutionid(),name,address,phone);
         JSONObject json = new JSONObject();
         json.put("result","success");
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/insManagement.bindAccount",method = RequestMethod.POST)
+    public String doBindAccount(@RequestParam(value = "payid")String payid, @RequestParam(value = "password")String password){
+        String result = getInstitutionService().BindAccount(Param.getInstitutionid(),payid,password);
+        JSONObject json = new JSONObject();
+        json.put("result",result);
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/insManagement.unbindAccount",method = RequestMethod.POST)
+    public String doUnbindAccount(@RequestParam(value = "payid")String payid){
+        getInstitutionService().UnbindAccount(Param.getInstitutionid(),payid);
+        JSONObject json = new JSONObject();
+        json.put("result","success");
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/insManagement.changePayPwd",method = RequestMethod.POST)
+    public String doChangePayPwd(@RequestParam(value = "payid")String payid,@RequestParam(value = "oldPwd")String oldPwd,@RequestParam(value = "newPwd")String newPwd){
+        String result = getInstitutionService().ChangePaymentPassword(payid, oldPwd, newPwd);
+        JSONObject json = new JSONObject();
+        json.put("result",result);
         return json.toString();
     }
 }

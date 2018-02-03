@@ -86,3 +86,17 @@
 .edit-div .my-button{
     margin-left: 120px;
 }
+
+#has-bind-div a{
+    text-decoration: none;
+    height: 30px;
+    padding: 20px 20px;
+}
+
+#has-bind-div a:hover{
+    cursor: pointer;
+}
+
+#change-payPwd-div {
+    margin-top: 30px;
+}

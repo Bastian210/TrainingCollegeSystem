@@ -2,7 +2,9 @@ package service;
 
 import dao.InstitutionDao;
 import dao.InstitutionDaoImpl;
+import dao.PaymentDao;
 import model.Institution;
+import model.Payment;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,8 +15,12 @@ import java.util.Map;
 
 @Service
 public class InstitutionServiceImpl implements InstitutionService {
+
     @Autowired
     private InstitutionDao institutionDao;
+
+    @Autowired
+    private PaymentDao paymentDao;
 
     @Override
     public String Login(String id, String password) {
@@ -53,6 +59,14 @@ public class InstitutionServiceImpl implements InstitutionService {
         map.put("name",institution.getInstitutionname());
         map.put("address",institution.getAddress());
         map.put("phone",institution.getPhone());
+        String payid = institution.getPayid();
+        if(payid==null){
+            map.put("payid","");
+            map.put("balance","");
+        }else{
+            map.put("payid",payid);
+            map.put("balance", String.valueOf(paymentDao.findPaymentByPayId(payid).getBalance()));
+        }
         return map;
     }
 
@@ -64,5 +78,34 @@ public class InstitutionServiceImpl implements InstitutionService {
         json.put("phone",phone);
         String chanMess = json.toString();
         institutionDao.updateChanMessById(id,chanMess);
+    }
+
+    @Override
+    public String BindAccount(String id, String payid, String password) {
+        Payment payment = paymentDao.findPaymentByPayId(payid);
+        String cor_password = payment.getPassword();
+        if(payment==null){
+            return "wrong id";
+        }else if(!cor_password.equals(password)){
+            return "wrong password";
+        }else{
+            institutionDao.updatePayIdByUserId(id, payid);
+            return "success";
+        }
+    }
+
+    @Override
+    public void UnbindAccount(String id, String payid) {
+        institutionDao.updatePayIdByUserId(id,"");
+    }
+
+    @Override
+    public String ChangePaymentPassword(String payid, String oldPassword, String newPassword) {
+        Payment payment = paymentDao.findPaymentByPayId(payid);
+        if(!payment.getPassword().equals(oldPassword)){
+            return "wrong password";
+        }
+        paymentDao.updatePasswordByPayid(payid,newPassword);
+        return "success";
     }
 }

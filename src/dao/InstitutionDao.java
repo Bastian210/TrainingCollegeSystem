@@ -31,4 +31,11 @@ public interface InstitutionDao {
      * @param chanMess
      */
     public void updateChanMessById(String id, String chanMess);
+
+    /**
+     * 根据识别码更新支付账号
+     * @param id
+     * @param payid
+     */
+    public void updatePayIdByUserId(String id,String payid);
 }

@@ -108,4 +108,16 @@
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/insManagement.getInsMess</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/insManagement.bindAccount</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/insManagement.unbindAccount</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/insManagement.changePayPwd</url-pattern>
+    </servlet-mapping>
 </web-app>

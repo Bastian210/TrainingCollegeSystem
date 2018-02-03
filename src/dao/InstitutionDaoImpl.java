@@ -71,4 +71,15 @@ public class InstitutionDaoImpl implements InstitutionDao {
         transaction.commit();
         session.close();
     }
+
+    @Override
+    public void updatePayIdByUserId(String id, String payid) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        Institution institution = session.get(Institution.class,id);
+        institution.setPayid(payid);
+        session.update(institution);
+        transaction.commit();
+        session.close();
+    }
 }

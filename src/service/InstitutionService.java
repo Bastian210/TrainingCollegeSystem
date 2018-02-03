@@ -37,4 +37,30 @@ public interface InstitutionService {
      * @return
      */
     public void ChangeInsMess(String id, String name, String address, String phone);
+
+    /**
+     * 机构绑定支付账号
+     * @param id
+     * @param payid
+     * @param password
+     * @return
+     */
+    public String BindAccount(String id, String payid, String password);
+
+    /**
+     * 解绑支付账号
+     * @param id
+     * @param payid
+     * @return
+     */
+    public void UnbindAccount(String id, String payid);
+
+    /**
+     * 更改支付密码
+     * @param payid
+     * @param oldPassword
+     * @param newPassword
+     * @return
+     */
+    public String ChangePaymentPassword(String payid,String oldPassword,String newPassword);
 }

@@ -258,6 +258,9 @@ $(function () {
         $("#write-off-modal").modal("show");
     });
 
+    /**
+     * 修改登录密码
+     */
     $("#change-password-btn").click(function () {
         var oldpassword = $("#enter-old-password").val();
         var newpassword1 = $("#enter-new-password1").val();
@@ -310,6 +313,9 @@ $(function () {
         }
     });
 
+    /**
+     * 注销用户
+     */
     $("#write-off-btn").click(function () {
         $.ajax({
             url: "/accountManagement.writeOff",

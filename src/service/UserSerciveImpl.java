@@ -1,5 +1,6 @@
 package service;
 
+import dao.PaymentDao;
 import dao.UserDao;
 import dao.UserDaoImpl;
 import model.Payment;
@@ -17,6 +18,9 @@ public class UserSerciveImpl implements UserService {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private PaymentDao paymentDao;
 
     @Override
     public String Login(String email, String password) {
@@ -88,7 +92,7 @@ public class UserSerciveImpl implements UserService {
             map.put("balance","");
         }else{
             map.put("payid",user.getPayid());
-            Payment payment = userDao.findPaymentByPayId(user.getPayid());
+            Payment payment = paymentDao.findPaymentByPayId(user.getPayid());
             map.put("balance", String.valueOf(payment.getBalance()));
         }
         return map;
@@ -101,7 +105,7 @@ public class UserSerciveImpl implements UserService {
 
     @Override
     public String BindAccount(String userid, String payid, String password) {
-        Payment payment = userDao.findPaymentByPayId(payid);
+        Payment payment = paymentDao.findPaymentByPayId(payid);
         if(payment==null){
             return "wrong id";
         }else if(!payment.getPassword().equals(password)){
@@ -119,11 +123,11 @@ public class UserSerciveImpl implements UserService {
 
     @Override
     public String ChangePaymentPassword(String payid, String oldPassword, String newPassword) {
-        Payment payment = userDao.findPaymentByPayId(payid);
+        Payment payment = paymentDao.findPaymentByPayId(payid);
         if(!payment.getPassword().equals(oldPassword)){
             return "wrong password";
         }
-        userDao.updatePasswordByPayid(payid,newPassword);
+        paymentDao.updatePasswordByPayid(payid,newPassword);
         return "success";
     }
 
