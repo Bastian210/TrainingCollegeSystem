@@ -71,4 +71,17 @@ public interface UserDao {
      * @param password
      */
     public void updatePasswordByPayid(String payid,String password);
+
+    /**
+     * 更改登录密码
+     * @param userid
+     * @param password
+     */
+    public void updatePasswordByUserid(String userid,String password);
+
+    /**
+     * 注销账号
+     * @param userid
+     */
+    public void updateWriteOffByUserId(String userid);
 }

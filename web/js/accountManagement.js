@@ -172,6 +172,9 @@ $(function () {
         $("#change-payPwd-div").show();
     });
 
+    /**
+     * 解绑支付账号
+     */
     $("#unbind-account-btn").click(function () {
         $.ajax({
             url: "/accountManagement.unbindAccount",
@@ -188,6 +191,9 @@ $(function () {
         });
     });
 
+    /**
+     * 修改支付密码
+     */
     $("#change-payPwd-btn").click(function () {
         var oldPwd = $("#enter-old-payPwd").val();
         var newPwd1 = $("#enter-new-payPwd1").val();
@@ -241,5 +247,80 @@ $(function () {
                 }
             });
         }
+    });
+
+    $("#change-password-a").click(function () {
+        $("#change-password-div").show();
+    });
+
+    $("#write-off-a").click(function () {
+        $("#change-password-div").hide();
+        $("#write-off-modal").modal("show");
+    });
+
+    $("#change-password-btn").click(function () {
+        var oldpassword = $("#enter-old-password").val();
+        var newpassword1 = $("#enter-new-password1").val();
+        var newpassword2 = $("#enter-new-password2").val();
+        if(oldpassword==""||newpassword1==""||newpassword2==""){
+            $("#change-password-error").html("密码不能为空！");
+            $("#change-password-error").show();
+            setTimeout(function () {
+                $("#change-password-error").hide();
+            },1000);
+        }else if(newpassword1!=newpassword2){
+            $("#change-password-error").html("两次新密码不相同！");
+            $("#change-password-error").show();
+            setTimeout(function () {
+                $("#change-password-error").hide();
+            },1000);
+        }else if(newpassword1.length<6||newpassword1.length>16){
+            $("#change-password-error").html("密码长度不合格！");
+            $("#change-password-error").show();
+            setTimeout(function () {
+                $("#change-password-error").hide();
+            },1000);
+        }else{
+            $.ajax({
+                url: "/accountManagement.changePassword",
+                type: "post",
+                data: {
+                    oldpassword: oldpassword,
+                    newpassword: newpassword1
+                },
+                dataType: "json",
+                success: function (data) {
+                    var result = data["result"];
+                    if(result=="wrong password"){
+                        $("#change-password-error").html("旧密码错误！");
+                        $("#change-password-error").show();
+                        setTimeout(function () {
+                            $("#change-password-error").hide();
+                        },1000);
+                    }else{
+                        $("#change-password-error").attr("class","alert alert-success");
+                        $("#change-password-error").html("修改成功！");
+                        $("#change-password-error").show();
+                        setTimeout(function () {
+                            $("#change-password-error").hide();
+                        },1000);
+                    }
+                }
+            });
+        }
+    });
+
+    $("#write-off-btn").click(function () {
+        $.ajax({
+            url: "/accountManagement.writeOff",
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                $("#write-off-modal").modal("hide");
+                setTimeout(function () {
+                    window.open("/register","_self");
+                },500);
+            }
+        });
     });
 });

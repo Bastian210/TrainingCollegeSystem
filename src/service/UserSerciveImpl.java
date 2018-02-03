@@ -21,14 +21,17 @@ public class UserSerciveImpl implements UserService {
     @Override
     public String Login(String email, String password) {
         User user = userDao.findUserByEmail(email);
+        System.out.println(user.toString());
         String result = "";
         if(user==null){
             result = "wrong email";
-        }else if(user.getPassword().equals(password)){
+        }else if(!user.getPassword().equals(password)){
+            result = "wrong password";
+        }else if(user.getWriteoff()==1) {
+            result = "write off";
+        }else{
             Param.setUserid(user.getUserid());
             result = "success";
-        }else{
-            result = "wrong password";
         }
         return result;
     }
@@ -122,5 +125,20 @@ public class UserSerciveImpl implements UserService {
         }
         userDao.updatePasswordByPayid(payid,newPassword);
         return "success";
+    }
+
+    @Override
+    public String ChangePassword(String userid, String oldPassword, String newPassword) {
+        User user = userDao.findUserByUserid(userid);
+        if(!user.getPassword().equals(oldPassword)){
+            return "wrong password";
+        }
+        userDao.updatePasswordByUserid(userid,newPassword);
+        return "success";
+    }
+
+    @Override
+    public void WriteOff(String userid) {
+        userDao.updateWriteOffByUserId(userid);
     }
 }

@@ -121,4 +121,22 @@ public class UserController {
         json.put("result",result);
         return json.toString();
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/accountManagement.changePassword",method = RequestMethod.POST)
+    public String doChangePassowrd(@RequestParam(value = "oldpassword")String oldPassword,@RequestParam(value = "newpassword")String newPassword){
+        String result = getUserService().ChangePassword(Param.getUserid(),oldPassword,newPassword);
+        JSONObject json = new JSONObject();
+        json.put("result",result);
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/accountManagement.writeOff",method = RequestMethod.POST)
+    public String doWriteOff(){
+        getUserService().WriteOff(Param.getUserid());
+        JSONObject json = new JSONObject();
+        json.put("result","success");
+        return json.toString();
+    }
 }

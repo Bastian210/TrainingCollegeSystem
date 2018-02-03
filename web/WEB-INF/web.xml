@@ -88,4 +88,12 @@
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/accountManagement.changePayPwd</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/accountManagement.changePassword</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/accountManagement.writeOff</url-pattern>
+    </servlet-mapping>
 </web-app>

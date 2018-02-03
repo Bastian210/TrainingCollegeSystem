@@ -78,4 +78,20 @@ public interface UserService {
      * @return
      */
     public String ChangePaymentPassword(String payid,String oldPassword,String newPassword);
+
+    /**
+     * 更改登录密码
+     * @param userid
+     * @param oldPassword
+     * @param newPassword
+     * @return
+     */
+    public String ChangePassword(String userid, String oldPassword, String newPassword);
+
+    /**
+     * 注销账号
+     * @param userid
+     * @return
+     */
+    public void WriteOff(String userid);
 }

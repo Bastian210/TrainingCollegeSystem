@@ -38,14 +38,24 @@ $(function () {
                 },
                 success: function (data) {
                     var result = data["result"];
-                    if(result=="wrong email"){
+                    if (result == "wrong email") {
                         $("#login-error").html("该邮箱没有被注册！");
                         $("#login-error").show();
-                        setTimeout(function(){$("#login-error").hide();},1000);
-                    }else if(result=="wrong password"){
+                        setTimeout(function () {
+                            $("#login-error").hide();
+                        }, 1000);
+                    } else if (result == "wrong password") {
                         $("#login-error").html("密码错误！");
                         $("#login-error").show();
-                        setTimeout(function(){$("#login-error").hide();},1000);
+                        setTimeout(function () {
+                            $("#login-error").hide();
+                        }, 1000);
+                    } else if (result == "write off") {
+                        $("#login-error").html("此账号已停用！");
+                        $("#login-error").show();
+                        setTimeout(function () {
+                            $("#login-error").hide();
+                        }, 1000);
                     }else{
                         //登录成功
                         window.open("/index","_self");

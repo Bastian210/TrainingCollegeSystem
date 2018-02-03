@@ -140,4 +140,26 @@ public class UserDaoImpl implements UserDao {
         transaction.commit();
         session.close();
     }
+
+    @Override
+    public void updatePasswordByUserid(String userid, String password) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        User user = session.get(User.class,userid);
+        user.setPassword(password);
+        session.update(user);
+        transaction.commit();
+        session.close();
+    }
+
+    @Override
+    public void updateWriteOffByUserId(String userid) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        User user = session.get(User.class,userid);
+        user.setWriteoff(1);
+        session.update(user);
+        transaction.commit();
+        session.close();
+    }
 }
