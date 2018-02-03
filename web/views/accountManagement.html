@@ -15,10 +15,10 @@
 <nav class="my-nav">
     <span>Training College</span>
     <ul>
-        <li><a class="active" href="/index">首页</a></li>
+        <li><a href="/index">首页</a></li>
         <li><a>我的订单</a></li>
         <li><a>我的课程</a></li>
-        <li><a href="/accountManagement">账号管理</a></li>
+        <li><a class="active" href="/accountManagement">账号管理</a></li>
     </ul>
     <input type="text" id="enter-search-lesson" placeholder="搜索课程">
     <button id="search-lesson-btn">搜索</button>
@@ -41,8 +41,84 @@
                 <span>账号管理> </span>
                 <span id="chosen-li">个人信息</span>
             </div>
+            <div class="edit-div">
+                <div id="user-message-div">
+                    <label>会员号:</label>
+                    <label id="userid-label">500002</label>
+                    <br>
+                    <label>姓名:</label>
+                    <input type="text" class="my-input" id="enter-username" placeholder="请填入姓名">
+                    <br>
+                    <label>性别:</label>
+                    <input type="radio" name="optionsRadios" class="my-input-radio" id="options-man"> 男
+                    <input type="radio" name="optionsRadios" class="my-input-radio" id="options-woman"> 女
+                    <br>
+                    <label>教育背景:</label>
+                    <div id="select">
+                        <template>
+                            <el-select v-model="value" placeholder="请选择学历" id="select-education">
+                                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </template>
+                    </div>
+                    <br>
+                    <button class="my-button" id="save-usermess-btn">保存</button>
+                </div>
+                <div id="my-points-div" hidden="hidden">
+
+                </div>
+                <div id="pay-account-div" hidden="hidden">
+
+                </div>
+                <div id="account-safety-div" hidden="hidden">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="changeMess-success-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="my-modal">
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                &times;
+            </button>
+            <div class="my-modal-header">
+                <p class="text-center">修改成功！</p>
+            </div>
+            <div class="my-modal-footer">
+                <button type="button" class="single-button" data-dismiss="modal">确定</button>
+            </div>
         </div>
     </div>
 </div>
 </body>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script>
+    var Main = {
+        data() {
+            return {
+                options: [{
+                    value: '选项1',
+                    label: '大学本科以上'
+                }, {
+                    value: '选项2',
+                    label: '高中'
+                }, {
+                    value: '选项3',
+                    label: '初中'
+                }, {
+                    value: '选项4',
+                    label: '小学'
+                }],
+                value: ''
+            }
+        }
+    }
+    var Ctor = Vue.extend(Main)
+    new Ctor().$mount('#select')
+</script>
 </html>

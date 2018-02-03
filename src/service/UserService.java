@@ -1,5 +1,7 @@
 package service;
 
+import java.util.Map;
+
 public interface UserService {
 
     /**
@@ -33,4 +35,21 @@ public interface UserService {
      * @return
      */
     public String Register(String username, String email, String password,String code);
+
+    /**
+     * 根据userid得到个人信息（姓名、性别、教育程度）
+     * @param userid
+     * @return
+     */
+    public Map getUserMessage(String userid);
+
+    /**
+     * 根据userid修改个人信息（姓名、性别、教育程度）
+     * @param userid
+     * @param username
+     * @param gender
+     * @param education
+     * @return
+     */
+    public void ChangeUserMessage(String userid, String username, String gender, String education);
 }

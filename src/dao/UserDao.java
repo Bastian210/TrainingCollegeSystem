@@ -15,11 +15,11 @@ public interface UserDao {
     public User findUserByUserid(String userid);
 
     /**
-     * 根据邮箱查询密码
+     * 根据邮箱查找用户
      * @param email
      * @return
      */
-    public String findPasswordByEmail(String email);
+    public User findUserByEmail(String email);
 
     /**
      * 得到数据库中最大的userid
@@ -40,4 +40,13 @@ public interface UserDao {
      * @param email
      */
     public String getCode(String email);
+
+    /**
+     * 根据userid修改个人信息（姓名、性别、教育程度）
+     * @param userid
+     * @param username
+     * @param gender
+     * @param education
+     */
+    public void updateMessageByUserId(String userid, String username, String gender, String education);
 }

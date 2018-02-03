@@ -37,7 +37,8 @@ public class UserDaoImpl implements UserDao {
         return user;
     }
 
-    public String findPasswordByEmail(String email){
+    @Override
+    public User findUserByEmail(String email){
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
         String hql = String.format("from model.User as u where u.email = '%s'", email);
@@ -48,7 +49,7 @@ public class UserDaoImpl implements UserDao {
         if(list.size()==0){
             return null;
         }else{
-            return ((User)list.get(0)).getPassword();
+            return ((User)list.get(0));
         }
     }
 
@@ -92,5 +93,18 @@ public class UserDaoImpl implements UserDao {
         transaction.commit();
         session.close();
         return securityCode.getCode();
+    }
+
+    @Override
+    public void updateMessageByUserId(String userid, String username, String gender, String education) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        User user = session.get(User.class,userid);
+        user.setUsername(username);
+        user.setGender(gender);
+        user.setEducation(education);
+        session.update(user);
+        transaction.commit();
+        session.close();
     }
 }

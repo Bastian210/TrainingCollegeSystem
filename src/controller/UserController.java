@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import service.UserService;
+import utils.Param;
+
+import java.util.Map;
 
 @Controller
 public class UserController {
@@ -66,6 +69,27 @@ public class UserController {
         String result = getUserService().Register(username,email,password,code);
         JSONObject json = new JSONObject();
         json.put("result",result);
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/accountManagement.changeMessage",method = RequestMethod.POST)
+    public String doChangeMessage(@RequestParam(value = "userid")String userid, @RequestParam(value = "username")String username, @RequestParam(value = "gender")String gender, @RequestParam(value = "education")String education){
+        getUserService().ChangeUserMessage(userid,username,gender,education);
+        JSONObject json = new JSONObject();
+        json.put("result","success");
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/accountManagement.getMessage",method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+    public String doGetMessage(){
+        Map map = getUserService().getUserMessage(Param.getUserid());
+        JSONObject json = new JSONObject();
+        json.put("userid",Param.getUserid());
+        json.put("username",map.get("username"));
+        json.put("gender",map.get("gender"));
+        json.put("education",map.get("education"));
         return json.toString();
     }
 }

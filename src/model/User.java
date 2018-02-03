@@ -20,6 +20,10 @@ public class User implements Serializable {
     private String password;
     @Column(name = "email")
     private String email;
+    @Column(name = "gender")
+    private String gender;
+    @Column(name = "education")
+    private String education;
     @Column(name = "level")
     private int level;
     @Column(name = "points")
@@ -33,11 +37,13 @@ public class User implements Serializable {
 
     public User(){}
 
-    public User(String userid, String username, String password, String email, int level, int points, String payid, int writeoff, int isadmin) {
+    public User(String userid, String username, String password, String email, String gender, String education, int level, int points, String payid, int writeoff, int isadmin) {
         this.userid = userid;
         this.username = username;
         this.password = password;
         this.email = email;
+        this.gender = gender;
+        this.education = education;
         this.level = level;
         this.points = points;
         this.payid = payid;
@@ -79,6 +85,22 @@ public class User implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getEducation() {
+        return education;
+    }
+
+    public void setEducation(String education) {
+        this.education = education;
     }
 
     public int getLevel() {

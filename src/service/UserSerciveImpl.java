@@ -6,6 +6,10 @@ import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import utils.MailUtil;
+import utils.Param;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class UserSerciveImpl implements UserService {
@@ -15,11 +19,12 @@ public class UserSerciveImpl implements UserService {
 
     @Override
     public String Login(String email, String password) {
-        String cor_password = userDao.findPasswordByEmail(email);
+        User user = userDao.findUserByEmail(email);
         String result = "";
-        if(cor_password==null){
+        if(user==null){
             result = "wrong email";
-        }else if(cor_password.equals(password)){
+        }else if(user.getPassword().equals(password)){
+            Param.setUserid(user.getUserid());
             result = "success";
         }else{
             result = "wrong password";
@@ -51,19 +56,34 @@ public class UserSerciveImpl implements UserService {
     @Override
     public String Register(String username, String email, String password, String code) {
         String cor_code = userDao.getCode(email);
-        String cor_password = userDao.findPasswordByEmail(email);
+        User cor_user = userDao.findUserByEmail(email);
         String result = "";
         if(!cor_code.equals(code)){
             return "wrong code";
         }
-        if(cor_password!=null){
+        if(cor_user!=null){
             return "has register";
         }
         int num = Integer.parseInt(userDao.getMaxUserid())+1;
         String userid = String.valueOf(num);
-        User user = new User(userid,username,password,email,1,0,null,0,0);
+        User user = new User(userid,username,password,email,null,null,1,0,null,0,0);
         userDao.save(user);
         result = userid;
         return result;
+    }
+
+    @Override
+    public Map getUserMessage(String userid) {
+        User user = userDao.findUserByUserid(userid);
+        Map<String,String> map = new HashMap<>();
+        map.put("username",user.getUsername());
+        map.put("gender",user.getGender());
+        map.put("education",user.getEducation());
+        return map;
+    }
+
+    @Override
+    public void ChangeUserMessage(String userid, String username, String gender, String education) {
+        userDao.updateMessageByUserId(userid, username, gender, education);
     }
 }

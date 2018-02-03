@@ -56,3 +56,37 @@
     line-height: 40px;
     margin-bottom: 20px;
 }
+
+.edit-div{
+    border: 1px solid #eef1f3;
+    padding: 20px;
+}
+
+.edit-div label{
+    width: 100px;
+    height: 40px;
+    text-align: center;
+    font-weight: inherit;
+}
+
+.edit-div .my-input{
+    height: 40px;
+}
+
+.edit-div .my-input-radio{
+    margin-left:40px;
+}
+
+.edit-div #select{
+    position: relative;
+    left: 100px;
+    top: -55px;
+    width:220px;
+}
+
+.edit-div .my-button{
+    position: relative;
+    left: auto;
+    top: -40px;
+    margin-left: 120px;
+}
