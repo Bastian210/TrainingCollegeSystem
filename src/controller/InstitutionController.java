@@ -99,4 +99,13 @@ public class InstitutionController {
         json.put("result",result);
         return json.toString();
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/insManagement.changePassword",method = RequestMethod.POST)
+    public String doChangePassword(@RequestParam(value = "oldpassword")String oldpassword,@RequestParam(value = "newpassword")String newpassword){
+        String result = getInstitutionService().ChangePassword(Param.getInstitutionid(),oldpassword,newpassword);
+        JSONObject json = new JSONObject();
+        json.put("result",result);
+        return json.toString();
+    }
 }

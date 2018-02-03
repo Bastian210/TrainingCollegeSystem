@@ -88,7 +88,20 @@
                         </div>
                     </div>
                 </div>
-                <div id="account-safety-div" hidden="hidden"></div>
+                <div id="account-safety-div" hidden="hidden">
+                    <p>修改密码</p>
+                    <label>当前密码:</label>
+                    <input type="password" class="my-input" id="enter-old-password" placeholder="请填入当前密码">
+                    <br>
+                    <label>新密码:</label>
+                    <input type="password" class="my-input" id="enter-new-password1" placeholder="6~16个字符">
+                    <br>
+                    <label>确认密码:</label>
+                    <input type="password" class="my-input" id="enter-new-password2" placeholder="请再次填入新密码">
+                    <br>
+                    <div class="alert alert-warning" id="change-password-error" hidden="hidden"></div>
+                    <button class="my-button" id="change-password-btn">确认修改</button>
+                </div>
             </div>
         </div>
     </div>

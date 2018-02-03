@@ -120,4 +120,8 @@
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/insManagement.changePayPwd</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/insManagement.changePassword</url-pattern>
+    </servlet-mapping>
 </web-app>

@@ -37,5 +37,12 @@ public interface InstitutionDao {
      * @param id
      * @param payid
      */
-    public void updatePayIdByUserId(String id,String payid);
+    public void updatePayIdById(String id,String payid);
+
+    /**
+     * 根据识别码更新登录密码
+     * @param id
+     * @param password
+     */
+    public void updatePasswordById(String id,String password);
 }

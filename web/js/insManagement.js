@@ -67,10 +67,10 @@ $(function () {
         $("#pay-account-li").removeAttr("class");
         $("#account-safety-li").attr("class","active");
         $("#chosen-li").html("账号安全");
-        $("#ins-message-div").show();
+        $("#ins-message-div").hide();
         $("#teachers-div").hide();
         $("#pay-account-div").hide();
-        $("#account-safety-div").hide();
+        $("#account-safety-div").show();
     });
 
     /**
@@ -239,6 +239,61 @@ $(function () {
                         setTimeout(function () {
                             $("#change-payPwd-error").hide();
                             $("#change-payPwd-div").hide();
+                        },1000);
+                    }
+                }
+            });
+        }
+    });
+
+    /**
+     * 修改登录密码
+     */
+    $("#change-password-btn").click(function () {
+        var oldpassword = $("#enter-old-password").val();
+        var newpassword1 = $("#enter-new-password1").val();
+        var newpassword2 = $("#enter-new-password2").val();
+        if(oldpassword==""||newpassword1==""||newpassword2==""){
+            $("#change-password-error").html("密码不能为空！");
+            $("#change-password-error").show();
+            setTimeout(function () {
+                $("#change-password-error").hide();
+            },1000);
+        }else if(newpassword1!=newpassword2){
+            $("#change-password-error").html("两次新密码不相同！");
+            $("#change-password-error").show();
+            setTimeout(function () {
+                $("#change-password-error").hide();
+            },1000);
+        }else if(newpassword1.length<6||newpassword1.length>16){
+            $("#change-password-error").html("密码长度不合格！");
+            $("#change-password-error").show();
+            setTimeout(function () {
+                $("#change-password-error").hide();
+            },1000);
+        }else{
+            $.ajax({
+                url: "/insManagement.changePassword",
+                type: "post",
+                data: {
+                    oldpassword: oldpassword,
+                    newpassword: newpassword1
+                },
+                dataType: "json",
+                success: function (data) {
+                    var result = data["result"];
+                    if(result=="wrong password"){
+                        $("#change-password-error").html("旧密码错误！");
+                        $("#change-password-error").show();
+                        setTimeout(function () {
+                            $("#change-password-error").hide();
+                        },1000);
+                    }else{
+                        $("#change-password-error").attr("class","alert alert-success");
+                        $("#change-password-error").html("修改成功！");
+                        $("#change-password-error").show();
+                        setTimeout(function () {
+                            $("#change-password-error").hide();
                         },1000);
                     }
                 }

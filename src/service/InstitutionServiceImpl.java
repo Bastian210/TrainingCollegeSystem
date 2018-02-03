@@ -89,14 +89,14 @@ public class InstitutionServiceImpl implements InstitutionService {
         }else if(!cor_password.equals(password)){
             return "wrong password";
         }else{
-            institutionDao.updatePayIdByUserId(id, payid);
+            institutionDao.updatePayIdById(id, payid);
             return "success";
         }
     }
 
     @Override
     public void UnbindAccount(String id, String payid) {
-        institutionDao.updatePayIdByUserId(id,"");
+        institutionDao.updatePayIdById(id,"");
     }
 
     @Override
@@ -106,6 +106,16 @@ public class InstitutionServiceImpl implements InstitutionService {
             return "wrong password";
         }
         paymentDao.updatePasswordByPayid(payid,newPassword);
+        return "success";
+    }
+
+    @Override
+    public String ChangePassword(String id, String oldPassword, String newPassword) {
+        Institution institution = institutionDao.findInstitutionById(id);
+        if(!institution.getPassword().equals(oldPassword)){
+            return "wrong password";
+        }
+        institutionDao.updatePasswordById(id,newPassword);
         return "success";
     }
 }

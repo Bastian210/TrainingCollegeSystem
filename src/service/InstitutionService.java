@@ -63,4 +63,13 @@ public interface InstitutionService {
      * @return
      */
     public String ChangePaymentPassword(String payid,String oldPassword,String newPassword);
+
+    /**
+     * 更改登录密码
+     * @param id
+     * @param oldPassword
+     * @param newPassword
+     * @return
+     */
+    public String ChangePassword(String id,String oldPassword,String newPassword);
 }
