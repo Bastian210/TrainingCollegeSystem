@@ -69,7 +69,36 @@
 
                 </div>
                 <div id="pay-account-div" hidden="hidden">
-
+                    <div id="bind-account-div">
+                        <p>您还没有绑定支付账号，立即绑定！</p>
+                        <label>支付账号:</label>
+                        <input type="text" class="my-input" id="enter-pay-account" placeholder="请填入支付账号">
+                        <br>
+                        <label>支付密码:</label>
+                        <input type="password" class="my-input" id="enter-account-password" placeholder="请填入支付密码">
+                        <br>
+                        <div class="alert alert-warning" id="bind-error" hidden="hidden"></div>
+                        <button class="my-button" id="bind-account-btn">立即绑定</button>
+                    </div>
+                    <div id="has-bind-div">
+                        <p>您已绑定支付账号<span id="account-id-span"></span>！</p>
+                        <p>当前余额：<span id="account-balance-span"></span></p>
+                        <a id="unbind-account-a">立即解绑</a>
+                        <a id="change-payPwd-a">修改密码</a>
+                        <div id="change-payPwd-div" hidden="hidden">
+                            <label>当前密码:</label>
+                            <input type="password" class="my-input" id="enter-old-payPwd" placeholder="请填入当前密码">
+                            <br>
+                            <label>新密码:</label>
+                            <input type="password" class="my-input" id="enter-new-payPwd1" placeholder="4~6位数字">
+                            <br>
+                            <label>确认密码:</label>
+                            <input type="password" class="my-input" id="enter-new-payPwd2" placeholder="请再次填入新密码">
+                            <br>
+                            <div class="alert alert-warning" id="change-payPwd-error" hidden="hidden"></div>
+                            <button class="my-button" id="change-payPwd-btn">确认修改</button>
+                        </div>
+                    </div>
                 </div>
                 <div id="account-safety-div" hidden="hidden">
 
@@ -90,6 +119,23 @@
             </div>
             <div class="my-modal-footer">
                 <button type="button" class="single-button" data-dismiss="modal">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="unbind-account-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="my-modal">
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                &times;
+            </button>
+            <div class="my-modal-header">
+                <p class="text-center">您确定要解绑此账号吗？</p>
+            </div>
+            <div class="my-modal-footer">
+                <button class="my-button" data-dismiss="modal">取消</button>
+                <button class="my-button" id="unbind-account-btn">确定</button>
             </div>
         </div>
     </div>

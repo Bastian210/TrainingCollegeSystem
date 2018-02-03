@@ -76,4 +76,16 @@
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/accountManagement.changeMessage</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/accountManagement.bindAccount</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/accountManagement.unbindAccount</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/accountManagement.changePayPwd</url-pattern>
+    </servlet-mapping>
 </web-app>

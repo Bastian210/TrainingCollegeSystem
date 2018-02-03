@@ -2,6 +2,7 @@ package service;
 
 import dao.UserDao;
 import dao.UserDaoImpl;
+import model.Payment;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -79,11 +80,47 @@ public class UserSerciveImpl implements UserService {
         map.put("username",user.getUsername());
         map.put("gender",user.getGender());
         map.put("education",user.getEducation());
+        if(user.getPayid()==null){
+            map.put("payid","");
+            map.put("balance","");
+        }else{
+            map.put("payid",user.getPayid());
+            Payment payment = userDao.findPaymentByPayId(user.getPayid());
+            map.put("balance", String.valueOf(payment.getBalance()));
+        }
         return map;
     }
 
     @Override
     public void ChangeUserMessage(String userid, String username, String gender, String education) {
         userDao.updateMessageByUserId(userid, username, gender, education);
+    }
+
+    @Override
+    public String BindAccount(String userid, String payid, String password) {
+        Payment payment = userDao.findPaymentByPayId(payid);
+        if(payment==null){
+            return "wrong id";
+        }else if(!payment.getPassword().equals(password)){
+            return "wrong password";
+        }else{
+            userDao.updatePayIdByUserId(userid,payid);
+            return "success";
+        }
+    }
+
+    @Override
+    public void UnbindAccount(String userid, String payid) {
+        userDao.updatePayIdByUserId(userid,"");
+    }
+
+    @Override
+    public String ChangePaymentPassword(String payid, String oldPassword, String newPassword) {
+        Payment payment = userDao.findPaymentByPayId(payid);
+        if(!payment.getPassword().equals(oldPassword)){
+            return "wrong password";
+        }
+        userDao.updatePasswordByPayid(payid,newPassword);
+        return "success";
     }
 }

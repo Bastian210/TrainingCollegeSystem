@@ -52,4 +52,30 @@ public interface UserService {
      * @return
      */
     public void ChangeUserMessage(String userid, String username, String gender, String education);
+
+    /**
+     * 绑定支付账号
+     * @param userid
+     * @param payid
+     * @param password
+     * @return
+     */
+    public String BindAccount(String userid, String payid, String password);
+
+    /**
+     * 解绑支付账号
+     * @param userid
+     * @param payid
+     * @return
+     */
+    public void UnbindAccount(String userid, String payid);
+
+    /**
+     * 更改支付密码
+     * @param payid
+     * @param oldPassword
+     * @param newPassword
+     * @return
+     */
+    public String ChangePaymentPassword(String payid,String oldPassword,String newPassword);
 }

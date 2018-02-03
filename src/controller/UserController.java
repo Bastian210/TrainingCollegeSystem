@@ -90,6 +90,35 @@ public class UserController {
         json.put("username",map.get("username"));
         json.put("gender",map.get("gender"));
         json.put("education",map.get("education"));
+        json.put("payid",map.get("payid"));
+        json.put("balance",map.get("balance"));
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/accountManagement.bindAccount",method = RequestMethod.POST)
+    public String doBindAccount(@RequestParam(value = "payid")String payid, @RequestParam(value = "password")String password){
+        String result = getUserService().BindAccount(Param.getUserid(),payid,password);
+        JSONObject json = new JSONObject();
+        json.put("result",result);
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/accountManagement.unbindAccount",method = RequestMethod.POST)
+    public String doUnbindAccount(@RequestParam(value = "payid")String payid){
+        getUserService().UnbindAccount(Param.getUserid(),payid);
+        JSONObject json = new JSONObject();
+        json.put("result","success");
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/accountManagement.changePayPwd",method = RequestMethod.POST)
+    public String doChangePayPwd(@RequestParam(value = "payid")String payid,@RequestParam(value = "oldPwd")String oldPwd,@RequestParam(value = "newPwd")String newPwd){
+        String result = getUserService().ChangePaymentPassword(payid, oldPwd, newPwd);
+        JSONObject json = new JSONObject();
+        json.put("result",result);
         return json.toString();
     }
 }

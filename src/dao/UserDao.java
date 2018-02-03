@@ -1,5 +1,6 @@
 package dao;
 
+import model.Payment;
 import model.User;
 
 public interface UserDao {
@@ -49,4 +50,25 @@ public interface UserDao {
      * @param education
      */
     public void updateMessageByUserId(String userid, String username, String gender, String education);
+
+    /**
+     * 绑定支付账号
+     * @param userid
+     * @param payid
+     */
+    public void updatePayIdByUserId(String userid, String payid);
+
+    /**
+     * 根据payid查找支付账号实体
+     * @param payid
+     * @return
+     */
+    public Payment findPaymentByPayId(String payid);
+
+    /**
+     * 更改支付密码
+     * @param payid
+     * @param password
+     */
+    public void updatePasswordByPayid(String payid,String password);
 }

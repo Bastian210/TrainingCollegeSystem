@@ -1,5 +1,6 @@
 package dao;
 
+import model.Payment;
 import model.SecurityCode;
 import model.User;
 import org.hibernate.Session;
@@ -104,6 +105,38 @@ public class UserDaoImpl implements UserDao {
         user.setGender(gender);
         user.setEducation(education);
         session.update(user);
+        transaction.commit();
+        session.close();
+    }
+
+    @Override
+    public void updatePayIdByUserId(String userid, String payid) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        User user = session.get(User.class,userid);
+        user.setPayid(payid);
+        session.update(user);
+        transaction.commit();
+        session.close();
+    }
+
+    @Override
+    public Payment findPaymentByPayId(String payid) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        Payment payment = session.get(Payment.class,payid);
+        transaction.commit();
+        session.close();
+        return payment;
+    }
+
+    @Override
+    public void updatePasswordByPayid(String payid, String password) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        Payment payment = session.get(Payment.class,payid);
+        payment.setPassword(password);
+        session.update(payment);
         transaction.commit();
         session.close();
     }
