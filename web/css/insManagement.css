@@ -1,0 +1,88 @@
+.row{
+    width: 1160px;
+    padding: 0 100px;
+}
+
+.left-nav{
+    width: 200px;
+    float: left;
+    border: 1px solid #efefef;
+}
+
+.right-content{
+    float: left;
+    margin-left: 10px;
+    width: 750px;
+}
+
+.left-nav label{
+    padding-left: 30px;
+    width: 200px;
+    height: 40px;
+    line-height:40px;
+    font-size: 16px;
+    font-family: "Microsoft YaHei";
+    color: white;
+    background-color: #409EFF;
+}
+
+.left-nav ul{
+    padding: 0 0;
+}
+
+.left-nav li{
+    list-style: none;
+    width: 200px;
+    height: 40px;
+    line-height:40px;
+    padding-left: 40px;
+}
+
+.left-nav li:hover{
+    background-color: #fafafa;
+    border-left: 2px solid #409EFF;
+    cursor: pointer;
+}
+
+.left-nav li.active {
+    background-color: #fafafa;
+    border-left: 2px solid #409EFF;
+}
+
+.breadcrumb{
+    border: 1px solid #efefef;
+    height: 40px;
+    padding: 0 20px;
+    line-height: 40px;
+    margin-bottom: 20px;
+}
+
+.edit-div{
+    border: 1px solid #eef1f3;
+    padding: 20px;
+}
+
+.edit-div label{
+    width: 100px;
+    height: 40px;
+    text-align: center;
+    font-weight: inherit;
+}
+
+.edit-div .my-input{
+    height: 40px;
+}
+
+.edit-div .my-input-radio{
+    margin-left:40px;
+}
+
+.edit-div p{
+    padding-left:20px;
+    height: 30px;
+    line-height: 30px;
+}
+
+.edit-div .my-button{
+    margin-left: 120px;
+}

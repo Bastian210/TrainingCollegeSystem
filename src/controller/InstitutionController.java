@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import service.InstitutionService;
+import utils.Param;
+
+import java.util.Map;
 
 @Controller
 public class InstitutionController {
@@ -44,6 +47,27 @@ public class InstitutionController {
         String result = getInstitutionService().Register(name,address,phone,password);
         JSONObject json = new JSONObject();
         json.put("result",result);
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/insManagement.getInsMess",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+    public String doGetInsMess(){
+        Map map = getInstitutionService().GetInsMess(Param.getInstitutionid());
+        JSONObject json = new JSONObject();
+        json.put("id",map.get("id"));
+        json.put("name",map.get("name"));
+        json.put("address",map.get("address"));
+        json.put("phone",map.get("phone"));
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/insManagement.changeInsMess",method = RequestMethod.POST)
+    public String doChangeInsMess(@RequestParam(value = "name")String name,@RequestParam(name = "address")String address,@RequestParam(name = "phone")String phone){
+        getInstitutionService().ChangeInsMess(Param.getInstitutionid(),name,address,phone);
+        JSONObject json = new JSONObject();
+        json.put("result","success");
         return json.toString();
     }
 }

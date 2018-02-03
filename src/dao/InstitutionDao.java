@@ -5,6 +5,11 @@ import model.Institution;
 public interface InstitutionDao {
     public void save(Institution institution);
 
+    /**
+     * 根据识别码查找机构
+     * @param id
+     * @return
+     */
     public Institution findInstitutionById(String id);
 
     /**
@@ -19,4 +24,11 @@ public interface InstitutionDao {
      * @return
      */
     public Institution findInstitutionByPhone(String phone);
+
+    /**
+     * 根据识别码更新修改的信息
+     * @param id
+     * @param chanMess
+     */
+    public void updateChanMessById(String id, String chanMess);
 }

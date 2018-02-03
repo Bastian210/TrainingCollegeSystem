@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>账号管理</title>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/js/insManagement.js"></script>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/insManagement.css">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+</head>
+<body>
+<nav class="my-nav">
+    <span>Training College</span>
+    <ul>
+        <li><a href="/institution">机构计划</a></li>
+        <li><a>订单管理</a></li>
+        <li><a>课程管理</a></li>
+        <li><a class="active" href="/insManagement">账号管理</a></li>
+    </ul>
+    <a class="a-right" href="/login">退出登录</a>
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="left-nav">
+            <label>账号管理</label>
+            <ul>
+                <li class="active" id="ins-message-li">机构信息</li>
+                <li id="teachers-li">师资力量</li>
+                <li id="pay-account-li">支付账号</li>
+                <li id="account-safety-li">账号安全</li>
+            </ul>
+        </div>
+        <div class="right-content">
+            <div class="breadcrumb">
+                <span>账号管理> </span>
+                <span id="chosen-li">机构信息</span>
+            </div>
+            <div class="edit-div">
+                <div id="ins-message-div">
+                    <label>识别码：</label>
+                    <label id="ins-id-label"></label>
+                    <br>
+                    <label>机构名称：</label>
+                    <input type="text" class="my-input" id="enter-ins-name" placeholder="请填入机构名称">
+                    <br>
+                    <label>地址：</label>
+                    <input type="text" class="my-input" id="enter-ins-address" placeholder="请填入机构地址">
+                    <br>
+                    <label>联系方式：</label>
+                    <input type="text" class="my-input" id="enter-ins-phone" placeholder="请填入联系方式">
+                    <br>
+                    <div class="alert alert-warning" id="ins-message-error" hidden="hidden"></div>
+                    <button class="my-button" id="ins-message-btn">保存</button>
+                </div>
+                <div id="teachers-div" hidden="hidden"></div>
+                <div id="pay-account-div" hidden="hidden"></div>
+                <div id="account-safety-div" hidden="hidden"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

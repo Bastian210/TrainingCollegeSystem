@@ -60,4 +60,15 @@ public class InstitutionDaoImpl implements InstitutionDao {
         }
         return (Institution) list.get(list.size()-1);
     }
+
+    @Override
+    public void updateChanMessById(String id, String chanMess) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        Institution institution = session.get(Institution.class,id);
+        institution.setChanMess(chanMess);
+        session.update(institution);
+        transaction.commit();
+        session.close();
+    }
 }

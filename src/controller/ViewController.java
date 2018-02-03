@@ -37,4 +37,9 @@ public class ViewController {
     public String getAccountManagement(ModelMap model){
         return "accountManagement";
     }
+
+    @RequestMapping(value = "/insManagement",method = RequestMethod.GET)
+    public String getInsManagement(ModelMap model){
+        return "insManagement";
+    }
 }

@@ -65,10 +65,9 @@ $(function () {
         }
     });
 
-    $("#confirm-insRegSuc-btn").click(){
-        $("#insReg-success-modal").modal("hide");
-    }
-
+    /**
+     * 机构登录
+     */
     $("#institution-login-btn").click(function () {
         var id = $("#enter-institution-id").val();
         var password = $("#enter-institution-password").val();

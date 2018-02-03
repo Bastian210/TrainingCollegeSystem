@@ -96,4 +96,16 @@
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/accountManagement.writeOff</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/insManagement</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/insManagement.changeInsMess</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/insManagement.getInsMess</url-pattern>
+    </servlet-mapping>
 </web-app>
