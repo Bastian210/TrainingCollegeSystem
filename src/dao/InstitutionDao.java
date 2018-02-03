@@ -1,6 +1,9 @@
 package dao;
 
 import model.Institution;
+import model.Teachers;
+
+import java.util.List;
 
 public interface InstitutionDao {
     public void save(Institution institution);
@@ -45,4 +48,17 @@ public interface InstitutionDao {
      * @param password
      */
     public void updatePasswordById(String id,String password);
+
+    /**
+     * 保存教师
+     * @param teachers
+     */
+    public void saveTeacher(Teachers teachers);
+
+    /**
+     * 根据识别码得到教师列表
+     * @param id
+     * @return
+     */
+    public List findTeachersById(String id);
 }

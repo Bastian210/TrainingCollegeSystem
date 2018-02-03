@@ -1,6 +1,7 @@
 package dao;
 
 import model.Institution;
+import model.Teachers;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -92,5 +93,26 @@ public class InstitutionDaoImpl implements InstitutionDao {
         session.update(institution);
         transaction.commit();
         session.close();
+    }
+
+    @Override
+    public void saveTeacher(Teachers teachers) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        session.save(teachers);
+        transaction.commit();
+        session.close();
+    }
+
+    @Override
+    public List findTeachersById(String id) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        String hql = String.format("from model.Teachers as t where t.institutionid='%s'", id);
+        Query query = session.createQuery(hql);
+        List list = query.list();
+        transaction.commit();
+        session.close();
+        return list;
     }
 }

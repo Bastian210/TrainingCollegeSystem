@@ -55,7 +55,48 @@
                     <div class="alert alert-warning" id="ins-message-error" hidden="hidden"></div>
                     <button class="my-button" id="ins-message-btn">保存</button>
                 </div>
-                <div id="teachers-div" hidden="hidden"></div>
+                <div id="teachers-div" hidden="hidden">
+                    <div class="float-right-div">
+                        <button class="my-button" id="show-add-teacher-btn">新增教师</button>
+                    </div>
+                    <div id="display-teachers-div">
+                        <table class="display-table">
+                            <thead>
+                            <tr>
+                                <th class="w1">序号</th>
+                                <th class="w2">姓名</th>
+                                <th class="w3">性别</th>
+                                <th class="w4">课程类型</th>
+                                <th class="w5">操作类型</th>
+                            </tr>
+                            </thead>
+                            <tbody id="display-content">
+                            <tr>
+                                <td>1</td>
+                                <td>朱海卫</td>
+                                <td>男</td>
+                                <td>高中物理</td>
+                                <td><a>修改</a><a>删除</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="add-teacher-div" hidden="hidden">
+                        <label>教师姓名：</label>
+                        <input type="text" class="my-input" id="enter-teacher-name" placeholder="请填入教师姓名">
+                        <br>
+                        <label>性别：</label>
+                        <input type="radio" class="my-input-radio" name="gender-options" id="man">男
+                        <input type="radio" class="my-input-radio" name="gender-options" id="woman">女
+                        <br>
+                        <label>课程类型：</label>
+                        <input type="text" class="my-input" id="enter-lesson-type" placeholder="课程类型(如：高中物理)">
+                        <br>
+                        <div class="alert alert-warning" id="add-teacher-error" hidden="hidden"></div>
+                        <button class="my-button" id="cancel-add-btn">取消</button>
+                        <button class="my-button" id="add-teacher-btn">添加</button>
+                    </div>
+                </div>
                 <div id="pay-account-div" hidden="hidden">
                     <div id="bind-account-div">
                         <p>您还没有绑定支付账号，立即绑定！</p>

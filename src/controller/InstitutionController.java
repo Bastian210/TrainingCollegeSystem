@@ -108,4 +108,25 @@ public class InstitutionController {
         json.put("result",result);
         return json.toString();
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/insManagement.addTeacher",method = RequestMethod.POST)
+    public String doAddTeacher(@RequestParam(value = "name")String name,@RequestParam(value = "gender")String gender,@RequestParam(value = "type")String type){
+        getInstitutionService().AddTeacher(Param.getInstitutionid(),name,gender,type);
+        JSONObject json = new JSONObject();
+        json.put("result","success");
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/insManagement.getTeacher",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+    public String doGetTeacher(){
+        Map map = getInstitutionService().GetTeacher(Param.getInstitutionid());
+        JSONObject json = new JSONObject();
+        json.put("index",map.get("index"));
+        json.put("name",map.get("name"));
+        json.put("gender",map.get("gender"));
+        json.put("type",map.get("type"));
+        return json.toString();
+    }
 }

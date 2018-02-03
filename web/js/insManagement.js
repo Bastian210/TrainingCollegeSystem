@@ -23,6 +23,8 @@ $(function () {
                 }
             }
         });
+
+        getAllTeacher();
     });
     
     $("#ins-message-li").click(function () {
@@ -300,4 +302,81 @@ $(function () {
             });
         }
     });
+
+    $("#show-add-teacher-btn").click(function () {
+        $("#add-teacher-div").show();
+        $("#display-teachers-div").hide();
+    });
+
+    $("#cancel-add-btn").click(function () {
+        $("#add-teacher-div").hide();
+        $("#display-teachers-div").show();
+    });
+
+    /**
+     * 添加教师
+     */
+    $("#add-teacher-btn").click(function () {
+        var name = $("#enter-teacher-name").val();
+        var gender = "";
+        if($("#man").prop("checked")){
+            gender = "男";
+        }
+        if($("#woman").prop("checked")){
+            gender = "女";
+        }
+        var type = $("#enter-lesson-type").val();
+        if(name==""||gender==""||type==""){
+            $("#add-teacher-error").html("教师信息填写不完整！");
+            $("#add-teacher-error").show();
+            setTimeout(function () {
+                $("#add-teacher-error").hide();
+            },1000);
+        }else{
+            $.ajax({
+                url: "/insManagement.addTeacher",
+                type: "post",
+                data: {
+                    name: name,
+                    gender: gender,
+                    type: type
+                },
+                dataType: "json",
+                success: function (data) {
+                    $("#add-teacher-div").hide();
+                    $("#display-teachers-div").show();
+                    getAllTeacher();
+                }
+            });
+        }
+    });
+
+    function getAllTeacher() {
+        $.ajax({
+            url: "/insManagement.getTeacher",
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                var indexlist = data["index"];
+                var namelist = data["name"];
+                var genderlist = data["gender"];
+                var typelist = data["type"];
+                var content = "";
+                for(var i=0;i<indexlist.length;i++){
+                    content = content+"<tr><td>"+indexlist[i]+"</td><td>"+namelist[i]+"</td><td>"+genderlist[i]
+                        +"</td><td>"+typelist[i]+"</td><td><a onclick=\"changeTeacher('"+namelist[i]+"','"
+                        +genderlist[i]+"','"+typelist[i]+"')\">修改</a><a onclick=\"deleteTeacher('"+namelist[i]+"')\">删除</a></td></tr>";
+                }
+                $("#display-content").html(content);
+            }
+        });
+    }
+
+    function changeTeacher(name,gender,type) {
+
+    }
+
+    function deleteTeacher(name) {
+
+    }
 });

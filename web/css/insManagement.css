@@ -100,3 +100,65 @@
 #change-payPwd-div {
     margin-top: 30px;
 }
+
+.float-right-div{
+    height: 60px;
+}
+
+.float-right-div .my-button{
+    margin-left: 600px;
+}
+
+.display-table{
+    width: 100%;
+}
+
+.display-table th{
+    border: 1px solid #e3e3e3;
+    text-align: center;
+    background-color: #f8f8f8;
+    height: 30px;
+    line-height: 30px;
+    font-weight: 400;
+}
+
+.w1{
+    width: 100px;
+}
+
+.w2{
+    width: 150px;
+}
+
+.w3{
+    width: 130px;
+}
+
+.w4{
+    width: 200px;
+}
+
+.w5{
+    width: 130px;
+}
+
+.display-table td{
+    border: 1px solid #e3e3e3;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+}
+
+.display-table a{
+    color: #409EFF;
+    text-decoration: none;
+    margin: 10px;
+}
+
+.display-table a:hover{
+    cursor: pointer;
+}
+
+#add-teacher-div .my-button{
+    margin-left: 60px;
+}

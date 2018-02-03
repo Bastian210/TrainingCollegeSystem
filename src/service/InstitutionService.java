@@ -72,4 +72,20 @@ public interface InstitutionService {
      * @return
      */
     public String ChangePassword(String id,String oldPassword,String newPassword);
+
+    /**
+     * 教育机构添加教师
+     * @param id
+     * @param name
+     * @param gender
+     * @param type
+     */
+    public void AddTeacher(String id,String name,String gender,String type);
+
+    /**
+     * 得到教育机构的所有老师
+     * @param id
+     * @return
+     */
+    public Map GetTeacher(String id);
 }

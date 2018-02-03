@@ -5,12 +5,14 @@ import dao.InstitutionDaoImpl;
 import dao.PaymentDao;
 import model.Institution;
 import model.Payment;
+import model.Teachers;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import utils.Param;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -117,5 +119,34 @@ public class InstitutionServiceImpl implements InstitutionService {
         }
         institutionDao.updatePasswordById(id,newPassword);
         return "success";
+    }
+
+    @Override
+    public void AddTeacher(String id, String name, String gender, String type) {
+        Teachers teachers = new Teachers(id,name,gender,type);
+        institutionDao.saveTeacher(teachers);
+    }
+
+    @Override
+    public Map GetTeacher(String id) {
+        List list = institutionDao.findTeachersById(id);
+        Map<String,String[]> map = new HashMap<>();
+        int length = list.size();
+        String[] indexlist = new String[length];
+        String[] namelist = new String[length];
+        String[] genderlist = new String[length];
+        String[] typelist = new String[length];
+        for(int i=0;i<length;i++){
+            Teachers teachers = (Teachers) list.get(i);
+            indexlist[i] = String.valueOf(i+1);
+            namelist[i] = teachers.getName();
+            genderlist[i] = teachers.getGender();
+            typelist[i] = teachers.getType();
+        }
+        map.put("index",indexlist);
+        map.put("name",namelist);
+        map.put("gender",genderlist);
+        map.put("type",typelist);
+        return map;
     }
 }
