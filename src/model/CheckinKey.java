@@ -2,18 +2,18 @@ package model;
 
 import java.io.Serializable;
 
-public class LessonKey implements Serializable {
+public class CheckinKey implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String lessonid;
     private String classtype;
     private String userid;
 
-    public LessonKey(){
+    public CheckinKey(){
 
     }
 
-    public LessonKey(String lessonid, String classtype, String userid) {
+    public CheckinKey(String lessonid, String classtype, String userid) {
         this.lessonid = lessonid;
         this.classtype = classtype;
         this.userid = userid;
@@ -52,11 +52,11 @@ public class LessonKey implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        LessonKey lessonKey = (LessonKey) o;
+        CheckinKey that = (CheckinKey) o;
 
-        if (lessonid != null ? !lessonid.equals(lessonKey.lessonid) : lessonKey.lessonid != null) return false;
-        if (classtype != null ? !classtype.equals(lessonKey.classtype) : lessonKey.classtype != null) return false;
-        return userid != null ? userid.equals(lessonKey.userid) : lessonKey.userid == null;
+        if (lessonid != null ? !lessonid.equals(that.lessonid) : that.lessonid != null) return false;
+        if (classtype != null ? !classtype.equals(that.classtype) : that.classtype != null) return false;
+        return userid != null ? userid.equals(that.userid) : that.userid == null;
     }
 
     @Override

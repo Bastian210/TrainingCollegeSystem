@@ -1,17 +1,22 @@
 package model;
 
+import org.springframework.stereotype.Controller;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "checkin")
-@IdClass(LessonKey.class)
+@IdClass(CheckinKey.class)
 public class Checkin implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "lessonid")
     private String lessonid;
+    @Id
+    @Column(name = "classtype")
+    private String classtype;
     @Id
     @Column(name = "userid")
     private String userid;
@@ -25,8 +30,9 @@ public class Checkin implements Serializable {
     public Checkin() {
     }
 
-    public Checkin(String lessonid, String userid, String time, int classhour, int isattend) {
+    public Checkin(String lessonid, String classtype, String userid, String time, int classhour, int isattend) {
         this.lessonid = lessonid;
+        this.classtype = classtype;
         this.userid = userid;
         this.time = time;
         this.classhour = classhour;
@@ -43,6 +49,14 @@ public class Checkin implements Serializable {
 
     public void setLessonid(String lessonid) {
         this.lessonid = lessonid;
+    }
+
+    public String getClasstype() {
+        return classtype;
+    }
+
+    public void setClasstype(String classtype) {
+        this.classtype = classtype;
     }
 
     public String getUserid() {

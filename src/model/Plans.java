@@ -1,20 +1,21 @@
 package model;
 
 import javax.naming.Name;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "plans")
+@IdClass(PlansKey.class)
 public class Plans implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "lessonid")
     private String lessonid;
+    @Id
+    @Column(name = "classtype")
+    private String classtype;
     @Column(name = "institutionid")
     private String institutionid;
     @Column(name = "begin")
@@ -31,8 +32,6 @@ public class Plans implements Serializable {
     private String description;
     @Column(name = "teacher")
     private String teacher;
-    @Column(name = "classtype")
-    private String classtype;
     @Column(name = "classnum")
     private int classnum;
     @Column(name = "studentnum")

@@ -61,7 +61,6 @@ function deleteClass(i) {
         pricelist[i] = priceList[i];
     }
 
-    console.log(teacherslist);
     diaplayAllClass();
 }
 
@@ -269,6 +268,12 @@ $(function () {
             setTimeout(function () {
                 $("#edit-class-error").hide();
             },1000);
+        }else if(type==typelist[0]||type==typelist[1]||type==typelist[2]){
+            $("#edit-class-error").html("已有此班级类型！");
+            $("#edit-class-error").show();
+            setTimeout(function () {
+                $("#edit-class-error").hide();
+            },1000);
         }else{
             var i = 0;
             if($("#type").text()=="add"){
@@ -290,7 +295,6 @@ $(function () {
                 stunumlist[i] = stuNum;
                 pricelist[i] = price;
             }
-            console.log(teacherslist);
 
             $("#edit-class-div").hide();
             $("#add-class-a").show();
@@ -372,7 +376,7 @@ $(function () {
             setTimeout(function () {
                 $("#add-plan-error").hide();
             },1000);
-        }else if(date1>date2){
+        }else if(date1>date2||date1<Date.now()){
             $("#add-plan-error").html("课程时间错误！");
             $("#add-plan-error").show();
             setTimeout(function () {
@@ -397,7 +401,11 @@ $(function () {
                     priceList: priceList,
                 },
                 success: function (data) {
-
+                    $("#add-plan-error").html("添加成功！");
+                    $("#add-plan-error").show();
+                    setTimeout(function () {
+                        $("#add-plan-error").hide();
+                    },1000);
                 }
             });
         }
