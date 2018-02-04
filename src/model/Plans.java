@@ -16,7 +16,7 @@ public class Plans implements Serializable {
     @Column(name = "lessonid")
     private String lessonid;
     @Column(name = "institutionid")
-    private String institution;
+    private String institutionid;
     @Column(name = "begin")
     private String begin;
     @Column(name = "end")
@@ -43,9 +43,9 @@ public class Plans implements Serializable {
     public Plans() {
     }
 
-    public Plans(String lessonid, String institution, String begin, String end, int classhours, String type, String lesson, String description, String teacher, String classtype, int classnum, int studentnum, double price) {
+    public Plans(String lessonid, String institutionid, String begin, String end, int classhours, String type, String lesson, String description, String teacher, String classtype, int classnum, int studentnum, double price) {
         this.lessonid = lessonid;
-        this.institution = institution;
+        this.institutionid = institutionid;
         this.begin = begin;
         this.end = end;
         this.classhours = classhours;
@@ -71,12 +71,12 @@ public class Plans implements Serializable {
         this.lessonid = lessonid;
     }
 
-    public String getInstitution() {
-        return institution;
+    public String getInstitutionid() {
+        return institutionid;
     }
 
-    public void setInstitution(String institution) {
-        this.institution = institution;
+    public void setInstitutionid(String institutionid) {
+        this.institutionid = institutionid;
     }
 
     public String getBegin() {

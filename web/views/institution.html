@@ -8,6 +8,7 @@
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="/js/institution.js"></script>
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/institution.css">
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 </head>
 <body>
@@ -21,5 +22,209 @@
     </ul>
     <a class="a-right" href="/login">退出登录</a>
 </nav>
+<div class="container">
+    <div class="row">
+        <div class="title">
+            <a>近期课程</a>
+            <a>以往课程</a>
+            <a>添加计划</a>
+        </div>
+        <div class="main-content">
+            <div id="add-plan-div">
+                <label>课程名称：</label>
+                <input type="text" class="my-input" id="enter-lesson-name" placeholder="请填入课程名称">
+                <label>课程类型：</label>
+                <input type="text" class="my-input" id="enter-lesson-type" placeholder="请填入课程类型">
+                <br>
+                <label class="float-left top10">课程时间：</label>
+                <div id="date-picker">
+                    <template>
+                        <div class="block">
+                            <el-date-picker v-model="value1" type="date" placeholder="选择开始日期" id="enter-begin-date">
+                            </el-date-picker>
+                            &nbsp;&nbsp;至&nbsp;&nbsp;
+                            <el-date-picker v-model="value2" type="date" placeholder="选择结束日期" id="enter-end-date">
+                            </el-date-picker>
+                        </div>
+                    </template>
+                </div>
+                <br>
+                <label class="float-left">课时：</label>
+                <div id="input-number">
+                    <template>
+                        <el-input-number v-model="num1" controls-position="right" @change="handleChange" :min="1" id="enter-class-hour"></el-input-number>
+                    </template>
+                </div>
+                <br>
+                <label class="float-left">课程描述：</label>
+                <div id="textarea">
+                    <el-input type="textarea" :rows="4" placeholder="请输入课程描述" v-model="textarea" id="enter-class-description">
+                    </el-input>
+                </div>
+                <br>
+
+                <div class="manage-class">
+                    <span>管理班级</span>
+                    <a id="add-class-a" hidden="hidden">新增班级</a>
+                </div>
+
+                <div id="edit-class-container">
+                    <span id="edit-id" hidden="hidden"></span>
+                    <div>
+                        <table width="100%" id="display-class">
+                        </table>
+                    </div>
+                    <div id="edit-class-div">
+                        <span hidden="hidden" id="type">add</span>
+                        <label>教师：</label>
+                        <input class="my-input" id="enter-teachers" placeholder="请填入教师名称">
+                        <a id="add-teacher-a">添加教师</a>
+                        <br>
+                        <label class="float-left top10">班级类型：</label>
+                        <div id="select">
+                            <template>
+                                <el-select v-model="value" placeholder="请选择班级类型" id="select-class-type">
+                                    <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </template>
+                        </div>
+                        <label class="float-left top10">班级数：</label>
+                        <div id="input-class-number" class="number-picker">
+                            <template>
+                                <el-input-number id="enter-class-number" v-model="num2" controls-position="right" @change="handleChange" :min="1" style="width: 100px"></el-input-number>
+                            </template>
+                        </div>
+                        <label class="float-left top10">容纳人数：</label>
+                        <div id="input-student-number" class="number-picker">
+                            <template>
+                                <el-input-number id="enter-student-number" v-model="num3" controls-position="right" @change="handleChange" :min="1" style="width: 100px"></el-input-number>
+                            </template>
+                        </div>
+                        <label class="float-left top10">价格：</label>
+                        <input class="my-input" id="enter-price" placeholder="请填入价格" style="width: 105px">&nbsp;元
+                        <div class="alert alert-warning" hidden="hidden" id="edit-class-error"></div>
+                        <button class="my-button" id="cancel-edit-btn">取消</button>
+                        <button class="my-button" id="save-class-btn">保存</button>
+                    </div>
+                </div>
+                <br>
+                <div class="alert alert-warning" hidden="hidden" id="add-plan-error"></div>
+                <button class="my-button" id="add-plan-btn">确认添加</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script>
+    var Main = {
+        data() {
+            return {
+                pickerOptions1: {
+                    disabledDate(time) {
+                        return time.getTime() > Date.now();
+                    },
+                    shortcuts: [{
+                        text: '今天',
+                        onClick(picker) {
+                            picker.$emit('pick', new Date());
+                        }
+                    }, {
+                        text: '昨天',
+                        onClick(picker) {
+                            const date = new Date();
+                            date.setTime(date.getTime() - 3600 * 1000 * 24);
+                            picker.$emit('pick', date);
+                        }
+                    }, {
+                        text: '一周前',
+                        onClick(picker) {
+                            const date = new Date();
+                            date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+                            picker.$emit('pick', date);
+                        }
+                    }]
+                },
+                value1: '',
+                value2: '',
+            };
+        }
+    };
+    var Ctor = Vue.extend(Main);
+    new Ctor().$mount('#date-picker');
+
+    var Main1 = {
+        data() {
+            return {
+                num1: 1
+            };
+        },
+        methods: {
+            handleChange(value) {
+            }
+        }
+    };
+    var Ctor1 = Vue.extend(Main1);
+    new Ctor1().$mount('#input-number');
+
+    var Main2 = {
+        data() {
+            return {
+                num2: 1
+            };
+        },
+        methods: {
+            handleChange(value) {
+            }
+        }
+    };
+    var Ctor2 = Vue.extend(Main2);
+    new Ctor2().$mount('#input-class-number');
+
+    var Main3 = {
+        data() {
+            return {
+                num3: 1
+            };
+        },
+        methods: {
+            handleChange(value) {
+            }
+        }
+    };
+    var Ctor3 = Vue.extend(Main3);
+    new Ctor3().$mount('#input-student-number');
+
+    var Main4 = {
+        data() {
+            return {
+                textarea: ''
+            }
+        }
+    }
+    var Ctor4 = Vue.extend(Main4)
+    new Ctor4().$mount('#textarea')
+
+    var Main5 = {
+        data() {
+            return {
+                options: [{
+                    value: '选项1',
+                    label: '大班'
+                }, {
+                    value: '选项2',
+                    label: '中班'
+                }, {
+                    value: '选项3',
+                    label: '小班'
+                }],
+                value: ''
+            }
+        }
+    }
+    var Ctor5 = Vue.extend(Main5)
+    new Ctor5().$mount('#select')
+</script>
 </html>

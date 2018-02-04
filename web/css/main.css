@@ -21,7 +21,6 @@
     line-height: 1;
     outline: none;
     padding: 0 15px;
-    transition: border-color .2s cubic-bezier(.645,.045,.355,1);
 }
 
 input:focus{
@@ -193,4 +192,14 @@ input:focus{
     font-size: 14px;
     border-radius: 4px;
     margin-left: 70px;
+}
+
+.my-textarea {
+    width: 400px;
+    height: 100px;
+    border: 1px solid #DCDFE6;
+}
+
+.my-textarea:focus{
+    border-color: #409EFF;
 }
