@@ -88,4 +88,20 @@ public interface InstitutionService {
      * @return
      */
     public Map GetTeacher(String id);
+
+    /**
+     * 修改教师信息
+     * @param id
+     * @param name
+     * @param gender
+     * @param type
+     */
+    public void ChangeTeacherMessage(String id,String name,String gender,String type);
+
+    /**
+     * 删除教师
+     * @param id
+     * @param name
+     */
+    public void DeleteTeacher(String id, String name);
 }

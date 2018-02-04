@@ -129,4 +129,22 @@ public class InstitutionController {
         json.put("type",map.get("type"));
         return json.toString();
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/insManagement.changeTeacherMess",method = RequestMethod.POST)
+    public String doChangeTeacherMessage(@RequestParam(value = "name")String name,@RequestParam(value = "gender")String gender,@RequestParam(value = "type")String type){
+        getInstitutionService().ChangeTeacherMessage(Param.getInstitutionid(),name,gender,type);
+        JSONObject json = new JSONObject();
+        json.put("result","success");
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/insManagement.deleteTeacher",method = RequestMethod.POST)
+    public String doDeleteTeacherMessage(@RequestParam(value = "name")String name){
+        getInstitutionService().DeleteTeacher(Param.getInstitutionid(),name);
+        JSONObject json = new JSONObject();
+        json.put("result","success");
+        return json.toString();
+    }
 }

@@ -2,6 +2,7 @@ package dao;
 
 import model.Institution;
 import model.Teachers;
+import model.TeachersKey;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -114,5 +115,31 @@ public class InstitutionDaoImpl implements InstitutionDao {
         transaction.commit();
         session.close();
         return list;
+    }
+
+    @Override
+    public void updateTeacherMessageByTeachersKey(TeachersKey key, String gender, String type) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        Teachers teachers = session.get(Teachers.class,key);
+        teachers.setGender(gender);
+        teachers.setType(type);
+        session.update(teachers);
+        transaction.commit();
+        session.close();
+    }
+
+    @Override
+    public void deleteTeacher(TeachersKey key) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        System.out.println(key.toString());
+        Teachers teachers = session.get(Teachers.class,key);
+        System.out.println(teachers.toString());
+        if(teachers!=null){
+            session.delete(teachers);
+        }
+        transaction.commit();
+        session.close();
     }
 }

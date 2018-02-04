@@ -6,6 +6,7 @@ import dao.PaymentDao;
 import model.Institution;
 import model.Payment;
 import model.Teachers;
+import model.TeachersKey;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -148,5 +149,15 @@ public class InstitutionServiceImpl implements InstitutionService {
         map.put("gender",genderlist);
         map.put("type",typelist);
         return map;
+    }
+
+    @Override
+    public void ChangeTeacherMessage(String id, String name, String gender, String type) {
+        institutionDao.updateTeacherMessageByTeachersKey(new TeachersKey(id,name),gender,type);
+    }
+
+    @Override
+    public void DeleteTeacher(String id, String name) {
+        institutionDao.deleteTeacher(new TeachersKey(id,name));
     }
 }

@@ -1,5 +1,32 @@
 
 'use strict';
+/**
+ * 打开改变教师信息的模态框
+ * @param name
+ * @param gender
+ * @param type
+ */
+function changeTeacher(name,gender,type) {
+    $("#teacher-name-label").html(name);
+    if(gender=="男"){
+        $("#choose-man").prop("checked",true);
+    }else{
+        $("#choose-woman").prop("checked",true);
+    }
+    $("#enter-change-type").val(type);
+    $("#change-teacher-modal").modal("show");
+}
+
+/**
+ * 删除教师
+ * @param name
+ */
+function deleteTeacher(name) {
+    console.log(name);
+    $("#teacher-name-span").html(name);
+    $("#delete-teacher-modal").modal("show");
+}
+
 $(function () {
     $(document).ready(function () {
         $.ajax({
@@ -351,6 +378,9 @@ $(function () {
         }
     });
 
+    /**
+     * 得到所有教师名单
+     */
     function getAllTeacher() {
         $.ajax({
             url: "/insManagement.getTeacher",
@@ -372,11 +402,49 @@ $(function () {
         });
     }
 
-    function changeTeacher(name,gender,type) {
+    /**
+     * 确认修改教师信息
+     */
+    $("#change-teacher-btn").click(function () {
+        var name = $("#teacher-name-label").text();
+        var gender = "";
+        if($("#choose-man").prop("checked")){
+            gender = "男";
+        }else{
+            gender = "女";
+        }
+        var type = $("#enter-change-type").val();
+        $.ajax({
+            url: "/insManagement.changeTeacherMess",
+            type: "post",
+            data:{
+                name: name,
+                gender: gender,
+                type: type,
+            },
+            dataType: "json",
+            success: function (data) {
+                $("#change-teacher-modal").modal("hide");
+                getAllTeacher();
+            }
+        });
+    });
 
-    }
-
-    function deleteTeacher(name) {
-
-    }
+    /**
+     * 确认删除教师
+     */
+    $("#delete-teacher-btn").click(function () {
+        $.ajax({
+            url: "/insManagement.deleteTeacher",
+            type: "post",
+            data: {
+                name: $("#teacher-name-span").text(),
+            },
+            dataType: "json",
+            success: function (data) {
+                $("#delete-teacher-modal").modal("hide");
+                getAllTeacher();
+            }
+        });
+    });
 });

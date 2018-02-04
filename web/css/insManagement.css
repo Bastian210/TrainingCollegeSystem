@@ -162,3 +162,45 @@
 #add-teacher-div .my-button{
     margin-left: 60px;
 }
+
+.form-modal{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    width: 400px;
+    border-radius: 10px;
+}
+
+.form-modal-content{
+    padding: 20px;
+    height: 200px;
+}
+
+.form-modal-content label{
+    width: 100px;
+    height: 38px;
+    font-weight: 400;
+    text-align: center;
+}
+
+.form-modal-content .my-input{
+    height: 38px;
+}
+
+.form-modal-content .my-input-radio{
+    margin-left: 30px;
+}
+
+.form-modal-footer{
+    height: 80px;
+    padding: 0px 85px 0px 85px;
+}
+
+.form-modal-footer button {
+    margin: 0px 20px 0px 20px;
+}

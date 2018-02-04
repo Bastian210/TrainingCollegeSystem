@@ -164,5 +164,47 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="change-teacher-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="form-modal">
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                &times;
+            </button>
+            <div class="form-modal-content">
+                <label>姓名：</label>
+                <label id="teacher-name-label"></label>
+                <br>
+                <label>性别：</label>
+                <input type="radio" name="change-gender-option" class="my-input-radio" id="choose-man">男
+                <input type="radio" name="change-gender-option" class="my-input-radio" id="choose-woman">女
+                <br>
+                <label>课程类型</label>
+                <input type="text" class="my-input" id="enter-change-type" placeholder="请填入主教课程">
+            </div>
+            <div class="form-modal-footer">
+                <button class="my-button" data-dismiss="modal">取消</button>
+                <button class="my-button" id="change-teacher-btn">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="delete-teacher-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="my-modal">
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                &times;
+            </button>
+            <div class="my-modal-header">
+                <p class="text-center">您确定要删除<span id="teacher-name-span"></span>教师吗？</p>
+            </div>
+            <div class="my-modal-footer">
+                <button class="my-button" data-dismiss="modal">取消</button>
+                <button class="my-button" id="delete-teacher-btn">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

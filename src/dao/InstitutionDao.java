@@ -2,6 +2,7 @@ package dao;
 
 import model.Institution;
 import model.Teachers;
+import model.TeachersKey;
 
 import java.util.List;
 
@@ -61,4 +62,18 @@ public interface InstitutionDao {
      * @return
      */
     public List findTeachersById(String id);
+
+    /**
+     * 根据教师主键更新教师信息
+     * @param key
+     * @param gender
+     * @param type
+     */
+    public void updateTeacherMessageByTeachersKey(TeachersKey key, String gender, String type);
+
+    /**
+     * 根据教师主键删除教师
+     * @param key
+     */
+    public void deleteTeacher(TeachersKey key);
 }
