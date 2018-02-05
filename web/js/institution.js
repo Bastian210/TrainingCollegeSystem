@@ -684,7 +684,7 @@ $(function () {
         }
 
         var name = $("#enter-lesson-name").val();
-        var type = $("#enter-lesson-type").val();
+        var type = $("#cascader input").attr("value");
         var begin = $("#enter-begin-date").val();
         var end = $("#enter-end-date").val();
         var classhour = $("#enter-class-hour input").val();
@@ -744,7 +744,7 @@ $(function () {
                     getAllPlan();
 
                     $("#enter-lesson-name").val("");
-                    $("#enter-lesson-type").val("");
+                    $("#cascader input").removeAttr("value");
                     $("#enter-begin-date").val("");
                     $("#enter-end-date").val("");
                     $("#enter-class-description").val("");

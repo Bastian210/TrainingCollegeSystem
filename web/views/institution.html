@@ -37,8 +37,14 @@
             <div id="add-plan-div" hidden="hidden">
                 <label>课程名称：</label>
                 <input type="text" class="my-input" id="enter-lesson-name" placeholder="请填入课程名称">
-                <label>课程类型：</label>
-                <input type="text" class="my-input" id="enter-lesson-type" placeholder="请填入课程类型">
+                <br>
+                <label class="float-left top10">课程类型：</label>
+                <div id="cascader">
+                    <div class="block">
+                        <el-cascader expand-trigger="hover" :options="options" v-model="selectedOptions">
+                        </el-cascader>
+                    </div>
+                </div>
                 <br>
                 <label class="float-left top10">课程时间：</label>
                 <div id="date-picker">
@@ -249,5 +255,80 @@
     }
     var Ctor5 = Vue.extend(Main5)
     new Ctor5().$mount('#select')
+
+    var Main6 = {
+        data() {
+            return {
+                options: [{
+                    value: 'primary',
+                    label: '小学',
+                    children: [{
+                        value: 'yuwen',
+                        label: '语文',
+                    }, {
+                        value: 'shuxue',
+                        label: '数学',
+                    },{
+                        value: 'yingyu',
+                        label: '英语',
+                    }]
+                }, {
+                    value: 'chuzhong',
+                    label: '初中',
+                    children: [{
+                        value: 'yuwen',
+                        label: '语文',
+                    }, {
+                        value: 'shuxue',
+                        label: '数学',
+                    },{
+                        value: 'yingyu',
+                        label: '英语',
+                    },{
+                        value: 'wuli',
+                        label: '物理',
+                    },{
+                        value: 'huaxue',
+                        label: '化学',
+                    }]
+                }, {
+                    value: '高中',
+                    label: '高中',
+                    children: [{
+                        value: 'yuwen',
+                        label: '语文',
+                    }, {
+                        value: 'shuxue',
+                        label: '数学',
+                    },{
+                        value: 'yingyu',
+                        label: '英语',
+                    },{
+                        value: 'wuli',
+                        label: '物理',
+                    },{
+                        value: 'huaxue',
+                        label: '化学',
+                    },{
+                        value: 'zhengzhi',
+                        label: "政治",
+                    },{
+                        value: 'lishi',
+                        label: '历史',
+                    },{
+                        value: 'dili',
+                        label: '地理',
+                    },{
+                        value: 'shengwu',
+                        label: '生物',
+                    }]
+                }],
+                selectedOptions: [],
+            };
+        },
+
+    };
+    var Ctor6 = Vue.extend(Main6)
+    new Ctor6().$mount('#cascader')
 </script>
 </html>

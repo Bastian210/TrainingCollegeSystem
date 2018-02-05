@@ -110,7 +110,7 @@ $(function () {
 
                 $("#lessonid-span").html(lessonid);
                 $("#enter-lesson-name").val(name);
-                $("#enter-lesson-type").val(type);
+                $("#cascader input").attr("value",type);
                 $("#enter-begin-date").val(begin);
                 $("#enter-end-date").val(end);
                 $("#enter-class-description").val(description);
@@ -286,7 +286,7 @@ $(function () {
         }
 
         var name = $("#enter-lesson-name").val();
-        var type = $("#enter-lesson-type").val();
+        var type = $("#cascader input").attr("value");
         var begin = $("#enter-begin-date").val();
         var end = $("#enter-end-date").val();
         var classhour = $("#enter-class-hour input").val();
