@@ -143,3 +143,54 @@
 #edit-class-div .my-button{
     margin: 10px 0px 30px 250px;
 }
+
+.show-one-plan{
+    padding: 10px 20px;
+    border: 1px solid #E4E7ED;
+}
+
+.show-one-plan label {
+    font-weight: 500;
+    height: 30px;
+    line-height: 30px;
+}
+
+.show-one-plan label.plan-name{
+    font-size: 18px;
+    margin-right: 30px;
+}
+
+.show-one-plan .description{
+    font-size: 14px;
+    line-height: 25px;
+}
+
+.show-one-plan label.detail{
+    width: 280px;
+    font-size: 13px;
+    height: 20px;
+}
+
+.el-collapse{
+    margin-top: 10px;
+}
+
+.show-one-plan .el-icon-edit{
+    float: right;
+    margin-right: 20px;
+}
+
+.show-one-plan .el-icon-delete{
+    float: right;
+    margin-right: 20px;
+}
+
+.show-one-plan tr{
+    border: 1px solid #E4E7ED;
+    height: 40px;
+    text-align: center;
+}
+
+.show-one-plan .my-button{
+    margin: 20px 0 10px 390px;
+}

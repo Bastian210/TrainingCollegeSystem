@@ -26,6 +26,9 @@ public class InstitutionDaoImpl implements InstitutionDao {
     public Institution findInstitutionById(String id) {
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
+        if(id==null){
+            return null;
+        }
         Institution institution = session.get(Institution.class,id);
         transaction.commit();
         session.close();
@@ -133,9 +136,7 @@ public class InstitutionDaoImpl implements InstitutionDao {
     public void deleteTeacher(TeachersKey key) {
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
-        System.out.println(key.toString());
         Teachers teachers = session.get(Teachers.class,key);
-        System.out.println(teachers.toString());
         if(teachers!=null){
             session.delete(teachers);
         }

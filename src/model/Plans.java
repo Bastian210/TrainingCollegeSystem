@@ -38,12 +38,15 @@ public class Plans implements Serializable {
     private int studentnum;
     @Column(name = "price")
     private double price;
+    @Column(name = "state")
+    private String state;   //"undetermined","selling","start","end"
 
     public Plans() {
     }
 
-    public Plans(String lessonid, String institutionid, String begin, String end, int classhours, String type, String lesson, String description, String teacher, String classtype, int classnum, int studentnum, double price) {
+    public Plans(String lessonid, String classtype, String institutionid, String begin, String end, int classhours, String type, String lesson, String description, String teacher, int classnum, int studentnum, double price, String state) {
         this.lessonid = lessonid;
+        this.classtype = classtype;
         this.institutionid = institutionid;
         this.begin = begin;
         this.end = end;
@@ -52,10 +55,10 @@ public class Plans implements Serializable {
         this.lesson = lesson;
         this.description = description;
         this.teacher = teacher;
-        this.classtype = classtype;
         this.classnum = classnum;
         this.studentnum = studentnum;
         this.price = price;
+        this.state = state;
     }
 
     public static long getSerialVersionUID() {
@@ -164,5 +167,13 @@ public class Plans implements Serializable {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }

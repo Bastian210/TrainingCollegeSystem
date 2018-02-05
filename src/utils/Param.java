@@ -5,6 +5,8 @@ public class Param {
 
     private static String institutionid;
 
+    private static String lessonid;
+
     public static String getUserid() {
         return userid;
     }
@@ -19,5 +21,13 @@ public class Param {
 
     public static void setInstitutionid(String institutionid) {
         Param.institutionid = institutionid;
+    }
+
+    public static String getLessonid() {
+        return lessonid;
+    }
+
+    public static void setLessonid(String lessonid) {
+        Param.lessonid = lessonid;
     }
 }

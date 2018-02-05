@@ -42,4 +42,9 @@ public class ViewController {
     public String getInsManagement(ModelMap model){
         return "insManagement";
     }
+
+    @RequestMapping(value = "/editPlan",method = RequestMethod.GET)
+    public String getEditPlan(ModelMap model){
+        return "editPlan";
+    }
 }

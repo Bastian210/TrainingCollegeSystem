@@ -41,4 +41,59 @@ public class PlanController {
         json.put("result","success");
         return json.toString();
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/institution.deletePlan",method = RequestMethod.POST)
+    public String doDeletePlan(@RequestParam(value = "lessonid")String lessonid){
+        getPlanService().DeletePlan(lessonid);
+        JSONObject json = new JSONObject();
+        json.put("result","success");
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/institution.getPlanList",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+    public String doGetPlanList(){
+        JSONObject[] jsonObject = getPlanService().GetPlanList(Param.getInstitutionid());
+        JSONObject json = new JSONObject();
+        json.put("result",jsonObject);
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/institution.getPlan",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+    public String doGetPlan(){
+        JSONObject json = getPlanService().GetPlan(Param.getLessonid());
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/institution.saveLessonid",method = RequestMethod.POST)
+    public String doSaveLessonId(@RequestParam(value = "lessonid")String lessonid){
+        getPlanService().SaveLessonId(lessonid);
+        JSONObject json = new JSONObject();
+        json.put("result","success");
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/institution.releasePlan",method = RequestMethod.POST)
+    public String doReleasePlan(@RequestParam(value = "lessonid")String lessonid){
+        getPlanService().ReleasePlan(lessonid);
+        JSONObject json = new JSONObject();
+        json.put("result","success");
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/editPlan.editPlan",method = RequestMethod.POST)
+    public String doEditPlan(@RequestParam(value = "lessonid")String lessonid,@RequestParam(value = "name")String name, @RequestParam(value = "type")String type,@RequestParam(value = "begin")String begin,
+                            @RequestParam(value = "end")String end, @RequestParam(value = "classhour")String classhour,@RequestParam(value = "description")String description,
+                            @RequestParam(value = "teacherList[]")String[] teacherList,@RequestParam(value = "typeList[]")String[] typeList,@RequestParam(value = "classNumList[]")String[] classNumList,
+                            @RequestParam(value = "stuNumList[]")String[] stuNumList,@RequestParam(value = "priceList[]")String[] priceList){
+        getPlanService().EditPlan(lessonid,Param.getInstitutionid(),name,type,begin,end,classhour,description,teacherList,typeList,classNumList,stuNumList,priceList);
+        JSONObject json = new JSONObject();
+        json.put("result","success");
+        return json.toString();
+    }
 }

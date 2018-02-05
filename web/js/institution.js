@@ -7,6 +7,10 @@ var classnumlist = new Array(3);
 var stunumlist = new Array(3);
 var pricelist = new Array(3);
 
+/**
+ * 编辑班级
+ * @param i
+ */
 function editClass(i) {
     $("#enter-teachers").val(teacherslist[i]);
     $("#select-class-type").val(typelist[i]);
@@ -21,6 +25,10 @@ function editClass(i) {
     $("#type").html("edit");
 }
 
+/**
+ * 删除班级
+ * @param i
+ */
 function deleteClass(i) {
     teacherslist[i] = "";
     typelist[i] = "";
@@ -72,11 +80,109 @@ function diaplayAllClass() {
     for(var i=0;i<3;i++){
         if(teacherslist[i]!==""){
             content = content+"<tr><td>教师："+teacherslist[i]+"</td><td>班级类型："+typelist[i]+"</td><td>班级数："+classnumlist[i]
-                +"</td><td>容纳人数："+stunumlist[i]+"</td><td>价格："+pricelist[i]+"</td><td><i class=\"el-icon-edit\" onclick='editClass("
+                +"</td><td>容纳人数："+stunumlist[i]+"</td><td>价格："+pricelist[i]+"元</td><td><i class=\"el-icon-edit\" onclick='editClass("
                 +i+")'></i><i class=\"el-icon-delete\" onclick='deleteClass("+i+")'></i></td></tr>";
         }
     }
     $("#display-class").html(content);
+}
+
+/**
+ * 打开删除计划的模态框
+ * @param lessonid
+ */
+function deletePlan(lessonid) {
+    $("#lesson-id-span").html(lessonid);
+    $("#delete-plan-modal").modal("show");
+}
+
+/**
+ * 保存lessonid到java静态变量中
+ * @param lessonid
+ */
+function editPlan(lessonid) {
+    $.ajax({
+        url: "/institution.saveLessonid",
+        type: "post",
+        data: {
+            lessonid: lessonid,
+        },
+        dataType: "json",
+        success: function (data) {
+
+        }
+    });
+
+    window.open("/editPlan");
+}
+
+/**
+ * 发布计划
+ * @param lessonid
+ */
+function releasePlan(lessonid) {
+    $.ajax({
+        url: "/institution.releasePlan",
+        type: "post",
+        data: {
+            lessonid: lessonid,
+        },
+        dataType: "json",
+        success: function (data) {
+            getAllPlan();
+        }
+    });
+}
+
+/**
+ * 得到所有计划
+ */
+function getAllPlan() {
+    $.ajax({
+        url: "/institution.getPlanList",
+        type: "post",
+        dataType: "json",
+        success: function (data) {
+            var result = data["result"];
+            var content = "";
+            for(var i=0;i<result.length;i++){
+                var json = JSON.parse(JSON.stringify(result[i]));
+                if(json["state"]=="undetermined"){
+                    var state = "待定中";
+                    content = content+"<div class=\"show-one-plan\">\n" +
+                        "                    <label class=\"plan-name\">"+json["name"]+"</label>\n" +
+                        "                    <label>"+json["type"]+"</label>\n" +
+                        "                    <i class=\"el-icon-delete\" onclick=\"deletePlan('"+json["lessonid"]+"')\"></i>\n" +
+                        "                    <i class=\"el-icon-edit\" onclick=\"editPlan('"+json["lessonid"]+"')\"></i>\n" +
+                        "                    <br>\n" +
+                        "                    <span class=\"description\">"+json["description"]+"</span>\n" +
+                        "                    <br>\n" +
+                        "                    <label class=\"detail\">课程时间："+json["begin"]+"至"+json["end"]+"</label>\n" +
+                        "                    <label class=\"detail\">地址："+json["address"]+"</label>\n" +
+                        "                    <label class=\"detail\">状态："+state+"</label>\n" +
+                        "                    <label class=\"detail\">价格："+json["price"]+"元</label>\n" +
+                        "                    <el-collapse>\n" +
+                        "                        <el-collapse-item title=\"查看班级\">\n" +
+                        "                            <table width=\"100%\">";
+                    var teacherList = json["teacherList"];
+                    var typeList = json["typeList"];
+                    var classNumList = json["classNumList"];
+                    var stuNumList = json["stuNumList"];
+                    var priceList = json["priceList"];
+                    for(var k=0;k<teacherList.length;k++){
+                        content = content+"<tr><td>教师："+teacherList[k]+"</td><td>班级类型："+typeList[k]+"</td><td>班级数："+classNumList[k]
+                            +"</td><td>容纳人数："+stuNumList[k]+"</td><td>价格："+priceList[k]+"元</td></tr>";
+                    }
+                    content = content+"</table>\n" +
+                        "                        </el-collapse-item>\n" +
+                        "                    </el-collapse>\n" +
+                        "                    <button class=\"my-button\" onclick=\"releasePlan('"+json["lessonid"]+"')\">发布计划</button></div>";
+                }
+            }
+            $("#undetermined-plan-div").html(content);
+            new Vue().$mount('#undetermined-plan-div');
+        }
+    });
 }
 
 $(function () {
@@ -88,7 +194,61 @@ $(function () {
             stunumlist[i] = "";
             pricelist[i] = "";
         }
+
+        getAllPlan();
     });
+
+    /**
+     * 得到所有计划
+     */
+    function getAllPlan() {
+        $.ajax({
+            url: "/institution.getPlanList",
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                var result = data["result"];
+                var content = "";
+                for(var i=0;i<result.length;i++){
+                    var json = JSON.parse(JSON.stringify(result[i]));
+                    if(json["state"]=="undetermined"){
+                        var state = "待定中";
+                        content = content+"<div class=\"show-one-plan\">\n" +
+                            "                    <label class=\"plan-name\">"+json["name"]+"</label>\n" +
+                            "                    <label>"+json["type"]+"</label>\n" +
+                            "                    <i class=\"el-icon-delete\" onclick=\"deletePlan('"+json["lessonid"]+"')\"></i>\n" +
+                            "                    <i class=\"el-icon-edit\" onclick=\"editPlan('"+json["lessonid"]+"')\"></i>\n" +
+                            "                    <br>\n" +
+                            "                    <span class=\"description\">"+json["description"]+"</span>\n" +
+                            "                    <br>\n" +
+                            "                    <label class=\"detail\">课程时间："+json["begin"]+"至"+json["end"]+"</label>\n" +
+                            "                    <label class=\"detail\">地址："+json["address"]+"</label>\n" +
+                            "                    <label class=\"detail\">状态："+state+"</label>\n" +
+                            "                    <label class=\"detail\">价格："+json["price"]+"元</label>\n" +
+                            "                    <el-collapse>\n" +
+                            "                        <el-collapse-item title=\"查看班级\">\n" +
+                            "                            <table width=\"100%\">";
+                        var teacherList = json["teacherList"];
+                        var typeList = json["typeList"];
+                        var classNumList = json["classNumList"];
+                        var stuNumList = json["stuNumList"];
+                        var priceList = json["priceList"];
+                        for(var k=0;k<teacherList.length;k++){
+                            content = content+"<tr><td>教师："+teacherList[k]+"</td><td>班级类型："+typeList[k]+"</td><td>班级数："+classNumList[k]
+                                +"</td><td>容纳人数："+stuNumList[k]+"</td><td>价格："+priceList[k]+"元</td></tr>";
+                        }
+                        content = content+"</table>\n" +
+                            "                        </el-collapse-item>\n" +
+                            "                    </el-collapse>\n" +
+                            "                    <button class=\"my-button\" onclick=\"releasePlan('"+json["lessonid"]+"')\">发布计划</button></div>";
+                    }
+                }
+                $("#undetermined-plan-div").html(content);
+                new Vue().$mount('#undetermined-plan-div');
+            }
+        });
+    }
+
     /**
      * 机构注册
      */
@@ -201,6 +361,50 @@ $(function () {
                 }
             });
         }
+    });
+
+    $("#recent-courses-a").click(function () {
+        $("#recent-courses-a").attr("class","active");
+        $("#past-courses-a").removeAttr("class");
+        $("#undetermined-plan-a").removeAttr("class");
+        $("#add-plan-a").removeAttr("class");
+        $("#recent-courses-div").show();
+        $("#past-courses-div").hide();
+        $("#undetermined-plan-div").hide();
+        $("#add-plan-div").hide();
+    });
+
+    $("#past-courses-a").click(function () {
+        $("#recent-courses-a").removeAttr("class");
+        $("#past-courses-a").attr("class","active");
+        $("#undetermined-plan-a").removeAttr("class");
+        $("#add-plan-a").removeAttr("class");
+        $("#recent-courses-div").hide();
+        $("#past-courses-div").show();
+        $("#undetermined-plan-div").hide();
+        $("#add-plan-div").hide();
+    });
+
+    $("#undetermined-plan-a").click(function () {
+        $("#recent-courses-a").removeAttr("class");
+        $("#past-courses-a").removeAttr("class");
+        $("#undetermined-plan-a").attr("class","active");
+        $("#add-plan-a").removeAttr("class");
+        $("#recent-courses-div").hide();
+        $("#past-courses-div").hide();
+        $("#undetermined-plan-div").show();
+        $("#add-plan-div").hide();
+    });
+
+    $("#add-plan-a").click(function () {
+        $("#recent-courses-a").removeAttr("class");
+        $("#past-courses-a").removeAttr("class");
+        $("#undetermined-plan-a").removeAttr("class");
+        $("#add-plan-a").attr("class","active");
+        $("#recent-courses-div").hide();
+        $("#past-courses-div").hide();
+        $("#undetermined-plan-div").hide();
+        $("#add-plan-div").show();
     });
 
     /**
@@ -316,7 +520,7 @@ $(function () {
         for(var i=0;i<3;i++){
             if(teacherslist[i]!=""){
                 content = content+"<tr><td>教师："+teacherslist[i]+"</td><td>班级类型："+typelist[i]+"</td><td>班级数："+classnumlist[i]
-                    +"</td><td>容纳人数："+stunumlist[i]+"</td><td>价格："+pricelist[i]+"</td><td><i class=\"el-icon-edit\" onclick='editClass("
+                    +"</td><td>容纳人数："+stunumlist[i]+"</td><td>价格："+pricelist[i]+"元</td><td><i class=\"el-icon-edit\" onclick='editClass("
                     +i+")'></i><i class=\"el-icon-delete\" onclick='deleteClass("+i+")'></i></td></tr>";
             }
         }
@@ -403,11 +607,43 @@ $(function () {
                 success: function (data) {
                     $("#add-plan-error").html("添加成功！");
                     $("#add-plan-error").show();
+                    getAllPlan();
+
+                    $("#enter-lesson-name").val("");
+                    $("#enter-lesson-type").val("");
+                    $("#enter-begin-date").val("");
+                    $("#enter-end-date").val("");
+                    $("#enter-class-description").val("");
+                    $("#enter-class-hour input").val(1);
+                    $("#add-class-a").show();
+                    $("#edit-class-div").show();
+                    $("#display-class").html("");
+
+                    $(document).ready();
                     setTimeout(function () {
                         $("#add-plan-error").hide();
+                        $("#undetermined-plan-a").click();
                     },1000);
                 }
             });
         }
+    });
+
+    /**
+     * 删除计划
+     */
+    $("#delete-plan-btn").click(function () {
+        $.ajax({
+            url: "/institution.deletePlan",
+            type: "post",
+            data: {
+                lessonid: $("#lesson-id-span").text(),
+            },
+            dataType: "json",
+            success: function (data) {
+                $("#delete-plan-modal").modal("hide");
+                getAllPlan();
+            }
+        });
     });
 });

@@ -6,7 +6,7 @@
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="/js/institution.js"></script>
+    <script src="/js/editPlan.js"></script>
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/institution.css">
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
@@ -25,16 +25,11 @@
 <div class="container">
     <div class="row">
         <div class="title">
-            <a class="active" id="recent-courses-a">近期课程</a>
-            <a id="past-courses-a">以往课程</a>
-            <a id="undetermined-plan-a">待定计划</a>
-            <a id="add-plan-a">添加计划</a>
+            <a >编辑计划</a>
         </div>
         <div class="main-content">
-            <div id="recent-courses-div"></div>
-            <div id="past-courses-div" hidden="hidden"></div>
-            <div id="undetermined-plan-div" hidden="hidden"></div>
-            <div id="add-plan-div" hidden="hidden">
+            <div id="add-plan-div">
+                <span hidden="hidden" id="lessonid-span"></span>
                 <label>课程名称：</label>
                 <input type="text" class="my-input" id="enter-lesson-name" placeholder="请填入课程名称">
                 <label>课程类型：</label>
@@ -114,30 +109,11 @@
                 </div>
                 <br>
                 <div class="alert alert-warning" hidden="hidden" id="add-plan-error"></div>
-                <button class="my-button" id="add-plan-btn">确认添加</button>
+                <button class="my-button" id="add-plan-btn">保存编辑</button>
             </div>
         </div>
     </div>
 </div>
-
-<div class="modal fade" id="delete-plan-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="my-modal">
-        <div class="modal-content">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                &times;
-            </button>
-            <div class="my-modal-header">
-                <p class="text-center">您确定要删除此计划吗？</p>
-                <span id="lesson-id-span" hidden="hidden"></span>
-            </div>
-            <div class="my-modal-footer">
-                <button class="my-button" data-dismiss="modal">取消</button>
-                <button class="my-button" id="delete-plan-btn">确定</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 </body>
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
