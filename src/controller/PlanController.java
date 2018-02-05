@@ -96,4 +96,22 @@ public class PlanController {
         json.put("result","success");
         return json.toString();
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/index.getLessonList",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+    public String doGetLessonList(){
+        JSONObject[] result = getPlanService().GetLessonList();
+        JSONObject json = new JSONObject();
+        json.put("result",result);
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/index.searchLessonList",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+    public String doSearchLessonList(@RequestParam(value = "lessonname")String lessonname,@RequestParam(value = "school")String school,@RequestParam(value = "subject[]")String[] subject){
+        JSONObject[] result = getPlanService().SearchLessonList(lessonname,school,subject);
+        JSONObject json = new JSONObject();
+        json.put("result",result);
+        return json.toString();
+    }
 }

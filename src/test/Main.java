@@ -10,9 +10,9 @@ public class Main {
 //        InstitutionService service = new InstitutionServiceImpl();
 //        service.Register("机构A","XX省","13270099850","1234");
         PlanService service = new PlanServiceImpl();
-        JSONObject json = service.GetPlan("10001");
-        System.out.println(json.toString());
-        JSONObject[] result = service.GetPlanList("1000001");
+//        JSONObject json = service.GetPlan("10001");
+//        System.out.println(json.toString());
+        JSONObject[] result = service.GetLessonList();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("result",result);
         System.out.println(jsonObject.toString());

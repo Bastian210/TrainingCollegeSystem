@@ -6,7 +6,7 @@
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="/js/user.js"></script>
+    <script src="/js/index.js"></script>
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
@@ -20,14 +20,43 @@
         <li><a>我的课程</a></li>
         <li><a href="/accountManagement">账号管理</a></li>
     </ul>
-    <input type="text" id="enter-search-lesson" placeholder="搜索课程">
-    <button id="search-lesson-btn">搜索</button>
     <a class="a-right" href="/login">退出登录</a>
 </nav>
 <div class="container">
     <div class="row">
+        <div class="title">
+            <div class="search">
+                <input type="text" class="my-input" placeholder="请填入课程名称" id="enter-lesson-name">
+                <button class="my-button" id="search-lesson-btn"><i class="el-icon-search"></i>搜索</button>
+            </div>
+            <br>
+            <label class="float-left">学校级别：</label>
+            <div class="radio">
+                <label id="primary-school"><input type="radio" class="my-input-radio" name="options-school-type">小学</label>
+                <label id="middle-school"><input type="radio" class="my-input-radio" name="options-school-type">初中</label>
+                <label id="high-school"><input type="radio" class="my-input-radio" name="options-school-type">高中</label>
+            </div>
+            <br>
+            <label class="float-left">学科：</label>
+            <div class="checkbox">
+                <label id="chinese"><input type="checkbox" class="my-input-checkbox">语文</label>
+                <label id="math"><input type="checkbox" class="my-input-checkbox">数学</label>
+                <label id="english"><input type="checkbox" class="my-input-checkbox">英语</label>
+                <label id="physics"><input type="checkbox" class="my-input-checkbox">物理</label>
+                <label id="chemistry"><input type="checkbox" class="my-input-checkbox">化学</label>
+                <label id="politics"><input type="checkbox" class="my-input-checkbox">政治</label>
+                <label id="history"><input type="checkbox" class="my-input-checkbox">历史</label>
+                <label id="geography"><input type="checkbox" class="my-input-checkbox">地理</label>
+                <label id="biology"><input type="checkbox" class="my-input-checkbox">生物</label>
+            </div>
+        </div>
 
+        <div class="main-content">
+            <div id="lesson-list-div"></div>
+        </div>
     </div>
 </div>
 </body>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
 </html>

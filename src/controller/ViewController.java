@@ -47,4 +47,9 @@ public class ViewController {
     public String getEditPlan(ModelMap model){
         return "editPlan";
     }
+
+    @RequestMapping(value = "/book",method = RequestMethod.GET)
+    public String getBook(ModelMap model){
+        return "book";
+    }
 }

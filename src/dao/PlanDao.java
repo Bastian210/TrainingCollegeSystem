@@ -40,4 +40,12 @@ public interface PlanDao {
      * @param state
      */
     public void updateStateByLessonId(String lessonid, String state);
+
+    /**
+     * 根据课程名和类型得到课程列表
+     * @param name
+     * @param type
+     * @return
+     */
+    public List getLessonByNameAndType(String name,String[] type);
 }

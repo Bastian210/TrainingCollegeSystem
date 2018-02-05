@@ -1,6 +1,7 @@
 package service;
 
 import dao.InstitutionDao;
+import dao.InstitutionDaoImpl;
 import dao.PlanDao;
 import dao.PlanDaoImpl;
 import model.Institution;
@@ -18,10 +19,10 @@ import java.util.Map;
 public class PlanServiceImpl implements PlanService {
 
     @Autowired
-    private PlanDao planDao;
+    private PlanDao planDao = new PlanDaoImpl();
 
     @Autowired
-    private InstitutionDao institutionDao;
+    private InstitutionDao institutionDao = new InstitutionDaoImpl();
 
     @Override
     public void AddPlan(String id, String name, String type, String begin, String end, String classhour, String description,
@@ -80,12 +81,12 @@ public class PlanServiceImpl implements PlanService {
 
     @Override
     public JSONObject[] GetPlanList(String institutionid) {
+        List list = planDao.getPlanListByInstitutionId(institutionid);
         Institution institution = institutionDao.findInstitutionById(institutionid);
         String address = "";
         if(institution!=null){
             address = institution.getAddress();
         }
-        List list = planDao.getPlanListByInstitutionId(institutionid);
         List lessonidList = getLessonId(list);
         JSONObject[] jsonObjects = new JSONObject[lessonidList.size()];
         for(int i=0;i<lessonidList.size();i++){
@@ -140,6 +141,68 @@ public class PlanServiceImpl implements PlanService {
             planDao.save(new Plans(String.valueOf(lessonid),typeList[i],institutionid,begin,end,Integer.valueOf(classhour),type,name,description,teacherList[i],
                     Integer.valueOf(classNumList[i]),Integer.valueOf(stuNumList[i]),Double.valueOf(priceList[i]),"undetermined"));
         }
+    }
+
+    @Override
+    public JSONObject[] GetLessonList() {
+        String[] subject = {"语文","数学","英语","物理","化学","政治","历史","地理","生物"};
+        return SearchLessonList("","高中",subject);
+    }
+
+    @Override
+    public JSONObject[] SearchLessonList(String lessonName,String school, String[] subject) {
+        String[] type = null;
+        if(subject!=null){
+            type = new String[subject.length];
+            for(int i=0;i<subject.length;i++){
+                type[i] = school+"/"+subject[i];
+            }
+        }
+        List list = planDao.getLessonByNameAndType(lessonName,type);
+        List lessonidList = getLessonId(list);
+        JSONObject[] jsonObjects = new JSONObject[lessonidList.size()];
+        for(int i=0;i<lessonidList.size();i++){
+            String lessonid = (String) lessonidList.get(i);
+            List newList = getListByLessonId(list,lessonid);
+            JSONObject json = new JSONObject();
+            Plans first = (Plans) newList.get(0);
+            json.put("lessonid",lessonid);
+            json.put("name",first.getLesson());
+            json.put("type",first.getType());
+            json.put("begin",first.getBegin());
+            json.put("end",first.getEnd());
+            json.put("classhour",first.getClasshours());
+            json.put("description",first.getDescription());
+            json.put("state",first.getState());
+            Institution institution = institutionDao.findInstitutionById(first.getInstitutionid());
+            String address = "";
+            if(institution!=null){
+                address = institution.getAddress();
+            }
+            json.put("address",address);
+
+            String[] teacherList = new String[newList.size()];
+            String[] typeList = new String[newList.size()];
+            String[] classNumList = new String[newList.size()];
+            String[] stuNumList = new String[newList.size()];
+            String[] priceList = new String[newList.size()];
+            for(int k=0;k<newList.size();k++){
+                Plans plans = (Plans) newList.get(k);
+                teacherList[k] = plans.getTeacher();
+                typeList[k] = plans.getClasstype();
+                classNumList[k] = String.valueOf(plans.getClassnum());
+                stuNumList[k] = String.valueOf(plans.getStudentnum());
+                priceList[k] = String.valueOf(plans.getPrice());
+            }
+            json.put("price",getPriceRange(priceList));
+            json.put("teacherList",teacherList);
+            json.put("typeList",typeList);
+            json.put("classNumList",classNumList);
+            json.put("stuNumList",stuNumList);
+            json.put("priceList",priceList);
+            jsonObjects[i] = json;
+        }
+        return jsonObjects;
     }
 
     private List getLessonId(List list){

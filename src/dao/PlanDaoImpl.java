@@ -91,4 +91,28 @@ public class PlanDaoImpl implements PlanDao {
         transaction.commit();
         session.close();
     }
+
+    @Override
+    public List getLessonByNameAndType(String name, String[] type) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        String hql = new StringBuilder().append("from model.Plans as p where p.state = 'selling' and p.lesson like '%").append(name).append("%'").toString();
+        if(type!=null){
+            for(int i=0;i<type.length;i++){
+                if(i==0){
+                    hql = hql+"and(type='"+type[i]+"'";
+                }else{
+                    hql = hql+"or type='"+type[i]+"'";
+                }
+                if(i==type.length-1){
+                    hql = hql+")";
+                }
+            }
+        }
+        Query query = session.createQuery(hql);
+        List list = query.list();
+        transaction.commit();
+        session.close();
+        return list;
+    }
 }

@@ -2,3 +2,94 @@
     width: 1160px;
     padding: 0 100px;
 }
+
+.search{
+    width: 400px;
+    margin: auto;
+    left: 0;
+    right: 0;
+    position: relative;
+}
+
+.search .my-input{
+    height: 40px;
+    width: 250px;
+}
+
+.title{
+    border: 1px solid #DCDFE6;
+    padding: 20px 20px;
+}
+
+.float-left{
+    float: left;
+    height: 38px;
+    line-height: 38px;
+    font-size: 16px;
+    font-weight: 400;
+    width: 100px;
+    text-align: center;
+}
+
+.radio label{
+    margin-left: 30px;
+}
+
+.checkbox label{
+    margin-left: 20px;
+}
+
+.radio{
+    margin: 10px 0 0 0;
+}
+
+.checkbox{
+    margin: 10px 0 0 0 ;
+}
+
+.main-content {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: 1px solid #DCDFE6;
+}
+
+.show-one-plan{
+    padding: 10px 20px;
+    border: 1px solid #E4E7ED;
+}
+
+.show-one-plan label {
+    font-weight: 500;
+    height: 30px;
+    line-height: 30px;
+}
+
+.show-one-plan label.plan-name{
+    font-size: 18px;
+    margin-right: 30px;
+}
+
+.show-one-plan .description{
+    font-size: 14px;
+    line-height: 25px;
+}
+
+.show-one-plan label.detail{
+    width: 280px;
+    font-size: 13px;
+    height: 20px;
+}
+
+.el-collapse{
+    margin-top: 10px;
+}
+
+.show-one-plan tr{
+    border: 1px solid #E4E7ED;
+    height: 40px;
+    text-align: center;
+}
+
+.show-one-plan .my-button{
+    margin: 20px 0 10px 390px;
+}

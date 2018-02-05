@@ -172,4 +172,16 @@
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/editPlan.editPlan</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/index.getLessonList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/index.searchLessonList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/book</url-pattern>
+    </servlet-mapping>
 </web-app>

@@ -69,4 +69,19 @@ public interface PlanService {
      * @param priceList
      */
     public void EditPlan(String lessonid, String institutionid, String name, String type, String begin, String end, String classhour, String description, String[] teacherList, String[] typeList, String[] classNumList, String[] stuNumList, String[] priceList);
+
+    /**
+     * 得到推荐课程列表
+     * @return
+     */
+    public JSONObject[] GetLessonList();
+
+    /**
+     * 搜索课程
+     * @param lessonName
+     * @param school
+     * @param subject
+     * @return
+     */
+    public JSONObject[] SearchLessonList(String lessonName,String school, String[] subject);
 }
