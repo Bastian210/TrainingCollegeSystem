@@ -9,6 +9,15 @@ import utils.HibernateUtil;
 @Repository
 public class PaymentDaoImpl implements PaymentDao {
     @Override
+    public void update(Payment payment) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        session.update(payment);
+        transaction.commit();
+        session.close();
+    }
+
+    @Override
     public Payment findPaymentByPayId(String payid) {
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
@@ -27,5 +36,10 @@ public class PaymentDaoImpl implements PaymentDao {
         session.update(payment);
         transaction.commit();
         session.close();
+    }
+
+    @Override
+    public Payment getManagePayment() {
+        return findPaymentByPayId("30001");
     }
 }

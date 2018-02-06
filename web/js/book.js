@@ -18,7 +18,34 @@ var actual = 0;
  * 打开添加学员信息的div元素
  */
 function openAddStudentDiv() {
-    $("#add-student-div").show();
+    var max = 0;
+    if(!$("#switch div").attr("aria-checked")){
+        max = 9;
+    }else{
+        max = 3;
+    }
+    if(students.length==max){
+        $("#add-order-error").html("每单不能超过"+max+"个学员！");
+        $("#add-order-error").show();
+        setTimeout(function () {
+            $("#add-order-error").hide();
+        },1000);
+    }else{
+        if($("#switch div").attr("aria-checked")){
+            var classtype = $("#enter-class-type").val();
+            for(var i=0;i<classes.length;i++){
+                if(classes[i]["classtype"]==classtype&&parseInt(classes[i]["left"])==students.length){
+                    $("#add-order-error").html("此类班级已只剩"+classes[i]["left"]+"个报名名额！");
+                    $("#add-order-error").show();
+                    setTimeout(function () {
+                        $("#add-order-error").hide();
+                    },1000);
+                }
+            }
+        }else{
+            $("#add-student-div").show();
+        }
+    }
 }
 
 /**
@@ -70,6 +97,7 @@ $(function () {
                 var classNumList = data["classNumList"];
                 var stuNumList = data["stuNumList"];
                 var priceList = data["priceList"];
+                var leftList = data["leftList"];
 
                 var content = "";
                 var state = "待定中";
@@ -97,8 +125,9 @@ $(function () {
                 $("#lesson-message-div").html(content);
                 new Vue().$mount("#lesson-message-div");
 
+                console.log(leftList);
                 for(var i=0;i<typeList.length;i++){
-                    var cla = {classtype: typeList[i],price: priceList[i]};
+                    var cla = {classtype: typeList[i],price: priceList[i],left: leftList[i]};
                     classes.push(cla);
                 }
 
@@ -289,12 +318,16 @@ $(function () {
      */
     $("#add-order-btn").click(function () {
         var type = "";
+        var classtype = "";
+        var max = 0;
         if(!$("#switch div").attr("aria-checked")){
             type = "不选班级";
+            max = 9;
         }else{
             type = "选班级";
+            classtype = $("#enter-class-type").val();
+            max = 3;
         }
-        var classtype = $("#enter-class-type").val();
         var name = new Array(students.length);
         var gender = new Array(students.length);
         var education = new Array(students.length);
@@ -303,30 +336,94 @@ $(function () {
             gender[i] = students[i]["gender"];
             education[i] = students[i]["education"];
         }
-        if(type=="选班级"||classtype==""){
-
+        if(type=="选班级"&&classtype==""){
+            $("#add-order-error").html("请将信息填写完整！");
+            $("#add-order-error").show();
+            setTimeout(function () {
+                $("#add-order-error").hide();
+            },1000);
+        }else if(name.length==0){
+            $("#add-order-error").html("请将信息填写完整！");
+            $("#add-order-error").show();
+            setTimeout(function () {
+                $("#add-order-error").hide();
+            },1000);
+        }else if(name.length>max){
+            $("#add-order-error").html("每单不能超过"+max+"个学员！");
+            $("#add-order-error").show();
+            setTimeout(function () {
+                $("#add-order-error").hide();
+            },1000);
+        }else{
+            $.ajax({
+                url: "/book.addOrder",
+                type: "post",
+                data: {
+                    lessonid: lessonid,
+                    institutionid: institutionid,
+                    type: type,
+                    price: total,
+                    actualpay: actual,
+                    classtype: classtype,
+                    nameList: name,
+                    genderList: gender,
+                    educationList: education,
+                },
+                dataType: "json",
+                success: function (data) {
+                    $("#add-order-error").html("下单成功！");
+                    $("#add-order-error").show();
+                    setTimeout(function () {
+                        $("#add-order-error").hide();
+                        $("#add-order-form").hide();
+                        $("#order-success-div").show();
+                        $("#order-success-message").html("下单成功！请在"+data["deadline"]+"之前支付，否则将自动取消订单！");
+                        if(type=="不选班级"){
+                            $("#no-choose-class").show();
+                        }
+                    },1000);
+                }
+            });
         }
-        $.ajax({
-            url: "/book.addOrder",
-            type: "post",
-            data: {
-                lessonid: lessonid,
-                institutionid: institutionid,
-                type: type,
-                price: total,
-                actualpay: actual,
-                classtype: classtype,
-                nameList: name,
-                genderList: gender,
-                educationList: education,
-            },
-            dataType: "json",
-            success: function (data) {
-                console.log(data["deadline"]);
-                $("#add-order-form").hide();
-                $("#order-success-div").show();
-                $("#order-success-message").html("下单成功！请在"+data["deadline"]+"之前支付，否则将自动取消订单！")
-            }
-        });
+    });
+
+    $("#pay-btn").click(function () {
+        var password = $("#enter-pay-password").val();
+        if(password==""){
+            $("#pay-error").html("请填写支付密码！");
+            $("#pay-error").show();
+            setTimeout(function () {
+                $("#pay-error").hide();
+            },1000);
+        }else{
+            $.ajax({
+                url: "/book.payOrder",
+                type: "post",
+                data: {
+                    price: actual,
+                    password: password
+                },
+                dataType: "json",
+                success: function (data) {
+                    var result = data["result"];
+                    if(result=="wrong password"){
+                        $("#pay-error").html("支付密码错误！");
+                        $("#pay-error").show();
+                        setTimeout(function () {
+                            $("#pay-error").hide();
+                        },1000);
+                    }else if(result=="not enough"){
+                        $("#pay-error").html("余额不足！");
+                        $("#pay-error").show();
+                        setTimeout(function () {
+                            $("#pay-error").hide();
+                        },1000);
+                    }else{
+                        console.log("success");
+                        window.open("/myOrder","_self");
+                    }
+                }
+            });
+        }
     });
 });

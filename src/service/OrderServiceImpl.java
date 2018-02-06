@@ -61,6 +61,7 @@ public class OrderServiceImpl implements OrderService {
             if(total==sold){
                 plans.setState("soldout");
             }
+            planDao.updatePlan(plans);
         }
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("deadline",deadline);

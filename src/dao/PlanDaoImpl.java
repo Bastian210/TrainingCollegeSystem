@@ -134,7 +134,7 @@ public class PlanDaoImpl implements PlanDao {
     }
 
     @Override
-    public void updatePlanByPlanKey(Plans plans) {
+    public void updatePlan(Plans plans) {
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
         session.update(plans);

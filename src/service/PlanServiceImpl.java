@@ -70,6 +70,7 @@ public class PlanServiceImpl implements PlanService {
         String[] classNumList = new String[list.size()];
         String[] stuNumList = new String[list.size()];
         String[] priceList = new String[list.size()];
+        String[] leftList = new String[list.size()];
         for(int i=0;i<list.size();i++){
             Plans plans = (Plans) list.get(i);
             teacherList[i] = plans.getTeacher();
@@ -77,6 +78,7 @@ public class PlanServiceImpl implements PlanService {
             classNumList[i] = String.valueOf(plans.getClassnum());
             stuNumList[i] = String.valueOf(plans.getStudentnum());
             priceList[i] = String.valueOf(plans.getPrice());
+            leftList[i] = String.valueOf(plans.getStudentnum()*plans.getClassnum()-plans.getSold());
         }
         json.put("teacherList",teacherList);
         json.put("typeList",typeList);
@@ -84,6 +86,7 @@ public class PlanServiceImpl implements PlanService {
         json.put("stuNumList",stuNumList);
         json.put("priceList",priceList);
         json.put("price",getPriceRange(priceList));
+        json.put("leftList",leftList);
         return json;
     }
 
@@ -117,6 +120,7 @@ public class PlanServiceImpl implements PlanService {
             String[] classNumList = new String[newList.size()];
             String[] stuNumList = new String[newList.size()];
             String[] priceList = new String[newList.size()];
+//            String[] leftList = new String[newList.size()];
             for(int k=0;k<newList.size();k++){
                 Plans plans = (Plans) newList.get(k);
                 teacherList[k] = plans.getTeacher();
@@ -124,6 +128,7 @@ public class PlanServiceImpl implements PlanService {
                 classNumList[k] = String.valueOf(plans.getClassnum());
                 stuNumList[k] = String.valueOf(plans.getStudentnum());
                 priceList[k] = String.valueOf(plans.getPrice());
+//                leftList[k] = String.valueOf(plans.getStudentnum()*plans.getClassnum()-plans.getSold());
             }
             json.put("price",getPriceRange(priceList));
             json.put("teacherList",teacherList);
@@ -131,6 +136,7 @@ public class PlanServiceImpl implements PlanService {
             json.put("classNumList",classNumList);
             json.put("stuNumList",stuNumList);
             json.put("priceList",priceList);
+//            json.put("leftList",leftList);
             jsonObjects[i] = json;
         }
         return jsonObjects;

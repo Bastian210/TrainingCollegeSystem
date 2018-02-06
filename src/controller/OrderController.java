@@ -19,6 +19,8 @@ public class OrderController {
 
     private static OrderService orderService;
 
+    private static UserService userService;
+
     private static ApplicationContext getApplicationContext(){
         if(applicationContext==null){
             applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
@@ -33,12 +35,28 @@ public class OrderController {
         return orderService;
     }
 
+    private static UserService getUserService(){
+        if(userService==null){
+            userService = (UserService)getApplicationContext().getBean("UserService");
+        }
+        return userService;
+    }
+
     @ResponseBody
     @RequestMapping(value = "/book.addOrder",method = RequestMethod.POST)
     public String doAddOrder(@RequestParam(value = "lessonid")String lessonid,@RequestParam(value = "institutionid")String institutionid,@RequestParam(value = "type")String type,
                              @RequestParam(value = "price")String price,@RequestParam(value = "actualpay")String actualpay,@RequestParam(value = "classtype")String classtype,
                              @RequestParam(value = "nameList[]")String[] nameList,@RequestParam(value = "genderList[]")String[] genderList,@RequestParam(value = "educationList[]")String[] educationList){
         JSONObject json = getOrderService().AddOrder(Param.getUserid(),lessonid,institutionid,type,price,actualpay,classtype,nameList,genderList,educationList);
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/book.payOrder",method = RequestMethod.POST)
+    public String doPayOrder(@RequestParam(value = "price")String price,@RequestParam(value = "password")String password){
+        String result = getUserService().Pay(Param.getUserid(),password,price);
+        JSONObject json = new JSONObject();
+        json.put("result",result);
         return json.toString();
     }
 }

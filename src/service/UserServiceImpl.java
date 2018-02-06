@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class UserSerciveImpl implements UserService {
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDao userDao;
@@ -158,5 +158,23 @@ public class UserSerciveImpl implements UserService {
             json.put("payid","has");
         }
         return json;
+    }
+
+    @Override
+    public String Pay(String userid, String password, String price) {
+        double num = Double.valueOf(price);
+        User user = userDao.findUserByUserid(userid);
+        Payment payment = paymentDao.findPaymentByPayId(user.getPayid());
+        if(!payment.getPassword().equals(password)){
+            return "wrong password";
+        }else if(payment.getBalance()<num){
+            return "not enough";
+        }
+        payment.setBalance(payment.getBalance()-num);
+        paymentDao.update(payment);
+        Payment manager = paymentDao.getManagePayment();
+        manager.setBalance(manager.getBalance()+num);
+        paymentDao.update(manager);
+        return "success";
     }
 }

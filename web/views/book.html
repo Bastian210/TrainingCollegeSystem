@@ -16,7 +16,7 @@
     <span>Training College</span>
     <ul>
         <li><a class="active" href="/index">首页</a></li>
-        <li><a>我的订单</a></li>
+        <li><a href="/myOrder">我的订单</a></li>
         <li><a>我的课程</a></li>
         <li><a href="/accountManagement">账号管理</a></li>
     </ul>
@@ -84,10 +84,14 @@
         </div>
         <div class="main-content" hidden="hidden" id="order-success-div">
             <p id="order-success-message"></p>
-            <div class="alert alert-warning" id="pay-error" hidden="hidden"></div>
+            <div id="no-choose-class" hidden="hidden">
+                <p>将在课程开始两周前分配班级！若配班不成功，将会自动退款！</p>
+                <p>分配班级后将重新计算价格，系统会将多余的账款退回你的账户。</p>
+            </div>
             <label>支付密码：</label>
             <input type="password" class="my-input" id="enter-pay-password" placeholder="请填入支付密码">
             <br>
+            <div class="alert alert-warning" id="pay-error" hidden="hidden"></div>
             <button class="my-button" id="pay-btn">立即支付</button>
         </div>
     </div>

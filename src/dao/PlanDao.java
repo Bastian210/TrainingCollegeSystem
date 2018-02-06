@@ -61,5 +61,5 @@ public interface PlanDao {
      * 根据planid和班级类型更新计划
      * @param plans
      */
-    public void updatePlanByPlanKey(Plans plans);
+    public void updatePlan(Plans plans);
 }

@@ -103,4 +103,13 @@ public interface UserService {
      * @return
      */
     public JSONObject GetUserPayMessage(String userid);
+
+    /**
+     * 用户支付
+     * @param userid
+     * @param password
+     * @param price
+     * @return
+     */
+    public String Pay(String userid,String password,String price);
 }

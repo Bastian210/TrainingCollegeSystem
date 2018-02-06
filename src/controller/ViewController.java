@@ -52,4 +52,9 @@ public class ViewController {
     public String getBook(ModelMap model){
         return "book";
     }
+
+    @RequestMapping(value = "/myOrder",method = RequestMethod.GET)
+    public String getMyOrder(ModelMap model){
+        return "myOrder";
+    }
 }
