@@ -5,6 +5,7 @@ import dao.UserDao;
 import dao.UserDaoImpl;
 import model.Payment;
 import model.User;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import utils.MailUtil;
@@ -25,7 +26,6 @@ public class UserSerciveImpl implements UserService {
     @Override
     public String Login(String email, String password) {
         User user = userDao.findUserByEmail(email);
-        System.out.println(user.toString());
         String result = "";
         if(user==null){
             result = "wrong email";
@@ -74,14 +74,14 @@ public class UserSerciveImpl implements UserService {
         }
         int num = Integer.parseInt(userDao.getMaxUserid())+1;
         String userid = String.valueOf(num);
-        User user = new User(userid,username,password,email,null,null,1,0,null,0,0);
+        User user = new User(userid,username,password,email,null,null,1,0,null,0,0,0);
         userDao.save(user);
         result = userid;
         return result;
     }
 
     @Override
-    public Map getUserMessage(String userid) {
+    public Map GetUserMessage(String userid) {
         User user = userDao.findUserByUserid(userid);
         Map<String,String> map = new HashMap<>();
         map.put("username",user.getUsername());
@@ -144,5 +144,19 @@ public class UserSerciveImpl implements UserService {
     @Override
     public void WriteOff(String userid) {
         userDao.updateWriteOffByUserId(userid);
+    }
+
+    @Override
+    public JSONObject GetUserPayMessage(String userid) {
+        User user = userDao.findUserByUserid(userid);
+        JSONObject json = new JSONObject();
+        json.put("level",user.getLevel());
+        json.put("points",user.getPoints());
+        if(user.getPayid()==null||user.getPayid().equals("")){
+            json.put("payid","not");
+        }else{
+            json.put("payid","has");
+        }
+        return json;
     }
 }

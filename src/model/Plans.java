@@ -38,13 +38,15 @@ public class Plans implements Serializable {
     private int studentnum;
     @Column(name = "price")
     private double price;
+    @Column(name = "sold")
+    private int sold;
     @Column(name = "state")
-    private String state;   //"undetermined","selling","start","end"
+    private String state;   //"undetermined","selling","soldout","start","end"
 
     public Plans() {
     }
 
-    public Plans(String lessonid, String classtype, String institutionid, String begin, String end, int classhours, String type, String lesson, String description, String teacher, int classnum, int studentnum, double price, String state) {
+    public Plans(String lessonid, String classtype, String institutionid, String begin, String end, int classhours, String type, String lesson, String description, String teacher, int classnum, int studentnum, double price, int sold, String state) {
         this.lessonid = lessonid;
         this.classtype = classtype;
         this.institutionid = institutionid;
@@ -58,6 +60,7 @@ public class Plans implements Serializable {
         this.classnum = classnum;
         this.studentnum = studentnum;
         this.price = price;
+        this.sold = sold;
         this.state = state;
     }
 
@@ -167,6 +170,14 @@ public class Plans implements Serializable {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public int getSold() {
+        return sold;
+    }
+
+    public void setSold(int sold) {
+        this.sold = sold;
     }
 
     public String getState() {

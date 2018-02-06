@@ -84,7 +84,7 @@ public class UserController {
     @ResponseBody
     @RequestMapping(value = "/accountManagement.getMessage",method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
     public String doGetMessage(){
-        Map map = getUserService().getUserMessage(Param.getUserid());
+        Map map = getUserService().GetUserMessage(Param.getUserid());
         JSONObject json = new JSONObject();
         json.put("userid",Param.getUserid());
         json.put("username",map.get("username"));
@@ -137,6 +137,13 @@ public class UserController {
         getUserService().WriteOff(Param.getUserid());
         JSONObject json = new JSONObject();
         json.put("result","success");
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/book.getUserPayMessage",method = RequestMethod.POST)
+    public String doGetUserPayMessage(){
+        JSONObject json = getUserService().GetUserPayMessage(Param.getUserid());
         return json.toString();
     }
 }

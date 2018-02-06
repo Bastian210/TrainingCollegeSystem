@@ -1,7 +1,18 @@
 
 'use strict'
 
+var lessonid = "";
+var institutionid = "";
+
 var students = new Array();
+
+var classes = new Array();
+
+var total = 0;
+var discount = 0;
+var reserve = 0;
+var actual = 0;
+
 
 /**
  * 打开添加学员信息的div元素
@@ -43,7 +54,8 @@ $(function () {
             type: "post",
             dataType: "json",
             success: function (data) {
-                var lessonid = data["lessonid"];
+                lessonid = data["lessonid"];
+                institutionid = data["institutionid"];
                 var name = data["name"];
                 var type = data["type"];
                 var begin = data["begin"];
@@ -84,6 +96,11 @@ $(function () {
                     "                    </div>";
                 $("#lesson-message-div").html(content);
                 new Vue().$mount("#lesson-message-div");
+
+                for(var i=0;i<typeList.length;i++){
+                    var cla = {classtype: typeList[i],price: priceList[i]};
+                    classes.push(cla);
+                }
 
                 var Main;
                 if(typeList.length==1){
@@ -136,6 +153,21 @@ $(function () {
                 new Ctor().$mount('#select-class-type');
             }
         });
+
+        $.ajax({
+            url: "/book.getUserPayMessage",
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                reserve = (parseInt(data["points"])/100).toFixed(2);
+                $("#points").html("当前积分:"+data["points"]+",使用后可优惠"+reserve+"元");
+                $("#discount").html("您是"+data["level"]+"级会员，为您优惠"+data["level"]+"%");
+                if(data["payid"]=="not"){
+                    $("#no-payid-modal").modal("show");
+                }
+                discount = parseInt(data["level"])/100;
+            }
+        });
     });
 
     $("#switch div").click(function () {
@@ -177,13 +209,24 @@ $(function () {
             },1000);
         }else{
             var student = {name: name, gender: gender, education: education};
-            console.log(student);
             students.push(student);
             showStudents();
             $("#add-student-div").hide();
+
+            calcucate();
             clearAddStudentDiv();
         }
     });
+
+    $('#enter-class-type').bind('input propertychange', function() {
+        console.log("success");
+        calcucate();
+    });
+
+    $("#use-points").click(function () {
+        calcucate();
+    })
+
 
     /**
      * 清空学员信息的输入框
@@ -208,10 +251,82 @@ $(function () {
     }
 
     /**
+     * 计算总价
+     */
+    function calcucate() {
+        if(!$("#switch div").attr("aria-checked")){ //不选班级按最高价计算
+            var max = 0;
+            for(var i=0;i<classes.length;i++){
+                if(parseFloat(classes[i]["price"])>max){
+                    max = parseFloat(classes[i]["price"]);
+                }
+            }
+            total = max*students.length;
+        }else{
+            var type = $("#enter-class-type").val();
+            for(var i=0;i<classes.length;i++){
+                if(classes[i]["classtype"]==type){
+                    total = students.length*parseFloat(classes[i]["price"]);
+                    break;
+                }
+            }
+        }
+        $("#need-price").html("合计"+total+"元");
+        actual = total*(1-discount);
+        if($("#use-points").prop("checked")){
+            actual = actual-reserve;
+        }
+        actual = actual.toFixed(2);
+        $("#actual-pay").html("需付"+actual+"元");
+    }
+
+    $("#bind-pay-account-btn").click(function () {
+        window.open("/accountManagement","_self");
+    });
+
+    /**
      * 立即下单
      */
     $("#add-order-btn").click(function () {
-        console.log("success");
+        var type = "";
+        if(!$("#switch div").attr("aria-checked")){
+            type = "不选班级";
+        }else{
+            type = "选班级";
+        }
+        var classtype = $("#enter-class-type").val();
+        var name = new Array(students.length);
+        var gender = new Array(students.length);
+        var education = new Array(students.length);
+        for(var i=0;i<students.length;i++){
+            name[i] = students[i]["name"];
+            gender[i] = students[i]["gender"];
+            education[i] = students[i]["education"];
+        }
+        if(type=="选班级"||classtype==""){
 
+        }
+        $.ajax({
+            url: "/book.addOrder",
+            type: "post",
+            data: {
+                lessonid: lessonid,
+                institutionid: institutionid,
+                type: type,
+                price: total,
+                actualpay: actual,
+                classtype: classtype,
+                nameList: name,
+                genderList: gender,
+                educationList: education,
+            },
+            dataType: "json",
+            success: function (data) {
+                console.log(data["deadline"]);
+                $("#add-order-form").hide();
+                $("#order-success-div").show();
+                $("#order-success-message").html("下单成功！请在"+data["deadline"]+"之前支付，否则将自动取消订单！")
+            }
+        });
     });
 });

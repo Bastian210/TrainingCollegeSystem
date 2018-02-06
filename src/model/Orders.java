@@ -24,9 +24,9 @@ public class Orders implements Serializable{
     @Column(name = "ordertime")
     private String ordertime;
     @Column(name = "price")
-    private String price;
+    private double price;
     @Column(name = "actualpay")
-    private String actualpay;
+    private double actualpay;
     @Column(name = "classtype")
     private String classtype;
     @Column(name = "deadline")
@@ -37,7 +37,7 @@ public class Orders implements Serializable{
     public Orders() {
     }
 
-    public Orders(String orderid, String userid, String institutionid, String lessonid, String type, int num, String ordertime, String price, String actualpay, String classtype, String deadline, String state) {
+    public Orders(String orderid, String userid, String institutionid, String lessonid, String type, int num, String ordertime, double price, double actualpay, String classtype, String deadline, String state) {
         this.orderid = orderid;
         this.userid = userid;
         this.institutionid = institutionid;
@@ -112,19 +112,19 @@ public class Orders implements Serializable{
         this.ordertime = ordertime;
     }
 
-    public String getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
-    public String getActualpay() {
+    public double getActualpay() {
         return actualpay;
     }
 
-    public void setActualpay(String actualpay) {
+    public void setActualpay(double actualpay) {
         this.actualpay = actualpay;
     }
 

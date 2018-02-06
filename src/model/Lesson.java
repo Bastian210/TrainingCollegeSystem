@@ -20,7 +20,7 @@ public class Lesson implements Serializable {
     private String name;
     @Column(name = "grade")
     private double grade;
-    @Column(name = "state")
+    @Column(name = "state") //未开课、开课中、已结课、已退课
     private String state;
     @Column(name = "classid")
     private String classid;

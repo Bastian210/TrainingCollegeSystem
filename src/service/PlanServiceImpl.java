@@ -19,10 +19,10 @@ import java.util.Map;
 public class PlanServiceImpl implements PlanService {
 
     @Autowired
-    private PlanDao planDao = new PlanDaoImpl();
+    private PlanDao planDao;
 
     @Autowired
-    private InstitutionDao institutionDao = new InstitutionDaoImpl();
+    private InstitutionDao institutionDao;
 
     @Override
     public void AddPlan(String id, String name, String type, String begin, String end, String classhour, String description,
@@ -31,7 +31,7 @@ public class PlanServiceImpl implements PlanService {
         int max_id = Integer.valueOf(max)+1;
         for(int i=0;i<teacherList.length;i++){
             planDao.save(new Plans(String.valueOf(max_id),typeList[i],id,begin,end,Integer.valueOf(classhour),type,name,description,teacherList[i],
-                    Integer.valueOf(classNumList[i]),Integer.valueOf(stuNumList[i]),Double.valueOf(priceList[i]),"undetermined"));
+                    Integer.valueOf(classNumList[i]),Integer.valueOf(stuNumList[i]),Double.valueOf(priceList[i]),0,"undetermined"));
         }
     }
 
@@ -57,6 +57,7 @@ public class PlanServiceImpl implements PlanService {
         json.put("end",first.getEnd());
         json.put("classhour",first.getClasshours());
         json.put("description",first.getDescription());
+        json.put("institutionid",first.getInstitutionid());
         Institution institution = institutionDao.findInstitutionById(first.getInstitutionid());
         String address = "";
         if(institution!=null){
@@ -146,7 +147,7 @@ public class PlanServiceImpl implements PlanService {
         planDao.delete(lessonid);
         for(int i=0;i<teacherList.length;i++){
             planDao.save(new Plans(String.valueOf(lessonid),typeList[i],institutionid,begin,end,Integer.valueOf(classhour),type,name,description,teacherList[i],
-                    Integer.valueOf(classNumList[i]),Integer.valueOf(stuNumList[i]),Double.valueOf(priceList[i]),"undetermined"));
+                    Integer.valueOf(classNumList[i]),Integer.valueOf(stuNumList[i]),Double.valueOf(priceList[i]),0,"undetermined"));
         }
     }
 

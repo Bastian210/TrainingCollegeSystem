@@ -184,4 +184,12 @@
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/book</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/book.getUserPayMessage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/book.addOrder</url-pattern>
+    </servlet-mapping>
 </web-app>

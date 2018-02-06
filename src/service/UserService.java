@@ -1,5 +1,7 @@
 package service;
 
+import org.json.JSONObject;
+
 import java.util.Map;
 
 public interface UserService {
@@ -41,7 +43,7 @@ public interface UserService {
      * @param userid
      * @return
      */
-    public Map getUserMessage(String userid);
+    public Map GetUserMessage(String userid);
 
     /**
      * 根据userid修改个人信息（姓名、性别、教育程度）
@@ -94,4 +96,11 @@ public interface UserService {
      * @return
      */
     public void WriteOff(String userid);
+
+    /**
+     * 得到用户支付信息（会员等级，积分,有无支付账号）
+     * @param userid
+     * @return
+     */
+    public JSONObject GetUserPayMessage(String userid);
 }

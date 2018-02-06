@@ -191,7 +191,8 @@ input:focus{
     padding: 10px 20px;
     font-size: 14px;
     border-radius: 4px;
-    margin-left: 70px;
+    margin-top: 20px;
+    margin-left: 66px;
 }
 
 .my-textarea {

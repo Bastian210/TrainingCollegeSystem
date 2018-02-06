@@ -116,3 +116,13 @@
     margin-top: 20px;
     margin-left: 140px;
 }
+
+.pay-span{
+    font-size: 14px;
+    padding: 20px;
+    line-height: 30px;
+}
+
+.main-content input[type=checkbox]{
+    margin-left: 20px;
+}

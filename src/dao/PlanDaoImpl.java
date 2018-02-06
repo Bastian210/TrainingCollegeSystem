@@ -1,6 +1,7 @@
 package dao;
 
 import model.Plans;
+import model.PlansKey;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -48,8 +49,14 @@ public class PlanDaoImpl implements PlanDao {
         if(list.size()==0){
             return "10000";
         }
-        Plans plans = (Plans) list.get(list.size()-1);
-        return plans.getLessonid();
+        int max = 0;
+        for(int i=0;i<list.size();i++){
+            Plans plans = (Plans) list.get(i);
+            if(Integer.valueOf(plans.getLessonid())>max){
+                max = Integer.valueOf(plans.getLessonid());
+            }
+        }
+        return String.valueOf(max);
     }
 
     @Override
@@ -114,5 +121,24 @@ public class PlanDaoImpl implements PlanDao {
         transaction.commit();
         session.close();
         return list;
+    }
+
+    @Override
+    public Plans getPlanByPlanKey(PlansKey plansKey) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        Plans plans = session.get(Plans.class,plansKey);
+        transaction.commit();
+        session.close();
+        return plans;
+    }
+
+    @Override
+    public void updatePlanByPlanKey(Plans plans) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        session.update(plans);
+        transaction.commit();
+        session.close();
     }
 }

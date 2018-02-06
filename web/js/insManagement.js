@@ -352,7 +352,7 @@ $(function () {
         if($("#woman").prop("checked")){
             gender = "女";
         }
-        var type = $("#enter-lesson-type").val();
+        var type = $("#cascader input").attr("value");
         if(name==""||gender==""||type==""){
             $("#add-teacher-error").html("教师信息填写不完整！");
             $("#add-teacher-error").show();

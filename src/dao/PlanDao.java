@@ -1,6 +1,7 @@
 package dao;
 
 import model.Plans;
+import model.PlansKey;
 
 import java.util.List;
 
@@ -48,4 +49,17 @@ public interface PlanDao {
      * @return
      */
     public List getLessonByNameAndType(String name,String[] type);
+
+    /**
+     * 根据planid和班级类型查找计划/课程
+     * @param plansKey
+     * @return
+     */
+    public Plans getPlanByPlanKey(PlansKey plansKey);
+
+    /**
+     * 根据planid和班级类型更新计划
+     * @param plans
+     */
+    public void updatePlanByPlanKey(Plans plans);
 }

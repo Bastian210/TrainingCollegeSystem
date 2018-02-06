@@ -204,3 +204,11 @@
 .form-modal-footer button {
     margin: 0px 20px 0px 20px;
 }
+
+.float-left{
+    float: left;
+}
+
+.top10{
+    margin-top: 10px;
+}

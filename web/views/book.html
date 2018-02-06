@@ -26,7 +26,7 @@
 <div class="container">
     <div class="row">
         <div id="lesson-message-div"></div>
-        <div class="main-content">
+        <div class="main-content" id="add-order-form">
             <div id="switch">
                 <template>
                     <el-switch v-model="value1" active-text="选班级" inactive-text="不选班级">
@@ -37,7 +37,7 @@
             <label class="float-left" id="class-type-label">班级：</label>
             <div id="select-class-type">
                 <template>
-                    <el-select v-model="value" placeholder="请选择班级类型" id="select-education">
+                    <el-select v-model="value" placeholder="请选择班级类型" id="enter-class-type">
                         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
                     </el-select>
@@ -60,7 +60,7 @@
                 <label class="float-left">教育背景：</label>
                 <div id="select">
                     <template>
-                        <el-select v-model="value" placeholder="请选择教育背景" id="select-education">
+                        <el-select v-model="value" placeholder="请选择教育背景">
                             <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                             </el-option>
                         </el-select>
@@ -71,11 +71,44 @@
                 <button class="my-button" id="cancel-add-student-btn">取消</button>
                 <button class="my-button" id="add-student-btn">添加</button>
             </div>
+            <span id="need-price" class="pay-span"></span>
+            <br>
+            <span id="discount" class="pay-span"></span>
+            <br>
+            <input type="checkbox" id="use-points">使用积分<span id="points" class="pay-span"></span>
+            <br>
+            <span id="actual-pay" class="pay-span"></span>
+            <br>
+            <div class="alert alert-warning" id="add-order-error" hidden="hidden"></div>
             <button class="my-button" id="add-order-btn">立即下单</button>
+        </div>
+        <div class="main-content" hidden="hidden" id="order-success-div">
+            <p id="order-success-message"></p>
+            <div class="alert alert-warning" id="pay-error" hidden="hidden"></div>
+            <label>支付密码：</label>
+            <input type="password" class="my-input" id="enter-pay-password" placeholder="请填入支付密码">
+            <br>
+            <button class="my-button" id="pay-btn">立即支付</button>
         </div>
     </div>
 </div>
 
+<div class="modal fade" id="no-payid-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="my-modal">
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                &times;
+            </button>
+            <div class="my-modal-header">
+                <p class="text-center">系统检测到您还没有绑定支付账号！</p>
+                <p class="text-center">请先绑定支付账号！</p>
+            </div>
+            <div class="my-modal-footer">
+                <button type="button" class="single-button" data-dismiss="modal" id="bind-pay-account-btn">立即绑定</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>

@@ -82,8 +82,13 @@
                         <input type="radio" class="my-input-radio" name="gender-options" id="man">男
                         <input type="radio" class="my-input-radio" name="gender-options" id="woman">女
                         <br>
-                        <label>课程类型：</label>
-                        <input type="text" class="my-input" id="enter-lesson-type" placeholder="课程类型(如：高中物理)">
+                        <label class="float-left top10">课程类型：</label>
+                        <div id="cascader">
+                            <div class="block">
+                                <el-cascader expand-trigger="hover" :options="options" v-model="selectedOptions">
+                                </el-cascader>
+                            </div>
+                        </div>
                         <br>
                         <div class="alert alert-warning" id="add-teacher-error" hidden="hidden"></div>
                         <button class="my-button" id="cancel-add-btn">取消</button>
@@ -200,4 +205,83 @@
     </div>
 </div>
 </body>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script>
+
+    var Main = {
+        data() {
+            return {
+                options: [{
+                    value: 'primary',
+                    label: '小学',
+                    children: [{
+                        value: 'yuwen',
+                        label: '语文',
+                    }, {
+                        value: 'shuxue',
+                        label: '数学',
+                    },{
+                        value: 'yingyu',
+                        label: '英语',
+                    }]
+                }, {
+                    value: 'chuzhong',
+                    label: '初中',
+                    children: [{
+                        value: 'yuwen',
+                        label: '语文',
+                    }, {
+                        value: 'shuxue',
+                        label: '数学',
+                    },{
+                        value: 'yingyu',
+                        label: '英语',
+                    },{
+                        value: 'wuli',
+                        label: '物理',
+                    },{
+                        value: 'huaxue',
+                        label: '化学',
+                    }]
+                }, {
+                    value: '高中',
+                    label: '高中',
+                    children: [{
+                        value: 'yuwen',
+                        label: '语文',
+                    }, {
+                        value: 'shuxue',
+                        label: '数学',
+                    },{
+                        value: 'yingyu',
+                        label: '英语',
+                    },{
+                        value: 'wuli',
+                        label: '物理',
+                    },{
+                        value: 'huaxue',
+                        label: '化学',
+                    },{
+                        value: 'zhengzhi',
+                        label: "政治",
+                    },{
+                        value: 'lishi',
+                        label: '历史',
+                    },{
+                        value: 'dili',
+                        label: '地理',
+                    },{
+                        value: 'shengwu',
+                        label: '生物',
+                    }]
+                }],
+                selectedOptions: [],
+            };
+        },
+
+    };
+    var Ctor = Vue.extend(Main)
+    new Ctor().$mount('#cascader')
+</script>
 </html>

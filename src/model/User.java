@@ -30,6 +30,8 @@ public class User implements Serializable {
     private int points;
     @Column(name = "payid")
     private String payid;
+    @Column(name = "consumption")
+    private double consumption;
     @Column(name = "writeoff")
     private int writeoff;
     @Column(name = "isadmin")
@@ -37,7 +39,7 @@ public class User implements Serializable {
 
     public User(){}
 
-    public User(String userid, String username, String password, String email, String gender, String education, int level, int points, String payid, int writeoff, int isadmin) {
+    public User(String userid, String username, String password, String email, String gender, String education, int level, int points, String payid, double consumption, int writeoff, int isadmin) {
         this.userid = userid;
         this.username = username;
         this.password = password;
@@ -47,6 +49,7 @@ public class User implements Serializable {
         this.level = level;
         this.points = points;
         this.payid = payid;
+        this.consumption = consumption;
         this.writeoff = writeoff;
         this.isadmin = isadmin;
     }
@@ -125,6 +128,14 @@ public class User implements Serializable {
 
     public void setPayid(String payid) {
         this.payid = payid;
+    }
+
+    public double getConsumption() {
+        return consumption;
+    }
+
+    public void setConsumption(double consumption) {
+        this.consumption = consumption;
     }
 
     public int getWriteoff() {
