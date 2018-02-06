@@ -7,16 +7,18 @@ public class CheckinKey implements Serializable {
 
     private String lessonid;
     private String classtype;
-    private String userid;
+    private String name;
+    private int classhour;
 
     public CheckinKey(){
 
     }
 
-    public CheckinKey(String lessonid, String classtype, String userid) {
+    public CheckinKey(String lessonid, String classtype, String name, int classhour) {
         this.lessonid = lessonid;
         this.classtype = classtype;
-        this.userid = userid;
+        this.name = name;
+        this.classhour = classhour;
     }
 
     public static long getSerialVersionUID() {
@@ -39,12 +41,20 @@ public class CheckinKey implements Serializable {
         this.classtype = classtype;
     }
 
-    public String getUserid() {
-        return userid;
+    public String getName() {
+        return name;
     }
 
-    public void setUserid(String userid) {
-        this.userid = userid;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getClasshour() {
+        return classhour;
+    }
+
+    public void setClasshour(int classhour) {
+        this.classhour = classhour;
     }
 
     @Override
@@ -54,16 +64,18 @@ public class CheckinKey implements Serializable {
 
         CheckinKey that = (CheckinKey) o;
 
+        if (classhour != that.classhour) return false;
         if (lessonid != null ? !lessonid.equals(that.lessonid) : that.lessonid != null) return false;
         if (classtype != null ? !classtype.equals(that.classtype) : that.classtype != null) return false;
-        return userid != null ? userid.equals(that.userid) : that.userid == null;
+        return name != null ? name.equals(that.name) : that.name == null;
     }
 
     @Override
     public int hashCode() {
         int result = lessonid != null ? lessonid.hashCode() : 0;
         result = 31 * result + (classtype != null ? classtype.hashCode() : 0);
-        result = 31 * result + (userid != null ? userid.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + classhour;
         return result;
     }
 }

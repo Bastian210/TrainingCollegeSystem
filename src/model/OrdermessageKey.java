@@ -6,13 +6,13 @@ public class OrdermessageKey implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String orderid;
-    private String userid;
+    private String name;
 
     public OrdermessageKey(){}
 
-    public OrdermessageKey(String orderid, String userid) {
+    public OrdermessageKey(String orderid, String name) {
         this.orderid = orderid;
-        this.userid = userid;
+        this.name = name;
     }
 
     public static long getSerialVersionUID() {
@@ -27,12 +27,12 @@ public class OrdermessageKey implements Serializable {
         this.orderid = orderid;
     }
 
-    public String getUserid() {
-        return userid;
+    public String getName() {
+        return name;
     }
 
-    public void setUserid(String userid) {
-        this.userid = userid;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -43,13 +43,13 @@ public class OrdermessageKey implements Serializable {
         OrdermessageKey that = (OrdermessageKey) o;
 
         if (orderid != null ? !orderid.equals(that.orderid) : that.orderid != null) return false;
-        return userid != null ? userid.equals(that.userid) : that.userid == null;
+        return name != null ? name.equals(that.name) : that.name == null;
     }
 
     @Override
     public int hashCode() {
         int result = orderid != null ? orderid.hashCode() : 0;
-        result = 31 * result + (userid != null ? userid.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
 }

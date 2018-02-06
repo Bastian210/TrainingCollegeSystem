@@ -6,9 +6,9 @@
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="/js/index.js"></script>
+    <script src="/js/book.js"></script>
     <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/book.css">
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 </head>
 <body>
@@ -23,5 +23,91 @@
     <a class="a-right" href="/login">退出登录</a>
 </nav>
 
+<div class="container">
+    <div class="row">
+        <div id="lesson-message-div"></div>
+        <div class="main-content">
+            <div id="switch">
+                <template>
+                    <el-switch v-model="value1" active-text="选班级" inactive-text="不选班级">
+                    </el-switch>
+                </template>
+            </div>
+            <br>
+            <label class="float-left" id="class-type-label">班级：</label>
+            <div id="select-class-type">
+                <template>
+                    <el-select v-model="value" placeholder="请选择班级类型" id="select-education">
+                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                        </el-option>
+                    </el-select>
+                </template>
+            </div>
+            <br>
+            <label class="float-left">学员：</label>
+            <div id="student-tags">
+                <a onclick="openAddStudentDiv()" id="add-student-a"><i class="el-icon-plus">新学员</i></a>
+            </div>
+            <br>
+            <div id="add-student-div" hidden="hidden">
+                <label class="float-left">姓名：</label>
+                <input type="text" class="my-input float-left" id="enter-student-name" placeholder="请填入学员姓名">
+                <label class="float-left">性别：</label>
+                <div class="radio">
+                    <label><input type="radio" name="options-gender" id="option-man">男</label>
+                    <label><input type="radio" name="options-gender" id="option-woman">女</label>
+                </div>
+                <label class="float-left">教育背景：</label>
+                <div id="select">
+                    <template>
+                        <el-select v-model="value" placeholder="请选择教育背景" id="select-education">
+                            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </template>
+                </div>
+                <br>
+                <div hidden="hidden" class="alert alert-warning" id="add-student-error"></div>
+                <button class="my-button" id="cancel-add-student-btn">取消</button>
+                <button class="my-button" id="add-student-btn">添加</button>
+            </div>
+            <button class="my-button" id="add-order-btn">立即下单</button>
+        </div>
+    </div>
+</div>
+
 </body>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script>
+    var Main = {
+        data() {
+            return {
+                value1: true
+            }
+        },
+    }
+    var Ctor = Vue.extend(Main);
+    new Ctor().$mount("#switch");
+
+    var Main1 = {
+        data() {
+            return {
+                options: [ {
+                    value: '选项1',
+                    label: '高中'
+                }, {
+                    value: '选项2',
+                    label: '初中'
+                }, {
+                    value: '选项3',
+                    label: '小学'
+                }],
+                value: ''
+            }
+        }
+    }
+    var Ctor1 = Vue.extend(Main1)
+    new Ctor1().$mount('#select')
+</script>
 </html>

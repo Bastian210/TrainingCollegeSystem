@@ -13,22 +13,22 @@ public class Ordermessage implements Serializable {
     @Column(name = "orderid")
     private String orderid;
     @Id
-    @Column(name = "userid")
-    private String userid;
-    @Column(name = "classtype")
-    private String classtype;
-    @Column(name = "classid")
-    private String classid;
+    @Column(name = "name")
+    private String name;
+    @Column(name = "gender")
+    private String gender;
+    @Column(name = "education")
+    private String education;
 
     public Ordermessage(){
 
     }
 
-    public Ordermessage(String orderid, String userid, String classtype, String classid) {
+    public Ordermessage(String orderid, String name, String gender, String education) {
         this.orderid = orderid;
-        this.userid = userid;
-        this.classtype = classtype;
-        this.classid = classid;
+        this.name = name;
+        this.gender = gender;
+        this.education = education;
     }
 
     public static long getSerialVersionUID() {
@@ -43,27 +43,27 @@ public class Ordermessage implements Serializable {
         this.orderid = orderid;
     }
 
-    public String getUserid() {
-        return userid;
+    public String getName() {
+        return name;
     }
 
-    public void setUserid(String userid) {
-        this.userid = userid;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getClasstype() {
-        return classtype;
+    public String getGender() {
+        return gender;
     }
 
-    public void setClasstype(String classtype) {
-        this.classtype = classtype;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
-    public String getClassid() {
-        return classid;
+    public String getEducation() {
+        return education;
     }
 
-    public void setClassid(String classid) {
-        this.classid = classid;
+    public void setEducation(String education) {
+        this.education = education;
     }
 }

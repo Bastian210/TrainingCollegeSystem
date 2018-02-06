@@ -7,16 +7,16 @@ public class LessonKey implements Serializable {
 
     private String lessonid;
     private String classtype;
-    private String userid;
+    private String name;
 
     public LessonKey(){
 
     }
 
-    public LessonKey(String lessonid, String classtype, String userid) {
+    public LessonKey(String lessonid, String classtype, String name) {
         this.lessonid = lessonid;
         this.classtype = classtype;
-        this.userid = userid;
+        this.name = name;
     }
 
     public static long getSerialVersionUID() {
@@ -39,12 +39,12 @@ public class LessonKey implements Serializable {
         this.classtype = classtype;
     }
 
-    public String getUserid() {
-        return userid;
+    public String getName() {
+        return name;
     }
 
-    public void setUserid(String userid) {
-        this.userid = userid;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -56,14 +56,14 @@ public class LessonKey implements Serializable {
 
         if (lessonid != null ? !lessonid.equals(lessonKey.lessonid) : lessonKey.lessonid != null) return false;
         if (classtype != null ? !classtype.equals(lessonKey.classtype) : lessonKey.classtype != null) return false;
-        return userid != null ? userid.equals(lessonKey.userid) : lessonKey.userid == null;
+        return name != null ? name.equals(lessonKey.name) : lessonKey.name == null;
     }
 
     @Override
     public int hashCode() {
         int result = lessonid != null ? lessonid.hashCode() : 0;
         result = 31 * result + (classtype != null ? classtype.hashCode() : 0);
-        result = 31 * result + (userid != null ? userid.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
 }

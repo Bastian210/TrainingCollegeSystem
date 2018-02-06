@@ -57,6 +57,12 @@ public class PlanServiceImpl implements PlanService {
         json.put("end",first.getEnd());
         json.put("classhour",first.getClasshours());
         json.put("description",first.getDescription());
+        Institution institution = institutionDao.findInstitutionById(first.getInstitutionid());
+        String address = "";
+        if(institution!=null){
+            address = institution.getAddress();
+        }
+        json.put("address",address);
 
         String[] teacherList = new String[list.size()];
         String[] typeList = new String[list.size()];
@@ -76,6 +82,7 @@ public class PlanServiceImpl implements PlanService {
         json.put("classNumList",classNumList);
         json.put("stuNumList",stuNumList);
         json.put("priceList",priceList);
+        json.put("price",getPriceRange(priceList));
         return json;
     }
 

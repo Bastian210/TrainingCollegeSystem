@@ -16,8 +16,8 @@ public class Lesson implements Serializable {
     @Column(name = "classtype")
     private String classtype;
     @Id
-    @Column(name = "userid")
-    private String userid;
+    @Column(name = "name")
+    private String name;
     @Column(name = "grade")
     private double grade;
     @Column(name = "state")
@@ -28,10 +28,10 @@ public class Lesson implements Serializable {
     public Lesson() {
     }
 
-    public Lesson(String lessonid, String classtype, String userid, double grade, String state, String classid) {
+    public Lesson(String lessonid, String classtype, String name, double grade, String state, String classid) {
         this.lessonid = lessonid;
         this.classtype = classtype;
-        this.userid = userid;
+        this.name = name;
         this.grade = grade;
         this.state = state;
         this.classid = classid;
@@ -49,12 +49,12 @@ public class Lesson implements Serializable {
         this.lessonid = lessonid;
     }
 
-    public String getUserid() {
-        return userid;
+    public String getName() {
+        return name;
     }
 
-    public void setUserid(String userid) {
-        this.userid = userid;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public double getGrade() {

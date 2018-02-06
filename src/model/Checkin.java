@@ -18,24 +18,25 @@ public class Checkin implements Serializable {
     @Column(name = "classtype")
     private String classtype;
     @Id
-    @Column(name = "userid")
-    private String userid;
-    @Column(name = "time")
-    private String time;
+    @Column(name = "name")
+    private String name;
+    @Id
     @Column(name = "classhour")
     private int classhour;
+    @Column(name = "time")
+    private String time;
     @Column(name = "isattend")
     private int isattend;
 
     public Checkin() {
     }
 
-    public Checkin(String lessonid, String classtype, String userid, String time, int classhour, int isattend) {
+    public Checkin(String lessonid, String classtype, String name, int classhour, String time, int isattend) {
         this.lessonid = lessonid;
         this.classtype = classtype;
-        this.userid = userid;
-        this.time = time;
+        this.name = name;
         this.classhour = classhour;
+        this.time = time;
         this.isattend = isattend;
     }
 
@@ -59,20 +60,12 @@ public class Checkin implements Serializable {
         this.classtype = classtype;
     }
 
-    public String getUserid() {
-        return userid;
+    public String getName() {
+        return name;
     }
 
-    public void setUserid(String userid) {
-        this.userid = userid;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getClasshour() {
@@ -81,6 +74,14 @@ public class Checkin implements Serializable {
 
     public void setClasshour(int classhour) {
         this.classhour = classhour;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public int getIsattend() {
