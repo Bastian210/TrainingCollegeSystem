@@ -22,6 +22,25 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
+    public void update(Orders orders) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        session.update(orders);
+        transaction.commit();
+        session.close();
+    }
+
+    @Override
+    public Orders findOrderByOrderId(String orderid) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        Orders orders = session.get(Orders.class,orderid);
+        transaction.commit();
+        session.close();
+        return orders;
+    }
+
+    @Override
     public String getMaxId() {
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
@@ -29,7 +48,7 @@ public class OrderDaoImpl implements OrderDao {
         Query query = session.createQuery(hql);
         List list = query.list();
         if(list.size()==0){
-            return "10000001";
+            return "10000000";
         }
         Orders orders = (Orders) list.get(list.size()-1);
         transaction.commit();

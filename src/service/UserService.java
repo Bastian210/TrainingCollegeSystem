@@ -109,7 +109,9 @@ public interface UserService {
      * @param userid
      * @param password
      * @param price
+     * @param orderid
+     * @param checkbox
      * @return
      */
-    public String Pay(String userid,String password,String price);
+    public String Pay(String userid,String password,String price,String orderid,String checkbox);
 }

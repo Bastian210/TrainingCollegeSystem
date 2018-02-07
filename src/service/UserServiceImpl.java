@@ -1,8 +1,10 @@
 package service;
 
+import dao.OrderDao;
 import dao.PaymentDao;
 import dao.UserDao;
 import dao.UserDaoImpl;
+import model.Orders;
 import model.Payment;
 import model.User;
 import org.json.JSONObject;
@@ -11,6 +13,10 @@ import org.springframework.stereotype.Service;
 import utils.MailUtil;
 import utils.Param;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +28,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PaymentDao paymentDao;
+
+    @Autowired
+    private OrderDao orderDao;
 
     @Override
     public String Login(String email, String password) {
@@ -161,7 +170,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String Pay(String userid, String password, String price) {
+    public String Pay(String userid, String password, String price,String orderid,String checkbox) {
         double num = Double.valueOf(price);
         User user = userDao.findUserByUserid(userid);
         Payment payment = paymentDao.findPaymentByPayId(user.getPayid());
@@ -170,11 +179,38 @@ public class UserServiceImpl implements UserService {
         }else if(payment.getBalance()<num){
             return "not enough";
         }
+        Orders orders = orderDao.findOrderByOrderId(orderid);
+        String deadline = orders.getDeadline();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            Date date = sdf.parse(deadline);
+            if(date.before(new Date())){
+                return "has end";
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         payment.setBalance(payment.getBalance()-num);
         paymentDao.update(payment);
         Payment manager = paymentDao.getManagePayment();
         manager.setBalance(manager.getBalance()+num);
         paymentDao.update(manager);
+        if(orders.getType().equals("不选班级")){
+            orders.setState("等待配票");
+        }else{
+            orders.setState("预订成功");
+        }
+        orderDao.update(orders);
+
+        double actual = Double.valueOf(price);
+        if(checkbox.equals("yes")){
+            user.setPoints((int) actual);
+        }else{
+            user.setPoints((int) (user.getPoints()+actual));
+        }
+        user.setConsumption(user.getConsumption()+actual);
+        user.setLevel((int) (user.getConsumption()/1000+1));
+        userDao.update(user);
         return "success";
     }
 }

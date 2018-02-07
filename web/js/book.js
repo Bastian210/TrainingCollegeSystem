@@ -13,6 +13,7 @@ var discount = 0;
 var reserve = 0;
 var actual = 0;
 
+var orderid = "";
 
 /**
  * 打开添加学员信息的div元素
@@ -24,26 +25,37 @@ function openAddStudentDiv() {
     }else{
         max = 3;
     }
+    console.log(max);
     if(students.length==max){
         $("#add-order-error").html("每单不能超过"+max+"个学员！");
         $("#add-order-error").show();
         setTimeout(function () {
             $("#add-order-error").hide();
         },1000);
+        console.log("每单不能超过"+max+"个学员！");
     }else{
-        if($("#switch div").attr("aria-checked")){
-            var classtype = $("#enter-class-type").val();
+        var classtype = $("#enter-class-type").val();
+        if($("#switch div").attr("aria-checked")&&classtype!=""){
+            console.log(classtype);
+            console.log(classes);
             for(var i=0;i<classes.length;i++){
-                if(classes[i]["classtype"]==classtype&&parseInt(classes[i]["left"])==students.length){
-                    $("#add-order-error").html("此类班级已只剩"+classes[i]["left"]+"个报名名额！");
-                    $("#add-order-error").show();
-                    setTimeout(function () {
-                        $("#add-order-error").hide();
-                    },1000);
+                if(classes[i]["classtype"]==classtype){
+                    if(parseInt(classes[i]["left"])==students.length){
+                        $("#add-order-error").html("此类班级已只剩"+classes[i]["left"]+"个报名名额！");
+                        $("#add-order-error").show();
+                        setTimeout(function () {
+                            $("#add-order-error").hide();
+                        },1000);
+                    }else{
+                        $("#add-student-div").show();
+                    }
+                    break;
                 }
             }
+            console.log("名额不够");
         }else{
             $("#add-student-div").show();
+            console.log("显示！");
         }
     }
 }
@@ -378,6 +390,7 @@ $(function () {
                         $("#add-order-form").hide();
                         $("#order-success-div").show();
                         $("#order-success-message").html("下单成功！请在"+data["deadline"]+"之前支付，否则将自动取消订单！");
+                        orderid = data["orderid"];
                         if(type=="不选班级"){
                             $("#no-choose-class").show();
                         }
@@ -387,8 +400,17 @@ $(function () {
         }
     });
 
+    /**
+     * 支付
+     */
     $("#pay-btn").click(function () {
         var password = $("#enter-pay-password").val();
+        var checkbox = "";
+        if($("#use-points").prop("checked")){
+            checkbox = "yes";
+        } else {
+            checkbox = "no";
+        }
         if(password==""){
             $("#pay-error").html("请填写支付密码！");
             $("#pay-error").show();
@@ -401,7 +423,9 @@ $(function () {
                 type: "post",
                 data: {
                     price: actual,
-                    password: password
+                    password: password,
+                    orderid: orderid,
+                    checkbox: checkbox,
                 },
                 dataType: "json",
                 success: function (data) {
@@ -414,6 +438,12 @@ $(function () {
                         },1000);
                     }else if(result=="not enough"){
                         $("#pay-error").html("余额不足！");
+                        $("#pay-error").show();
+                        setTimeout(function () {
+                            $("#pay-error").hide();
+                        },1000);
+                    }else if(result=="has end"){
+                        $("#pay-error").html("已过截止时间，订单已取消！");
                         $("#pay-error").show();
                         setTimeout(function () {
                             $("#pay-error").hide();

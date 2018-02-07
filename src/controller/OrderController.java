@@ -53,8 +53,8 @@ public class OrderController {
 
     @ResponseBody
     @RequestMapping(value = "/book.payOrder",method = RequestMethod.POST)
-    public String doPayOrder(@RequestParam(value = "price")String price,@RequestParam(value = "password")String password){
-        String result = getUserService().Pay(Param.getUserid(),password,price);
+    public String doPayOrder(@RequestParam(value = "price")String price,@RequestParam(value = "password")String password,@RequestParam(value = "orderid")String orderid,@RequestParam(value = "checkbox")String checkbox){
+        String result = getUserService().Pay(Param.getUserid(),password,price,orderid,checkbox);
         JSONObject json = new JSONObject();
         json.put("result",result);
         return json.toString();

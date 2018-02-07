@@ -3,6 +3,7 @@ package service;
 import dao.LessonDao;
 import dao.OrderDao;
 import dao.PlanDao;
+import dao.UserDao;
 import model.*;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private LessonDao lessonDao;
 
+    @Autowired
+    private UserDao userDao;
+
     @Override
     public JSONObject AddOrder(String userid, String lessonid, String institutionid, String type, String price, String actualpay, String classtype, String[] nameList, String[] genderList, String[] educationList) {
         String max_id = orderDao.getMaxId();
@@ -33,15 +37,11 @@ public class OrderServiceImpl implements OrderService {
         String time = sdf.format(now.getTimeInMillis());
         now.add(Calendar.MINUTE,15);
         String deadline = sdf.format(now.getTimeInMillis());
-        String state = "";
-        if(type.equals("不选班级")){
-            state = "等待配票";
-        }else{
-            state = "预订完成";
-        }
+        String state = "未支付";
 
         Orders orders = new Orders(orderid,userid,institutionid,lessonid,type,nameList.length,time,Double.valueOf(price),Double.valueOf(actualpay),classtype,deadline,state);
         orderDao.save(orders);
+
         for(int i=0;i<nameList.length;i++){
             Ordermessage ordermessage = new Ordermessage(orderid,nameList[i],genderList[i],educationList[i]);
             orderDao.saveOrderMessage(ordermessage);
@@ -63,8 +63,10 @@ public class OrderServiceImpl implements OrderService {
             }
             planDao.updatePlan(plans);
         }
+
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("deadline",deadline);
+        jsonObject.put("orderid",orderid);
         return jsonObject;
     }
 }

@@ -10,10 +10,6 @@ import java.util.Date;
 
 public class Main {
     public static void main(String[] args) {
-//        UserService service = new UserSerciveImpl();
-//        service.SendCode("2518740156@qq.com");
-//        InstitutionService service = new InstitutionServiceImpl();
-//        service.Register("机构A","XX省","13270099850","1234");
 //        PlanService service = new PlanServiceImpl();
 //        JSONObject json = service.GetPlan("10001");
 //        System.out.println(json.toString());
@@ -24,12 +20,17 @@ public class Main {
 //        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
 //        Date now = new Date();
 //        System.out.println(df.format(now));// new Date()为获取当前系统时间
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Calendar now= Calendar.getInstance();
-        String time = sdf.format(now.getTimeInMillis());
-        System.out.println(time);
-        now.add(Calendar.MINUTE,15);
-        String deadline = sdf.format(now.getTimeInMillis());
-        System.out.println(deadline);
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        Calendar now= Calendar.getInstance();
+//        String time = sdf.format(now.getTimeInMillis());
+//        System.out.println(time);
+//        now.add(Calendar.MINUTE,15);
+//        String deadline = sdf.format(now.getTimeInMillis());
+//        System.out.println(deadline);
+
+        String a = "100.34";
+        double b = Double.valueOf(a);
+        int c = (int) b;
+        System.out.println((int)b);
     }
 }
