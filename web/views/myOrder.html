@@ -6,8 +6,9 @@
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="/js/index.js"></script>
+    <script src="/js/myOrder.js"></script>
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/myOrder.css">
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 </head>
 <body>
@@ -21,5 +22,85 @@
     </ul>
     <a class="a-right" href="/login">退出登录</a>
 </nav>
+
+<div class="container">
+    <div class="row">
+        <div class="title">
+            <a class="active" id="all-order-a">全部</a>
+            <a id="notpay-order-a">待付款</a>
+            <a id="hasbook-order-a">已预订</a>
+            <a id="unsubscribe-order-a">已退订</a>
+            <a id="finish-order-a">已完成</a>
+        </div>
+        <div class="main-content">
+            <div id="all-order-div"></div>
+            <div id="notpay-order-div" hidden="hidden"></div>
+            <div id="hasbook-order-div" hidden="hidden"></div>
+            <div id="unsubscribe-order-div" hidden="hidden"></div>
+            <div id="finish-order-div" hidden="hidden"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="delete-order-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="my-modal">
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                &times;
+            </button>
+            <div class="my-modal-header">
+                <p class="text-center">您确定要删除此订单吗？</p>
+            </div>
+            <div class="my-modal-footer">
+                <button class="my-button" data-dismiss="modal">取消</button>
+                <button class="my-button" id="delete-order-btn">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="cancel-order-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="my-modal">
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                &times;
+            </button>
+            <div class="my-modal-header">
+                <p class="text-center">您确定要取消此订单吗？</p>
+            </div>
+            <div class="my-modal-footer">
+                <button class="my-button" data-dismiss="modal">取消</button>
+                <button class="my-button" id="cancel-order-btn">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="pay-order-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="my-modal">
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                &times;
+            </button>
+            <div class="my-modal-header">
+                <p class="text-center">支付订单</p>
+            </div>
+            <div class="my-modal-content">
+                <input class="my-input" type="text" placeholder="请填入支付密码" id="enter-pay-password">
+                <div class="alert alert-warning" hidden="hidden" id="pay-order-error"></div>
+            </div>
+            <div class="my-modal-footer">
+                <button class="my-button" data-dismiss="modal">取消</button>
+                <button class="my-button" id="pay-order-btn">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script>
+    new Vue().$mount(".main-content");
+</script>
 </html>

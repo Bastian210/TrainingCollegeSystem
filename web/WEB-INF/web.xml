@@ -200,4 +200,16 @@
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/myOrder</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/myOrder.getAllOrder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/myOrder.cancelOrder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/myOrder.deleteOrder</url-pattern>
+    </servlet-mapping>
 </web-app>

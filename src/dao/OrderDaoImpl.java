@@ -31,6 +31,16 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
+    public void delete(String orderid) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        Orders orders = session.get(Orders.class,orderid);
+        session.delete(orders);
+        transaction.commit();
+        session.close();
+    }
+
+    @Override
     public Orders findOrderByOrderId(String orderid) {
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
@@ -57,10 +67,49 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
+    public List findOrderListByUserId(String userid) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        String hql = String.format("from model.Orders as o where o.userid = '%s'", userid);
+        Query query = session.createQuery(hql);
+        List list = query.list();
+        transaction.commit();
+        session.close();
+        return list;
+    }
+
+    @Override
     public void saveOrderMessage(Ordermessage ordermessage) {
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
         session.save(ordermessage);
+        transaction.commit();
+        session.close();
+    }
+
+    @Override
+    public List getOrderMessageListByOrderId(String orderid) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        String hql = String.format("from model.Ordermessage as om where om.orderid = '%s'", orderid);
+        Query query = session.createQuery(hql);
+        List list = query.list();
+        transaction.commit();
+        session.close();
+        return list;
+    }
+
+    @Override
+    public void deleteOrderMessageByOrderId(String orderid) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        String hql = String.format("from model.Ordermessage as om where om.orderid = '%s'", orderid);
+        Query query = session.createQuery(hql);
+        List list = query.list();
+        for(int i=0;i<list.size();i++){
+            Orders orders = (Orders) list.get(i);
+            session.delete(orders);
+        }
         transaction.commit();
         session.close();
     }

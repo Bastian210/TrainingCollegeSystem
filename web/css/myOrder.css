@@ -1,0 +1,86 @@
+.row{
+    width: 1160px;
+    padding: 0 100px;
+}
+
+.title{
+    border: 1px solid #efefef;
+    height: 60px;
+    padding: 10px 30px;
+}
+
+.title a{
+    font-size: 18px;
+    line-height: 40px;
+    color: black;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-left: 1px solid #E4E7ED;
+    border-radius: 4px;
+}
+
+.title a:hover{
+    cursor: pointer;
+}
+
+.title a.active{
+    background-color: #409EFF;
+}
+
+.main-content {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: 1px solid #DCDFE6;
+}
+
+.show-one-order{
+    padding: 10px 20px;
+    border-bottom: 1px solid #DCDFE6;
+}
+
+.line{
+    text-decoration: line-through;
+}
+
+.label1{
+    width: 200px;
+    height: 30px;
+}
+
+.label2{
+    width: 160px;
+    font-weight: 400;
+    height: 40px;
+    line-height: 40px;
+}
+
+.show-one-order a{
+    text-decoration: none;
+}
+
+.show-one-order a:hover{
+    cursor: pointer;
+}
+
+.el-icon-delete{
+    float: right;
+    margin-right: 30px;
+}
+
+.el-icon-delete:hover{
+    cursor: pointer;
+}
+
+.show-one-order th{
+    text-align: center;
+}
+
+.show-one-order td{
+    text-align: center;
+}
+
+.show-one-order tr{
+    border: 1px solid #efefef;
+    height: 40px;
+}

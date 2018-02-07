@@ -92,6 +92,9 @@ public class UserController {
         json.put("education",map.get("education"));
         json.put("payid",map.get("payid"));
         json.put("balance",map.get("balance"));
+        json.put("level",map.get("level"));
+        json.put("points",map.get("points"));
+        json.put("consumption",map.get("consumption"));
         return json.toString();
     }
 

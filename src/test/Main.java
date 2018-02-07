@@ -27,10 +27,10 @@ public class Main {
 //        now.add(Calendar.MINUTE,15);
 //        String deadline = sdf.format(now.getTimeInMillis());
 //        System.out.println(deadline);
-
-        String a = "100.34";
-        double b = Double.valueOf(a);
-        int c = (int) b;
-        System.out.println((int)b);
+        OrderService orderService = new OrderServiceImpl();
+        JSONObject[] jsonObjects = orderService.GetAllOrder("500002");
+        JSONObject json = new JSONObject();
+        json.put("result",jsonObjects);
+        System.out.println(json.toString());
     }
 }

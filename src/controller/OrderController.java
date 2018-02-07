@@ -59,4 +59,31 @@ public class OrderController {
         json.put("result",result);
         return json.toString();
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/myOrder.getAllOrder",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+    public String doGetAllOrder(){
+        JSONObject[] jsonObjects = getOrderService().GetAllOrder("500002");
+        JSONObject json = new JSONObject();
+        json.put("result",jsonObjects);
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/myOrder.cancelOrder",method = RequestMethod.POST)
+    public String doCancelOrder(@RequestParam(value = "orderid")String orderid){
+        getOrderService().CancelOrder(orderid);
+        JSONObject json = new JSONObject();
+        json.put("result","success");
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/myOrder.deleteOrder",method = RequestMethod.POST)
+    public String doDeleteOrder(@RequestParam(value = "orderid")String orderid){
+        getOrderService().DeleteOrder(orderid);
+        JSONObject json = new JSONObject();
+        json.put("result","success");
+        return json.toString();
+    }
 }

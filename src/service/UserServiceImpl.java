@@ -104,6 +104,9 @@ public class UserServiceImpl implements UserService {
             Payment payment = paymentDao.findPaymentByPayId(user.getPayid());
             map.put("balance", String.valueOf(payment.getBalance()));
         }
+        map.put("level", String.valueOf(user.getLevel()));
+        map.put("points", String.valueOf(user.getPoints()));
+        map.put("consumption",String.valueOf(user.getConsumption()));
         return map;
     }
 
@@ -185,6 +188,8 @@ public class UserServiceImpl implements UserService {
         try {
             Date date = sdf.parse(deadline);
             if(date.before(new Date())){
+                orders.setState("已退订");
+                orderDao.update(orders);
                 return "has end";
             }
         } catch (ParseException e) {
@@ -198,7 +203,7 @@ public class UserServiceImpl implements UserService {
         if(orders.getType().equals("不选班级")){
             orders.setState("等待配票");
         }else{
-            orders.setState("预订成功");
+            orders.setState("已预订");
         }
         orderDao.update(orders);
 

@@ -30,6 +30,9 @@ $(function () {
                     $("#account-balance-span").html(data["balance"]);
                     $("#has-bind-div").show();
                 }
+                $("#level-label").html(data["level"]+"级");
+                $("#points-label").html(data["points"]+"点");
+                $("#consumption-label").html(data["consumption"]+"元");
             }
         });
     });

@@ -1,6 +1,7 @@
 package dao;
 
 import model.Lesson;
+import model.LessonKey;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
@@ -15,5 +16,15 @@ public class LessonDaoImpl implements LessonDao {
         session.save(lesson);
         transaction.commit();
         session.close();
+    }
+
+    @Override
+    public Lesson findLessonByLessonKey(LessonKey lessonKey) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        Lesson lesson = session.get(Lesson.class,lessonKey);
+        transaction.commit();
+        session.close();
+        return lesson;
     }
 }
