@@ -86,4 +86,13 @@ public class OrderController {
         json.put("result","success");
         return json.toString();
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/insOrder.getAllInsOrder",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+    public String GetAllInsOrder(){
+        JSONObject[] jsonObjects = getOrderService().GetAllInsOrder(Param.getInstitutionid());
+        JSONObject json = new JSONObject();
+        json.put("result",jsonObjects);
+        return json.toString();
+    }
 }

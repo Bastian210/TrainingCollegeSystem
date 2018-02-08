@@ -6,6 +6,8 @@ import model.LessonKey;
 public interface LessonDao {
     public void save(Lesson lesson);
 
+    public void delete(Lesson lesson);
+
     /**
      * 根据lessonkey查找lesson
      * @param lessonKey
@@ -14,10 +16,9 @@ public interface LessonDao {
     public Lesson findLessonByLessonKey(LessonKey lessonKey);
 
     /**
-     * 根据lessonid和学生名删除lesson
+     * 根据lessonid和学生名查找lesson
      * @param lessonid
      * @param name
-     * @return
      */
-    public Lesson deleteLessonByLessonidAndName(String lessonid, String name);
+    public Lesson findLessonByLessonidAndName(String lessonid, String name);
 }

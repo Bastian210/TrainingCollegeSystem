@@ -212,4 +212,12 @@
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/myOrder.deleteOrder</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/insOrder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/insOrder.getAllInsOrder</url-pattern>
+    </servlet-mapping>
 </web-app>

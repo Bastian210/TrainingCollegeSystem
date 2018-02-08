@@ -56,4 +56,11 @@ public interface OrderDao {
      * @return
      */
     public List findOrderListByState(String state);
+
+    /**
+     * 根据机构id查找订单
+     * @param institutionid
+     * @return
+     */
+    public List findOrderListByInstitutionId(String institutionid);
 }

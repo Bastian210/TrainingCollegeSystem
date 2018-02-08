@@ -1,57 +1,15 @@
 
 'use strict'
 
-var orderid = "";
-var checkbox = "";
-var price = 0;
-
-/**
- * 取消订单
- * @param orderid
- */
-function cancelOrder(id) {
-    $("#cancel-order-modal").modal("show");
-    orderid = id;
-}
-
-/**
- * 支付订单
- * @param orderid
- * @param price
- * @param checkbox
- */
-function payOrder(id,pri,check) {
-    $("#pay-order-modal").modal("show");
-    orderid = id;
-    price = pri;
-    checkbox = check;
-}
-
-/**
- * 删除订单
- * @param id
- */
-function deleteOrder(id) {
-    $("#delete-order-modal").modal("show");
-    orderid = id;
-}
-
 $(function () {
     $(document).ready(function () {
-       getAllOrder();
-    });
-
-    /**
-     * 得到所有订单
-     */
-    function getAllOrder() {
         $.ajax({
-            url: "/myOrder.getAllOrder",
+            url: "/insOrder.getAllInsOrder",
             type: "post",
             dataType: "json",
             success: function (data) {
                 var result = data["result"];
-                console.log(result);
+
                 var content = "";
                 var content1 = "";
                 var content2 = "";
@@ -65,18 +23,18 @@ $(function () {
                     var genderList = json["genderList"];
                     var educationList = json["educationList"];
                     var classidList = json["classidList"];
-                    console.log(state);
+                    
                     if(state=="未支付"){
                         content1 = content1+"<div class=\"show-one-order\">\n" +
                             "                    <label class=\"label1\">"+json["time"]+"</label>\n" +
                             "                    <label class=\"label1\">订单号："+json["orderid"]+"</label>\n" +
-                            "                    <label class=\"label1\">"+json["institutionname"]+"</label>\n" +
+                            "                    <label class=\"label1\">"+json["username"]+"</label>\n" +
                             "                    <br>\n" +
                             "                    <label class=\"label2\">"+json["lessonname"]+"</label>\n";
                         content = content+"<div class=\"show-one-order\">\n" +
                             "                    <label class=\"label1\">"+json["time"]+"</label>\n" +
                             "                    <label class=\"label1\">订单号："+json["orderid"]+"</label>\n" +
-                            "                    <label class=\"label1\">"+json["institutionname"]+"</label>\n" +
+                            "                    <label class=\"label1\">"+json["username"]+"</label>\n" +
                             "                    <br>\n" +
                             "                    <label class=\"label2\">"+json["lessonname"]+"</label>\n";
                         if(json["type"]=="选班级"){
@@ -89,7 +47,6 @@ $(function () {
                         content1 = content1+ "<label class=\"label2\">学员数量："+json["num"]+"</label>\n" +
                             "                    <label class=\"label2\"><span class=\"line\">￥"+json["price"]+"</span><span>￥"+json["actualpay"]+"</span></label>\n" +
                             "                    <label class=\"label2\">订单状态：未支付</label>\n" +
-                            "                    <a onclick=\"payOrder('"+json["orderid"]+"',"+json["actualpay"]+",'"+json["checkbox"]+"')\">立即付款</a>\n" +
                             "                    <el-collapse>\n" +
                             "                        <el-collapse-item title=\"查看学员\">\n" +
                             "                            <table width=\"100%\">\n" +
@@ -100,7 +57,6 @@ $(function () {
                         content = content+ "<label class=\"label2\">学员数量："+json["num"]+"</label>\n" +
                             "                    <label class=\"label2\"><span class=\"line\">￥"+json["price"]+"</span><span>￥"+json["actualpay"]+"</span></label>\n" +
                             "                    <label class=\"label2\">订单状态：未支付</label>\n" +
-                            "                    <a onclick=\"payOrder('"+json["orderid"]+"',"+json["actualpay"]+",'"+json["checkbox"]+"')\">立即付款</a>\n" +
                             "                    <el-collapse>\n" +
                             "                        <el-collapse-item title=\"查看学员\">\n" +
                             "                            <table width=\"100%\">\n" +
@@ -127,13 +83,13 @@ $(function () {
                         content2 = content2+"<div class=\"show-one-order\">\n" +
                             "                    <label class=\"label1\">"+json["time"]+"</label>\n" +
                             "                    <label class=\"label1\">订单号："+json["orderid"]+"</label>\n" +
-                            "                    <label class=\"label1\">"+json["institutionname"]+"</label>\n" +
+                            "                    <label class=\"label1\">"+json["username"]+"</label>\n" +
                             "                    <br>\n" +
                             "                    <label class=\"label2\">"+json["lessonname"]+"</label>\n";
                         content = content+"<div class=\"show-one-order\">\n" +
                             "                    <label class=\"label1\">"+json["time"]+"</label>\n" +
                             "                    <label class=\"label1\">订单号："+json["orderid"]+"</label>\n" +
-                            "                    <label class=\"label1\">"+json["institutionname"]+"</label>\n" +
+                            "                    <label class=\"label1\">"+json["username"]+"</label>\n" +
                             "                    <br>\n" +
                             "                    <label class=\"label2\">"+json["lessonname"]+"</label>\n";
                         if(json["type"]=="选班级"){
@@ -146,7 +102,6 @@ $(function () {
                         content2 = content2+ "<label class=\"label2\">学员数量："+json["num"]+"</label>\n" +
                             "                    <label class=\"label2\"><span class=\"line\">￥"+json["price"]+"</span><span>￥"+json["actualpay"]+"</span></label>\n" +
                             "                    <label class=\"label2\">订单状态："+json["state"]+"</label>\n" +
-                            "                    <a onclick=\"cancelOrder('"+json["orderid"]+"',)\">立即取消</a>\n" +
                             "                    <el-collapse>\n" +
                             "                        <el-collapse-item title=\"查看学员\">\n" +
                             "                            <table width=\"100%\">\n" +
@@ -157,7 +112,6 @@ $(function () {
                         content = content+ "<label class=\"label2\">学员数量："+json["num"]+"</label>\n" +
                             "                    <label class=\"label2\"><span class=\"line\">￥"+json["price"]+"</span><span>￥"+json["actualpay"]+"</span></label>\n" +
                             "                    <label class=\"label2\">订单状态："+json["state"]+"</label>\n" +
-                            "                    <a onclick=\"cancelOrder('"+json["orderid"]+"',)\">立即取消</a>\n" +
                             "                    <el-collapse>\n" +
                             "                        <el-collapse-item title=\"查看学员\">\n" +
                             "                            <table width=\"100%\">\n" +
@@ -184,15 +138,13 @@ $(function () {
                         content3 = content3+"<div class=\"show-one-order\">\n" +
                             "                    <label class=\"label1\">"+json["time"]+"</label>\n" +
                             "                    <label class=\"label1\">订单号："+json["orderid"]+"</label>\n" +
-                            "                    <label class=\"label1\">"+json["institutionname"]+"</label>\n" +
-                            "                    <i class=\"el-icon-delete\" onclick=\"deleteOrder('"+json["orderid"]+"')\"></i>\n"+
+                            "                    <label class=\"label1\">"+json["username"]+"</label>\n" +
                             "                    <br>\n" +
                             "                    <label class=\"label2\">"+json["lessonname"]+"</label>\n";
                         content = content+"<div class=\"show-one-order\">\n" +
                             "                    <label class=\"label1\">"+json["time"]+"</label>\n" +
                             "                    <label class=\"label1\">订单号："+json["orderid"]+"</label>\n" +
-                            "                    <label class=\"label1\">"+json["institutionname"]+"</label>\n" +
-                            "                    <i class=\"el-icon-delete\" onclick=\"deleteOrder('"+json["orderid"]+"')\"></i>\n"+
+                            "                    <label class=\"label1\">"+json["username"]+"</label>\n" +
                             "                    <br>\n" +
                             "                    <label class=\"label2\">"+json["lessonname"]+"</label>\n";
                         if(json["type"]=="选班级"){
@@ -241,15 +193,13 @@ $(function () {
                         content4 = content4+"<div class=\"show-one-order\">\n" +
                             "                    <label class=\"label1\">"+json["time"]+"</label>\n" +
                             "                    <label class=\"label1\">订单号："+json["orderid"]+"</label>\n" +
-                            "                    <label class=\"label1\">"+json["institutionname"]+"</label>\n" +
-                            "                    <i class=\"el-icon-delete\" onclick=\"deleteOrder('"+json["orderid"]+"')\"></i>\n"+
+                            "                    <label class=\"label1\">"+json["username"]+"</label>\n" +
                             "                    <br>\n" +
                             "                    <label class=\"label2\">"+json["lessonname"]+"</label>\n";
                         content = content+"<div class=\"show-one-order\">\n" +
                             "                    <label class=\"label1\">"+json["time"]+"</label>\n" +
                             "                    <label class=\"label1\">订单号："+json["orderid"]+"</label>\n" +
-                            "                    <label class=\"label1\">"+json["institutionname"]+"</label>\n" +
-                            "                    <i class=\"el-icon-delete\" onclick=\"deleteOrder('"+json["orderid"]+"')\"></i>\n"+
+                            "                    <label class=\"label1\">"+json["username"]+"</label>\n" +
                             "                    <br>\n" +
                             "                    <label class=\"label2\">"+json["lessonname"]+"</label>\n";
                         if(json["type"]=="选班级"){
@@ -305,8 +255,8 @@ $(function () {
                 new Vue().$mount(".main-content");
             }
         });
-    }
-    
+    });
+
     $("#all-order-a").click(function () {
         $("#all-order-a").attr("class","active");
         $("#notpay-order-a").removeAttr("class");
@@ -319,7 +269,7 @@ $(function () {
         $("#unsubscribe-order-div").hide();
         $("#finish-order-div").hide();
     });
-    
+
     $("#notpay-order-a").click(function () {
         $("#all-order-a").removeAttr("class");
         $("#notpay-order-a").attr("class","active");
@@ -332,7 +282,7 @@ $(function () {
         $("#unsubscribe-order-div").hide();
         $("#finish-order-div").hide();
     });
-    
+
     $("#hasbook-order-a").click(function () {
         $("#all-order-a").removeAttr("class");
         $("#notpay-order-a").removeAttr("class");
@@ -345,7 +295,7 @@ $(function () {
         $("#unsubscribe-order-div").hide();
         $("#finish-order-div").hide();
     });
-    
+
     $("#unsubscribe-order-a").click(function () {
         $("#all-order-a").removeAttr("class");
         $("#notpay-order-a").removeAttr("class");
@@ -358,7 +308,7 @@ $(function () {
         $("#unsubscribe-order-div").show();
         $("#finish-order-div").hide();
     });
-    
+
     $("#finish-order-a").click(function () {
         $("#all-order-a").removeAttr("class");
         $("#notpay-order-a").removeAttr("class");
@@ -370,96 +320,5 @@ $(function () {
         $("#hasbook-order-div").hide();
         $("#unsubscribe-order-div").hide();
         $("#finish-order-div").show();
-    });
-
-    /**
-     * 订单支付
-     */
-    $("#pay-order-btn").click(function () {
-        var password = $("#enter-pay-password").val();
-        if(password==""){
-            $("#pay-order-error").html("请填写支付密码！");
-            $("#pay-order-error").show();
-            setTimeout(function () {
-                $("#pay-order-error").hide();
-            },1000);
-        }else{
-            $.ajax({
-                url: "/book.payOrder",
-                type: "post",
-                data: {
-                    price: price,
-                    password: password,
-                    orderid: orderid,
-                    checkbox: checkbox,
-                },
-                dataType: "json",
-                success: function (data) {
-                    var result = data["result"];
-                    if(result=="wrong password"){
-                        $("#pay-order-error").html("支付密码错误！");
-                        $("#pay-order-error").show();
-                        setTimeout(function () {
-                            $("#pay-order-error").hide();
-                        },1000);
-                    }else if(result=="not enough"){
-                        $("#pay-order-error").html("余额不足！");
-                        $("#pay-order-error").show();
-                        setTimeout(function () {
-                            $("#pay-order-error").hide();
-                        },1000);
-                    }else if(result=="has end"){
-                        $("#pay-order-error").html("已过截止时间，订单已取消！");
-                        $("#pay-order-error").show();
-                        setTimeout(function () {
-                            $("#pay-order-error").hide();
-                        },1000);
-                    }else{
-                        $("#pay-order-error").html("支付完成！");
-                        $("#pay-order-error").show();
-                        setTimeout(function () {
-                            $("#pay-order-error").hide();
-                        },1000);
-                        getAllOrder();
-                    }
-                }
-            });
-        }
-    });
-
-    /**
-     * 取消订单
-     */
-    $("#cancel-order-btn").click(function () {
-        $.ajax({
-            url: "/myOrder.cancelOrder",
-            type: "post",
-            dataType: "json",
-            data: {
-                orderid: orderid,
-            },
-            success: function (data) {
-                $("#cancel-order-modal").modal("hide");
-                getAllOrder();
-            }
-        });
-    });
-
-    /**
-     * 删除订单
-     */
-    $("#delete-plan-btn").click(function () {
-        $.ajax({
-            url: "/myOrder.deleteOrder",
-            type: "post",
-            dataType: "json",
-            data: {
-                orderid: orderid,
-            },
-            success: function (data) {
-                $("#delete-order-modal").modal("hide");
-                getAllOrder();
-            }
-        });
     });
 });

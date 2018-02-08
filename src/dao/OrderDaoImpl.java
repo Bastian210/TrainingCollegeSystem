@@ -125,4 +125,16 @@ public class OrderDaoImpl implements OrderDao {
         session.close();
         return list;
     }
+
+    @Override
+    public List findOrderListByInstitutionId(String institutionid) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        String hql = String.format("from model.Orders as o where o.institutionid = '%s'", institutionid);
+        Query query = session.createQuery(hql);
+        List list = query.list();
+        transaction.commit();
+        session.close();
+        return list;
+    }
 }

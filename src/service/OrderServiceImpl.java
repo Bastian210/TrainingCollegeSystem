@@ -79,62 +79,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public JSONObject[] GetAllOrder(String userid) {
         List list = orderDao.findOrderListByUserId(userid);
-        JSONObject[] jsonObjects = new JSONObject[list.size()];
-        for(int i=0;i<list.size();i++){
-            Orders orders = (Orders) list.get(i);
-            JSONObject json = new JSONObject();
-            json.put("time",orders.getOrdertime().substring(0,10));
-            json.put("orderid",orders.getOrderid());
-            json.put("institutionname",institutionDao.findInstitutionById(orders.getInstitutionid()).getInstitutionname());
-            List list1 = planDao.getPlanByLessonId(orders.getLessonid());
-            Plans plans = (Plans) list1.get(0);
-            json.put("lessonname",plans.getLesson());
-            json.put("type",orders.getType());
-            json.put("classtype",orders.getClasstype());
-            json.put("num",orders.getNum());
-            json.put("price",orders.getPrice());
-            json.put("actualpay",orders.getActualpay());
-            json.put("state",orders.getState());
-            if(orders.getState().equals("未支付")){
-                User user = userDao.findUserByUserid(userid);
-                int level = user.getLevel();
-                if(orders.getPrice()*(1-level/100.0)==orders.getActualpay()){
-                    json.put("checkbox","no");
-                }else{
-                    json.put("checkbox","yes");
-                }
-            }
-
-            List orderMessageList = orderDao.getOrderMessageListByOrderId(orders.getOrderid());
-            int length = orderMessageList.size();
-            String[] nameList = new String[length];
-            String[] genderList = new String[length];
-            String[] educationList = new String[length];
-            String[] classidList = new String[length];
-            for(int k=0;k<length;k++){
-                Ordermessage ordermessage = (Ordermessage) orderMessageList.get(k);
-                nameList[k] = ordermessage.getName();
-                genderList[k] = ordermessage.getGender();
-                educationList[k] = ordermessage.getEducation();
-                if(orders.getType().equals("选班级")){
-                    classidList[k] = orders.getClasstype()+lessonDao.findLessonByLessonKey(new LessonKey(orders.getLessonid(),orders.getClasstype(),nameList[k])).getClassid()+"班";
-                }else{
-                    if(orders.getState().equals("已预订")){
-                        Lesson lesson = lessonDao.findLessonByLessonKey(new LessonKey(orders.getLessonid(),orders.getClasstype(),nameList[k]));
-                        classidList[k] = lesson.getClasstype()+lesson.getClassid()+"班";
-                    }else{
-                        classidList[k] = "尚未配班";
-                    }
-                }
-            }
-            json.put("nameList",nameList);
-            json.put("genderList",genderList);
-            json.put("educationList",educationList);
-            json.put("classidList",classidList);
-
-            jsonObjects[i] = json;
-        }
-        return jsonObjects;
+        return getOrderJsonMessage(list);
     }
 
     @Override
@@ -145,7 +90,8 @@ public class OrderServiceImpl implements OrderService {
         List OrderMessageList = orderDao.getOrderMessageListByOrderId(orderid);
         for(int i=0;i<OrderMessageList.size();i++){
             Ordermessage ordermessage = (Ordermessage) OrderMessageList.get(i);
-            lessonDao.deleteLessonByLessonidAndName(orders.getLessonid(),ordermessage.getName());
+            Lesson lesson = lessonDao.findLessonByLessonidAndName(orders.getLessonid(),ordermessage.getName());
+            lessonDao.delete(lesson);
         }
     }
 
@@ -188,7 +134,7 @@ public class OrderServiceImpl implements OrderService {
                 Date date1 = c.getTime();
                 if(date1.equals(new Date())||date1.before(new Date())){
                     List orderMessageList = orderDao.getOrderMessageListByOrderId(orders.getOrderid());
-                    String[][] assign = getAssignMessage(planList,orderMessageList.size());
+                    String[][] assign = getAssignMessage(planList,orderMessageList.size(),orders);
                     if(assign==null){
                         orders.setState("配票失败");
                         orderDao.update(orders);
@@ -220,8 +166,82 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
-    private String[][] getAssignMessage(List plansList,int num){
+    @Override
+    public JSONObject[] GetAllInsOrder(String institutionid) {
+        List list = orderDao.findOrderListByInstitutionId(institutionid);
+        return getOrderJsonMessage(list);
+    }
+
+    private JSONObject[] getOrderJsonMessage(List list){
+        JSONObject[] jsonObjects = new JSONObject[list.size()];
+        for(int i=0;i<list.size();i++){
+            Orders orders = (Orders) list.get(i);
+            JSONObject json = new JSONObject();
+            json.put("time",orders.getOrdertime().substring(0,10));
+            json.put("orderid",orders.getOrderid());
+            json.put("institutionname",institutionDao.findInstitutionById(orders.getInstitutionid()).getInstitutionname());
+            json.put("username",userDao.findUserByUserid(orders.getUserid()).getUsername());
+            List list1 = planDao.getPlanByLessonId(orders.getLessonid());
+            Plans plans = (Plans) list1.get(0);
+            json.put("lessonname",plans.getLesson());
+            json.put("type",orders.getType());
+            json.put("classtype",orders.getClasstype());
+            json.put("num",orders.getNum());
+            json.put("price",orders.getPrice());
+            json.put("actualpay",orders.getActualpay());
+            json.put("state",orders.getState());
+            if(orders.getState().equals("未支付")){
+                User user = userDao.findUserByUserid(orders.getUserid());
+                int level = user.getLevel();
+                if(orders.getPrice()*(1-level/100.0)==orders.getActualpay()){
+                    json.put("checkbox","no");
+                }else{
+                    json.put("checkbox","yes");
+                }
+            }
+
+            List orderMessageList = orderDao.getOrderMessageListByOrderId(orders.getOrderid());
+            int length = orderMessageList.size();
+            String[] nameList = new String[length];
+            String[] genderList = new String[length];
+            String[] educationList = new String[length];
+            String[] classidList = new String[length];
+            for(int k=0;k<length;k++){
+                Ordermessage ordermessage = (Ordermessage) orderMessageList.get(k);
+                nameList[k] = ordermessage.getName();
+                genderList[k] = ordermessage.getGender();
+                educationList[k] = ordermessage.getEducation();
+                if(orders.getType().equals("选班级")){
+                    classidList[k] = orders.getClasstype()+lessonDao.findLessonByLessonKey(new LessonKey(orders.getLessonid(),orders.getClasstype(),nameList[k])).getClassid()+"班";
+                }else{
+                    if(orders.getState().equals("已预订")){
+                        Lesson lesson = lessonDao.findLessonByLessonidAndName(orders.getLessonid(),nameList[k]);
+                        classidList[k] = lesson.getClasstype()+lesson.getClassid()+"班";
+                    }else{
+                        classidList[k] = "尚未配班";
+                    }
+                }
+            }
+            json.put("nameList",nameList);
+            json.put("genderList",genderList);
+            json.put("educationList",educationList);
+            json.put("classidList",classidList);
+
+            jsonObjects[i] = json;
+        }
+        return jsonObjects;
+    }
+
+    /**
+     * 配票
+     * @param plansList
+     * @param num
+     * @param orders
+     * @return
+     */
+    private String[][] getAssignMessage(List plansList,int num,Orders orders){
         String[][] result = new String[num][2];
+        double price = 0;
         for(int k=0;k<num;k++){
             boolean find = false;
             for(int i=0;i<plansList.size();i++){
@@ -235,12 +255,30 @@ public class OrderServiceImpl implements OrderService {
                     plans.setSold(sold);
                     planDao.updatePlan(plans);
                     find = true;
+                    price = price+plans.getPrice();
                     break;
                 }
             }
             if (!find){
                 return null;
             }
+        }
+
+        //退去部分款项
+        double past_price = orders.getPrice();
+        double past_actual = orders.getActualpay();
+
+        User user = userDao.findUserByUserid(orders.getUserid());
+        if(price!=past_price){
+            double actual = price*(1-user.getLevel()/100.0);
+            double change = past_actual-actual;
+
+            Payment payment = paymentDao.findPaymentByPayId(user.getPayid());
+            payment.setBalance(payment.getBalance()+change);
+            paymentDao.update(payment);
+            Payment manager = paymentDao.getManagePayment();
+            manager.setBalance(manager.getBalance()-change);
+            paymentDao.update(manager);
         }
         return result;
     }

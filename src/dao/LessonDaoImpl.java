@@ -22,6 +22,15 @@ public class LessonDaoImpl implements LessonDao {
     }
 
     @Override
+    public void delete(Lesson lesson) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        session.delete(lesson);
+        transaction.commit();
+        session.close();
+    }
+
+    @Override
     public Lesson findLessonByLessonKey(LessonKey lessonKey) {
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
@@ -32,9 +41,10 @@ public class LessonDaoImpl implements LessonDao {
     }
 
     @Override
-    public Lesson deleteLessonByLessonidAndName(String lessonid, String name) {
+    public Lesson findLessonByLessonidAndName(String lessonid, String name) {
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
+        System.out.println("\n"+lessonid+name);
         String hql = String.format("from model.Lesson as l where l.lessonid = '%s' and l.name = '%s'", lessonid, name);
         Query query = session.createQuery(hql);
         List list = query.list();
