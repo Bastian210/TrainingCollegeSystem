@@ -49,6 +49,27 @@ public class LessonServiceImpl implements LessonService {
         lessonDao.update(lesson);
     }
 
+    @Override
+    public void OnSiteBook(String lessonid, String type, String userid, String classtype, String actual, String[] nameList, String[] genderList, String[] educationList) {
+        if(type.equals("是")){
+            User user = userDao.findUserByUserid(userid);
+            user.setPoints((int) (user.getPoints()+Double.valueOf(actual)));
+            user.setConsumption(user.getConsumption()+Double.valueOf(actual));
+            user.setLevel((int) (user.getConsumption()/1000+1));
+            userDao.update(user);
+        }
+
+        Plans plans = planDao.getPlanByPlanKey(new PlansKey(lessonid,classtype));
+        int sold = plans.getSold();
+        for(int i=0;i<nameList.length;i++){
+            int id = (sold+1)/plans.getStudentnum()+1;
+            lessonDao.save(new Lesson(lessonid,classtype,nameList[i],0,"未开课",String.valueOf(id)));
+            sold++;
+        }
+        plans.setSold(sold);
+        planDao.updatePlan(plans);
+    }
+
     private JSONObject[] getLessonJsonMessage(List list){
         JSONObject[] jsonObjects = new JSONObject[list.size()];
         for(int i=0;i<list.size();i++){

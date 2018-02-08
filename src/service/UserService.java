@@ -114,4 +114,11 @@ public interface UserService {
      * @return
      */
     public String Pay(String userid,String password,String price,String orderid,String checkbox);
+
+    /**
+     * 检测userid是不是本系统会员
+     * @param userid
+     * @return
+     */
+    public String TestVip(String userid);
 }

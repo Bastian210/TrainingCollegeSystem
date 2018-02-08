@@ -149,4 +149,13 @@ public class UserController {
         JSONObject json = getUserService().GetUserPayMessage(Param.getUserid());
         return json.toString();
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/insLesson.testVip",method = RequestMethod.POST)
+    public String doTestVip(@RequestParam(value = "userid")String userid){
+        String result = getUserService().TestVip(userid);
+        JSONObject json = new JSONObject();
+        json.put("result",result);
+        return json.toString();
+    }
 }

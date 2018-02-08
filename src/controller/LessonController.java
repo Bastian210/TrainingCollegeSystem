@@ -47,4 +47,15 @@ public class LessonController {
         json.put("result","success");
         return json.toString();
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/myLesson.onSiteBook",method = RequestMethod.POST)
+    public String doOnSiteBook(@RequestParam(value = "lessonid")String lessonid,@RequestParam(value = "type")String type,@RequestParam(value = "userid")String userid,
+                               @RequestParam(value = "classtype")String classtype,@RequestParam(value = "actual")String actual,@RequestParam(value = "nameList[]")String[] nameList,
+                               @RequestParam(value = "genderList[]")String[] genderList,@RequestParam(value = "educationList[]")String[] educationList){
+        getLessonService().OnSiteBook(lessonid, type, userid, classtype, actual, nameList, genderList, educationList);
+        JSONObject json = new JSONObject();
+        json.put("result","success");
+        return json.toString();
+    }
 }

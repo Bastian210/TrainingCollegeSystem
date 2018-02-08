@@ -218,4 +218,13 @@ public class UserServiceImpl implements UserService {
         userDao.update(user);
         return "success";
     }
+
+    @Override
+    public String TestVip(String userid) {
+        User user = userDao.findUserByUserid(userid);
+        if(user==null){
+            return "wrong id";
+        }
+        return String.valueOf(user.getLevel());
+    }
 }

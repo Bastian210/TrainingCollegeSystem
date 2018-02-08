@@ -1,0 +1,182 @@
+.show-one-plan{
+    padding: 10px 20px;
+    border: 1px solid #E4E7ED;
+}
+
+.show-one-plan label {
+    font-weight: 500;
+    height: 30px;
+    line-height: 30px;
+}
+
+.show-one-plan label.plan-name{
+    font-size: 18px;
+    margin-right: 30px;
+}
+
+.show-one-plan .description{
+    font-size: 14px;
+    line-height: 25px;
+}
+
+.show-one-plan label.detail{
+    width: 280px;
+    font-size: 13px;
+    height: 20px;
+}
+
+.el-collapse{
+    margin-top: 10px;
+}
+
+.show-one-plan .el-icon-edit{
+    float: right;
+    margin-right: 20px;
+}
+
+.show-one-plan .el-icon-delete{
+    float: right;
+    margin-right: 20px;
+}
+
+.show-one-plan tr{
+    border: 1px solid #E4E7ED;
+    height: 40px;
+    text-align: center;
+}
+
+.show-one-plan .my-button{
+    margin: 20px 0 10px 390px;
+}
+
+.row{
+    width: 1160px;
+    padding: 0 100px;
+}
+
+.title{
+    margin-top: 20px;
+    border: 1px solid #efefef;
+    height: 60px;
+    padding: 10px 30px;
+}
+
+.title a{
+    font-size: 18px;
+    line-height: 40px;
+    color: black;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-left: 1px solid #E4E7ED;
+    border-radius: 4px;
+}
+
+.title a:hover{
+    cursor: pointer;
+}
+
+.title a.active{
+    background-color: #409EFF;
+}
+
+.main-content {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: 1px solid #DCDFE6;
+}
+
+.main-content label{
+    text-align: center;
+    font-weight: 400;
+    height: 40px;
+    line-height: 40px;
+    width: 100px;
+}
+
+.main-content .my-input{
+    height: 40px;
+}
+
+.float-left{
+    float: left;
+}
+
+#student-tags{
+    margin-top: 5px;
+}
+
+.radio{
+    top: -10px;
+    width: 120px;
+    float: left;
+}
+
+.radio input{
+    margin-top:13px;
+}
+
+.radio label{
+    width: 50px;
+}
+
+#switch {
+    margin: 10px;
+}
+
+#enter-user-id{
+    margin-bottom: 30px;
+}
+
+
+#add-student-a{
+    border: 1px solid #E4E7ED;
+    padding: 6px 10px;
+    height: 32px;
+    line-height: 32px;
+    color: black;
+    font-size: 13px;
+    margin-left: 10px;
+}
+
+#add-student-a:hover{
+    cursor: pointer;
+    border-color: #409EFF;
+}
+
+#add-student-div {
+    padding: 20px;
+    border: 1px solid #E4E7ED;
+}
+
+.top10{
+    margin-top: 15px;
+}
+
+.less10{
+    margin-top: -10px;
+}
+
+#add-student-div .my-button{
+    margin-left: 230px;
+}
+
+.main-content .my-button{
+    margin-top: 20px;
+    margin-left: 140px;
+}
+
+.pay-span{
+    font-size: 14px;
+    padding: 20px;
+    line-height: 30px;
+}
+
+#test-vip-a{
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+#test-vip-a:hover{
+    cursor: pointer;
+}

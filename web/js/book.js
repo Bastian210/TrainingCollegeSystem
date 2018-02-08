@@ -260,14 +260,12 @@ $(function () {
     });
 
     $('#enter-class-type').bind('input propertychange', function() {
-        console.log("success");
         calcucate();
     });
 
     $("#use-points").click(function () {
         calcucate();
     })
-
 
     /**
      * 清空学员信息的输入框

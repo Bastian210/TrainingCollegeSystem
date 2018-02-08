@@ -236,4 +236,12 @@
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/insLesson</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/insLesson.testVip</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/myLesson.onSiteBook</url-pattern>
+    </servlet-mapping>
 </web-app>
