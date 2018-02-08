@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>我的课程</title>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/js/myLesson.js"></script>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/myLesson.css">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+</head>
+<body>
+<nav class="my-nav">
+    <span>Training College</span>
+    <ul>
+        <li><a href="/index">首页</a></li>
+        <li><a href="/myOrder">我的订单</a></li>
+        <li><a class="active" href="/myLesson">我的课程</a></li>
+        <li><a href="/accountManagement">账号管理</a></li>
+    </ul>
+    <a class="a-right" href="/login">退出登录</a>
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="title">
+            <a class="active" id="all-lesson-a">全部课程</a>
+            <a id="nostart-lesson-a">未开课</a>
+            <a id="unsubscribe-lesson-a">已退课</a>
+            <a id="ing-lesson-a">正上课</a>
+            <a id="end-lesson-a">已结课</a>
+        </div>
+        <div class="main-content">
+            <div id="all-lesson-div"></div>
+            <div id="nostart-lesson-div" hidden="hidden"></div>
+            <div id="unsubscribe-lesson-div" hidden="hidden"></div>
+            <div id="ing-lesson-div" hidden="hidden"></div>
+            <div id="end-lesson-div" hidden="hidden"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="withdraw-lesson-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="my-modal">
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                &times;
+            </button>
+            <div class="my-modal-header">
+                <p class="text-center">您确定要退课吗？退课后系统不会退款！</p>
+            </div>
+            <div class="my-modal-footer">
+                <button class="my-button" data-dismiss="modal">取消</button>
+                <button class="my-button" id="withdraw-lesson-btn">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

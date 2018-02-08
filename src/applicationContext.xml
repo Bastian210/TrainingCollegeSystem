@@ -18,6 +18,7 @@
     <bean id="InstitutionService" class="service.InstitutionServiceImpl"></bean>
     <bean id="PlanService" class="service.PlanServiceImpl"></bean>
     <bean id="OrderService" class="service.OrderServiceImpl"></bean>
+    <bean id="LessonService" class="service.LessonServiceImpl"></bean>
     <context:component-scan base-package="controller"/>
     <context:component-scan base-package="service"/>
     <context:component-scan base-package="dao"/>

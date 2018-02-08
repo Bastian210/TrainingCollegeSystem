@@ -31,6 +31,15 @@ public class LessonDaoImpl implements LessonDao {
     }
 
     @Override
+    public void update(Lesson lesson) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        session.update(lesson);
+        transaction.commit();
+        session.close();
+    }
+
+    @Override
     public Lesson findLessonByLessonKey(LessonKey lessonKey) {
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
@@ -44,12 +53,23 @@ public class LessonDaoImpl implements LessonDao {
     public Lesson findLessonByLessonidAndName(String lessonid, String name) {
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
-        System.out.println("\n"+lessonid+name);
         String hql = String.format("from model.Lesson as l where l.lessonid = '%s' and l.name = '%s'", lessonid, name);
         Query query = session.createQuery(hql);
         List list = query.list();
         transaction.commit();
         session.close();
         return (Lesson) list.get(0);
+    }
+
+    @Override
+    public List findLessonListByName(String name) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        String hql = String.format("from model.Lesson as l where l.name = '%s'", name);
+        Query query = session.createQuery(hql);
+        List list = query.list();
+        transaction.commit();
+        session.close();
+        return list;
     }
 }

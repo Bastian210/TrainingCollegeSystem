@@ -71,8 +71,8 @@ public class OrderController {
 
     @ResponseBody
     @RequestMapping(value = "/myOrder.cancelOrder",method = RequestMethod.POST)
-    public String doCancelOrder(@RequestParam(value = "orderid")String orderid){
-        getOrderService().CancelOrder(orderid);
+    public String doCancelOrder(@RequestParam(value = "orderid")String orderid,@RequestParam(value = "price")String price){
+        getOrderService().CancelOrder(orderid,price);
         JSONObject json = new JSONObject();
         json.put("result","success");
         return json.toString();

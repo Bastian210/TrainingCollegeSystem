@@ -220,4 +220,16 @@
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/insOrder.getAllInsOrder</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/myLesson</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/myLesson.getAllUserLesson</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/myLesson.withdrawLesson</url-pattern>
+    </servlet-mapping>
 </web-app>

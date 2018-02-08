@@ -3,10 +3,14 @@ package dao;
 import model.Lesson;
 import model.LessonKey;
 
+import java.util.List;
+
 public interface LessonDao {
     public void save(Lesson lesson);
 
     public void delete(Lesson lesson);
+
+    public void update(Lesson lesson);
 
     /**
      * 根据lessonkey查找lesson
@@ -21,4 +25,11 @@ public interface LessonDao {
      * @param name
      */
     public Lesson findLessonByLessonidAndName(String lessonid, String name);
+
+    /**
+     * 根据姓名查找课程
+     * @param name
+     * @return
+     */
+    public List findLessonListByName(String name);
 }

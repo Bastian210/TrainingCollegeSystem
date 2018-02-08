@@ -30,8 +30,9 @@ public interface OrderService {
     /**
      * 取消订单
      * @param orderid
+     * @param price
      */
-    public void CancelOrder(String orderid);
+    public void CancelOrder(String orderid,String price);
 
     /**
      * 删除订单

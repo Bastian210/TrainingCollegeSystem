@@ -83,7 +83,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void CancelOrder(String orderid) {
+    public void CancelOrder(String orderid,String price) {
         Orders orders = orderDao.findOrderByOrderId(orderid);
         orders.setState("已退订");
         orderDao.update(orders);
@@ -93,6 +93,14 @@ public class OrderServiceImpl implements OrderService {
             Lesson lesson = lessonDao.findLessonByLessonidAndName(orders.getLessonid(),ordermessage.getName());
             lessonDao.delete(lesson);
         }
+
+        User user = userDao.findUserByUserid(orders.getUserid());
+        Payment payment = paymentDao.findPaymentByPayId(user.getPayid());
+        payment.setBalance(payment.getBalance()+Double.valueOf(price));
+        paymentDao.update(payment);
+        Payment manager = paymentDao.getManagePayment();
+        payment.setBalance(payment.getBalance()-Double.valueOf(price));
+        paymentDao.update(manager);
     }
 
     @Override
@@ -190,6 +198,7 @@ public class OrderServiceImpl implements OrderService {
             json.put("price",orders.getPrice());
             json.put("actualpay",orders.getActualpay());
             json.put("state",orders.getState());
+            json.put("begintime",plans.getBegin());
             if(orders.getState().equals("未支付")){
                 User user = userDao.findUserByUserid(orders.getUserid());
                 int level = user.getLevel();

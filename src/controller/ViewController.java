@@ -62,4 +62,9 @@ public class ViewController {
     public String getInsOrder(ModelMap model){
         return "insOrder";
     }
+
+    @RequestMapping(value = "/myLesson",method = RequestMethod.GET)
+    public String getMyLesson(ModelMap model){
+        return "myLesson";
+    }
 }

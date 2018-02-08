@@ -9,7 +9,18 @@ var price = 0;
  * 取消订单
  * @param orderid
  */
-function cancelOrder(id) {
+function cancelOrder(id,time,pri) {
+    var now = new Date();
+    var array =  time.split("-");
+    var begin = new Date(array[0], array[1], array[2]);
+    var change = begin-now;
+    if(change>=7){
+        price = pri;
+        $("#cancel-order-message").html("取消后系统将退还全款！");
+    }else{
+        price = pri*(1-(7-change)/100.0);
+        $("#cancel-order-message").html("取消后系统将退还您"+price+"元");
+    }
     $("#cancel-order-modal").modal("show");
     orderid = id;
 }
@@ -146,7 +157,7 @@ $(function () {
                         content2 = content2+ "<label class=\"label2\">学员数量："+json["num"]+"</label>\n" +
                             "                    <label class=\"label2\"><span class=\"line\">￥"+json["price"]+"</span><span>￥"+json["actualpay"]+"</span></label>\n" +
                             "                    <label class=\"label2\">订单状态："+json["state"]+"</label>\n" +
-                            "                    <a onclick=\"cancelOrder('"+json["orderid"]+"',)\">立即取消</a>\n" +
+                            "                    <a onclick=\"cancelOrder('"+json["orderid"]+"','"+json["begintime"]+"',"+json["actualpay"]+")\">立即取消</a>\n" +
                             "                    <el-collapse>\n" +
                             "                        <el-collapse-item title=\"查看学员\">\n" +
                             "                            <table width=\"100%\">\n" +
@@ -157,7 +168,7 @@ $(function () {
                         content = content+ "<label class=\"label2\">学员数量："+json["num"]+"</label>\n" +
                             "                    <label class=\"label2\"><span class=\"line\">￥"+json["price"]+"</span><span>￥"+json["actualpay"]+"</span></label>\n" +
                             "                    <label class=\"label2\">订单状态："+json["state"]+"</label>\n" +
-                            "                    <a onclick=\"cancelOrder('"+json["orderid"]+"',)\">立即取消</a>\n" +
+                            "                    <a onclick=\"cancelOrder('"+json["orderid"]+"','"+json["begintime"]+"',"+json["actualpay"]+")\">立即取消</a>\n" +
                             "                    <el-collapse>\n" +
                             "                        <el-collapse-item title=\"查看学员\">\n" +
                             "                            <table width=\"100%\">\n" +
@@ -437,6 +448,7 @@ $(function () {
             dataType: "json",
             data: {
                 orderid: orderid,
+                price: price,
             },
             success: function (data) {
                 $("#cancel-order-modal").modal("hide");
