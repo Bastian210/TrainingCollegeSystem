@@ -28,9 +28,10 @@ public class Main {
 //        String deadline = sdf.format(now.getTimeInMillis());
 //        System.out.println(deadline);
         OrderService orderService = new OrderServiceImpl();
-        JSONObject[] jsonObjects = orderService.GetAllOrder("500002");
-        JSONObject json = new JSONObject();
-        json.put("result",jsonObjects);
-        System.out.println(json.toString());
+//        JSONObject[] jsonObjects = orderService.GetAllOrder("500002");
+//        JSONObject json = new JSONObject();
+//        json.put("result",jsonObjects);
+//        System.out.println(json.toString());
+        orderService.CheckOrder();
     }
 }

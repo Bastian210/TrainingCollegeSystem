@@ -6,9 +6,11 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -28,6 +30,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private InstitutionDao institutionDao;
+
+    @Autowired
+    private PaymentDao paymentDao;
 
     @Override
     public JSONObject AddOrder(String userid, String lessonid, String institutionid, String type, String price, String actualpay, String classtype, String[] nameList, String[] genderList, String[] educationList) {
@@ -137,10 +142,106 @@ public class OrderServiceImpl implements OrderService {
         Orders orders = orderDao.findOrderByOrderId(orderid);
         orders.setState("已退订");
         orderDao.update(orders);
+        List OrderMessageList = orderDao.getOrderMessageListByOrderId(orderid);
+        for(int i=0;i<OrderMessageList.size();i++){
+            Ordermessage ordermessage = (Ordermessage) OrderMessageList.get(i);
+            lessonDao.deleteLessonByLessonidAndName(orders.getLessonid(),ordermessage.getName());
+        }
     }
 
     @Override
     public void DeleteOrder(String orderid) {
         orderDao.delete(orderid);
+        orderDao.deleteOrderMessageByOrderId(orderid);
+    }
+
+    @Override
+    public void CheckOrder(){
+        List list1 = orderDao.findOrderListByState("未支付");
+        for(int i=0;i<list1.size();i++){
+            Orders orders = (Orders) list1.get(i);
+            String deadline = orders.getDeadline();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            try {
+                Date date = sdf.parse(deadline);
+                if(date.before(new Date())){
+                    orders.setState("已退订");
+                    orderDao.update(orders);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        List list2 = orderDao.findOrderListByState("等待配票");
+
+        for(int i=0;i<list2.size();i++){
+            Orders orders = (Orders) list2.get(i);
+            List planList = planDao.getPlanByLessonId(orders.getLessonid());
+            Plans plans = (Plans) planList.get(0);
+            String begin = plans.getBegin();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                Date date = sdf.parse(begin);
+                Calendar c = Calendar.getInstance();
+                c.setTime(date);
+                c.add(Calendar.DATE,-14);
+                Date date1 = c.getTime();
+                if(date1.equals(new Date())||date1.before(new Date())){
+                    List orderMessageList = orderDao.getOrderMessageListByOrderId(orders.getOrderid());
+                    String[][] assign = getAssignMessage(planList,orderMessageList.size());
+                    if(assign==null){
+                        orders.setState("配票失败");
+                        orderDao.update(orders);
+
+                        double price = orders.getPrice();
+                        User user = userDao.findUserByUserid(orders.getUserid());
+                        user.setConsumption(user.getConsumption()-price);
+                        user.setLevel((int) (user.getConsumption()/1000+1));
+                        userDao.update(user);
+
+                        Payment payment = paymentDao.findPaymentByPayId(user.getPayid());
+                        payment.setBalance(payment.getBalance()+price);
+                        paymentDao.update(payment);
+                        Payment manager = paymentDao.getManagePayment();
+                        manager.setBalance(manager.getBalance()-price);
+                        paymentDao.update(manager);
+                    }else{
+                        for(int j=0;j<orderMessageList.size();j++){
+                            Ordermessage ordermessage = (Ordermessage) orderMessageList.get(j);
+                            lessonDao.save(new Lesson(orders.getLessonid(),assign[j][0],ordermessage.getName(),0,"未开课",assign[j][1]));
+                        }
+                        orders.setState("已预订");
+                        orderDao.update(orders);
+                    }
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private String[][] getAssignMessage(List plansList,int num){
+        String[][] result = new String[num][2];
+        for(int k=0;k<num;k++){
+            boolean find = false;
+            for(int i=0;i<plansList.size();i++){
+                Plans plans = (Plans) plansList.get(i);
+                int total = plans.getClassnum()*plans.getStudentnum();
+                int sold = plans.getSold();
+                if(total>sold){
+                    result[k][0] = plans.getClasstype();
+                    result[k][1] = String.valueOf((sold+1)/plans.getStudentnum()+1);
+                    sold++;
+                    plans.setSold(sold);
+                    planDao.updatePlan(plans);
+                    find = true;
+                    break;
+                }
+            }
+            if (!find){
+                return null;
+            }
+        }
+        return result;
     }
 }

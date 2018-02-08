@@ -113,4 +113,16 @@ public class OrderDaoImpl implements OrderDao {
         transaction.commit();
         session.close();
     }
+
+    @Override
+    public List findOrderListByState(String state) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        String hql = String.format("from model.Orders as o where o.state = '%s'", state);
+        Query query = session.createQuery(hql);
+        List list = query.list();
+        transaction.commit();
+        session.close();
+        return list;
+    }
 }

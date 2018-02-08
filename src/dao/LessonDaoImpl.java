@@ -4,8 +4,11 @@ import model.Lesson;
 import model.LessonKey;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import utils.HibernateUtil;
+
+import java.util.List;
 
 @Repository
 public class LessonDaoImpl implements LessonDao {
@@ -26,5 +29,17 @@ public class LessonDaoImpl implements LessonDao {
         transaction.commit();
         session.close();
         return lesson;
+    }
+
+    @Override
+    public Lesson deleteLessonByLessonidAndName(String lessonid, String name) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        String hql = String.format("from model.Lesson as l where l.lessonid = '%s' and l.name = '%s'", lessonid, name);
+        Query query = session.createQuery(hql);
+        List list = query.list();
+        transaction.commit();
+        session.close();
+        return (Lesson) list.get(0);
     }
 }

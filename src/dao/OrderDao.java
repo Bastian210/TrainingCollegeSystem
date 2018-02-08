@@ -49,4 +49,11 @@ public interface OrderDao {
      * @param orderid
      */
     public void deleteOrderMessageByOrderId(String orderid);
+
+    /**
+     * 根据状态搜索订单
+     * @param state
+     * @return
+     */
+    public List findOrderListByState(String state);
 }

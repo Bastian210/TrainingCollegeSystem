@@ -12,4 +12,12 @@ public interface LessonDao {
      * @return
      */
     public Lesson findLessonByLessonKey(LessonKey lessonKey);
+
+    /**
+     * 根据lessonid和学生名删除lesson
+     * @param lessonid
+     * @param name
+     * @return
+     */
+    public Lesson deleteLessonByLessonidAndName(String lessonid, String name);
 }

@@ -38,4 +38,9 @@ public interface OrderService {
      * @param orderid
      */
     public void DeleteOrder(String orderid);
+
+    /**
+     * 检查订单
+     */
+    public void CheckOrder();
 }
