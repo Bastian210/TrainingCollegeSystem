@@ -37,6 +37,11 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
+    public JSONObject[] GetLessonByInstitutionId(String institutionid) {
+        return new JSONObject[0];
+    }
+
+    @Override
     public void WithdrawLesson(String lessonid,String userid) {
         User user = userDao.findUserByUserid(userid);
         Lesson lesson = lessonDao.findLessonByLessonidAndName(lessonid,user.getUsername());

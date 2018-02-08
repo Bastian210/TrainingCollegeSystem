@@ -198,3 +198,12 @@
 .show-one-plan .my-button{
     margin: 20px 0 10px 390px;
 }
+
+.show-one-plan a{
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+.show-one-plan a:hover{
+    cursor: pointer;
+}

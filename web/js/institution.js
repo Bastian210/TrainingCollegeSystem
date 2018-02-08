@@ -134,6 +134,22 @@ function releasePlan(lessonid) {
     });
 }
 
+function ViewDetail(lessonid) {
+    $.ajax({
+        url: "/institution.saveLessonid",
+        type: "post",
+        data: {
+            lessonid: lessonid,
+        },
+        dataType: "json",
+        success: function (data) {
+
+        }
+    });
+
+    window.open("/insLesson");
+}
+
 /**
  * 得到所有计划
  */
@@ -217,6 +233,7 @@ function getAllPlan() {
                     content3 = content3+"<div class=\"show-one-plan\">\n" +
                         "                    <label class=\"plan-name\">"+json["name"]+"</label>\n" +
                         "                    <label>"+json["type"]+"</label>\n" +
+                        "                    <a onclick=\"ViewDetail('"+json["lessonid"]+"')\">查看详情</a>\n" +
                         "                    <br>\n" +
                         "                    <span class=\"description\">"+json["description"]+"</span>\n" +
                         "                    <br>\n" +
@@ -348,6 +365,7 @@ $(function () {
                         content3 = content3+"<div class=\"show-one-plan\">\n" +
                             "                    <label class=\"plan-name\">"+json["name"]+"</label>\n" +
                             "                    <label>"+json["type"]+"</label>\n" +
+                            "                    <a onclick=\"ViewDetail('"+json["lessonid"]+"')\">查看详情</a>\n" +
                             "                    <br>\n" +
                             "                    <span class=\"description\">"+json["description"]+"</span>\n" +
                             "                    <br>\n" +
