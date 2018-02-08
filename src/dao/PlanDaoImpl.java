@@ -9,6 +9,9 @@ import org.springframework.stereotype.Repository;
 import service.PlanService;
 import utils.HibernateUtil;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -138,6 +141,43 @@ public class PlanDaoImpl implements PlanDao {
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
         session.update(plans);
+        transaction.commit();
+        session.close();
+    }
+
+    @Override
+    public void checkPlan(){
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        String hql = "from model.Plans";
+        Query query = session.createQuery(hql);
+        List list = query.list();
+        LessonDao lessonDao = new LessonDaoImpl();
+        for(int i=0;i<list.size();i++){
+            Plans plans = (Plans) list.get(i);
+            String begin = plans.getBegin();
+            String end = plans.getEnd();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = null;
+            Date date1 = null;
+            try {
+                date = sdf.parse(end);
+                date1 = sdf.parse(begin);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Date now = new Date();
+            if((date1.equals(now)||date1.before(now))&&plans.getState().equals("selling")){
+                plans.setState("start");
+                session.update(plans);
+                lessonDao.updateStateByLessonid(plans.getLessonid(),"已开课");
+            }
+            if((date.equals(now)||date.before(now))&&plans.getState().equals("start")){
+                plans.setState("end");
+                session.update(plans);
+                lessonDao.updateStateByLessonid(plans.getLessonid(),"已结课");
+            }
+        }
         transaction.commit();
         session.close();
     }

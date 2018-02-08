@@ -126,8 +126,8 @@ public class OrderServiceImpl implements OrderService {
                 e.printStackTrace();
             }
         }
-        List list2 = orderDao.findOrderListByState("等待配票");
 
+        List list2 = orderDao.findOrderListByState("等待配票");
         for(int i=0;i<list2.size();i++){
             Orders orders = (Orders) list2.get(i);
             List planList = planDao.getPlanByLessonId(orders.getLessonid());
@@ -172,6 +172,27 @@ public class OrderServiceImpl implements OrderService {
                 e.printStackTrace();
             }
         }
+
+        List list3 = orderDao.findOrderListByState("已预订");
+        for(int i=0;i<list3.size();i++){
+            Orders orders = (Orders) list3.get(i);
+            List planList = planDao.getPlanByLessonId(orders.getLessonid());
+            Plans plans = (Plans) planList.get(0);
+            String begin = plans.getBegin();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = null;
+            try {
+                date = sdf.parse(begin);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            if(date.after(new Date())){
+                orders.setState("已完成");
+                orderDao.update(orders);
+            }
+        }
+
+        planDao.checkPlan();
     }
 
     @Override

@@ -62,4 +62,9 @@ public interface PlanDao {
      * @param plans
      */
     public void updatePlan(Plans plans);
+
+    /**
+     * 自动更新
+     */
+    public void checkPlan();
 }

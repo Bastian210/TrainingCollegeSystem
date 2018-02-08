@@ -72,4 +72,20 @@ public class LessonDaoImpl implements LessonDao {
         session.close();
         return list;
     }
+
+    @Override
+    public void updateStateByLessonid(String lessonid, String state){
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        String hql = String.format("from model.Lesson as l where l.lessonid = '%s'", lessonid);
+        Query query = session.createQuery(hql);
+        List list = query.list();
+        for(int i=0;i<list.size();i++){
+            Lesson lesson = (Lesson) list.get(i);
+            lesson.setState(state);
+            session.update(lesson);
+        }
+        transaction.commit();
+        session.close();
+    }
 }

@@ -32,4 +32,11 @@ public interface LessonDao {
      * @return
      */
     public List findLessonListByName(String name);
+
+    /**
+     * 自动更新state字段
+     * @param lessonid
+     * @param state
+     */
+    public void updateStateByLessonid(String lessonid, String state);
 }
