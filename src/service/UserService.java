@@ -121,4 +121,16 @@ public interface UserService {
      * @return
      */
     public String TestVip(String userid);
+
+    /**
+     * 得到所有用户
+     * @return
+     */
+    public JSONObject[] GetAllUser();
+
+    /**
+     * 得到系统利润
+     * @return
+     */
+    public double getProfit();
 }

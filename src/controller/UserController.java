@@ -7,10 +7,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import service.UserService;
 import utils.Param;
 
@@ -156,6 +153,24 @@ public class UserController {
         String result = getUserService().TestVip(userid);
         JSONObject json = new JSONObject();
         json.put("result",result);
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/statistics.getAllUser",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+    public String doGetAllUser(){
+        JSONObject[] jsonObjects = getUserService().GetAllUser();
+        JSONObject json = new JSONObject();
+        json.put("result",jsonObjects);
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/statistics.getProfit",method = RequestMethod.POST)
+    public String doGetProfit(){
+        double profit = getUserService().getProfit();
+        JSONObject json = new JSONObject();
+        json.put("result",profit);
         return json.toString();
     }
 }

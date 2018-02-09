@@ -72,4 +72,9 @@ public class ViewController {
     public String getInsLesson(ModelMap model){
         return "insLesson";
     }
+
+    @RequestMapping(value = "/statistics",method = RequestMethod.GET)
+    public String getStatistics(ModelMap model){
+        return "statistics";
+    }
 }

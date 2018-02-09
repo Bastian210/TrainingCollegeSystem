@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>机构管理</title>
+    <title>统计信息</title>
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="/js/amaldar.js"></script>
+    <script src="/js/statistics.js"></script>
     <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" href="/css/amaldar.css">
+    <link rel="stylesheet" href="/css/statistics.css">
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 </head>
 <body>
@@ -23,12 +23,17 @@
 <div class="container">
     <div class="row">
         <div class="title">
-            <a class="active" id="register-apply-a">注册申请</a>
-            <a id="changeMess-apply-a">修改申请</a>
+            <a class="active" id="all-institution-a">机构信息</a>
+            <a id="all-user-a">用户信息</a>
+            <a id="profit-a">财务信息</a>
         </div>
         <div class="main-content">
-            <div id="register-apply-div"></div>
-            <div id="changeMess-apply-div" hidden="hidden"></div>
+            <div id="all-institution-div"></div>
+            <div id="all-user-div" hidden="hidden"></div>
+            <div id="profit-div" hidden="hidden">
+                <label>系统盈利：</label>
+                <label id="profit-label"></label>
+            </div>
         </div>
     </div>
 </div>

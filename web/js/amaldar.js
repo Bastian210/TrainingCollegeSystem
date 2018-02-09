@@ -85,10 +85,10 @@ function getRegisterApply() {
             var result = data["result"];
 
             var content = "<table width=\"100%\">\n" +
-                "                    <tr><th>机构识别号<th>机构名称</th><th>机构地址</th><th>联系方式</th><th>操作类型</th></tr>";
+                "                    <tr><th>机构名称</th><th>机构地址</th><th>联系方式</th><th>操作类型</th></tr>";
             for(var i=0;i<result.length;i++){
                 var json = JSON.parse(JSON.stringify(result[i]));
-                content = content+"<tr><td>"+json["id"]+"</td><td>"+json["name"]+"</td><td>"+json["address"]+"</td><td>"+json["phone"]+"</td><td><a onclick=\"refuseRegister('"
+                content = content+"<tr><td>"+json["name"]+"</td><td>"+json["address"]+"</td><td>"+json["phone"]+"</td><td><a onclick=\"refuseRegister('"
                     +json["id"]+"')\">拒绝</a><a onclick=\"agreeRegister('"+json["id"]+"')\">批准</a></td></tr>";
             }
             content = content+"</table>";
@@ -109,10 +109,10 @@ function getChangeMessApply() {
             var result = data["result"];
 
             var content = "<table width=\"100%\">\n" +
-                "                    <tr><th>机构名称</th><th>机构地址</th><th>联系方式</th><th>操作类型</th></tr>";
+                "                    <tr><th>机构识别号</th><th>机构名称</th><th>机构地址</th><th>联系方式</th><th>操作类型</th></tr>";
             for(var i=0;i<result.length;i++){
                 var json = JSON.parse(JSON.stringify(result[i]));
-                content = content+"<tr><td>"+json["name"]+"</td><td>"+json["address"]+"</td><td>"+json["phone"]+"</td><td><a onclick=\"refuseChange('"
+                content = content+"<tr><td>"+json["id"]+"</td><td>"+json["name"]+"</td><td>"+json["address"]+"</td><td>"+json["phone"]+"</td><td><a onclick=\"refuseChange('"
                     +json["id"]+"')\">拒绝</a><a onclick=\"agreeChange('"+json["id"]+"')\">批准</a></td></tr>";
             }
             content = content+"</table>";
@@ -125,6 +125,17 @@ $(function () {
     $(document).ready(function () {
         getRegisterApply();
         getChangeMessApply();
+
+        setTimeout(function () {
+            $.ajax({
+                url: "/amaldar.checkOrder",
+                type: "post",
+                dataType: "json",
+                success: function (data) {
+
+                }
+            });
+        },5000);
     });
 
     /**
@@ -139,10 +150,10 @@ $(function () {
                 var result = data["result"];
 
                 var content = "<table width=\"100%\">\n" +
-                    "                    <tr><th>机构识别号<th>机构名称</th><th>机构地址</th><th>联系方式</th><th></th><th>操作类型</th></tr>";
+                    "                    <tr><th>机构名称</th><th>机构地址</th><th>联系方式</th><th>操作类型</th></tr>";
                 for(var i=0;i<result.length;i++){
                     var json = JSON.parse(JSON.stringify(result[i]));
-                    content = content+"<tr><td>"+json["id"]+"</td><td>"+json["name"]+"</td><td>"+json["address"]+"</td><td>"+json["phone"]+"</td><td><a onclick=\"refuseRegister('"
+                    content = content+"<tr><td>"+json["name"]+"</td><td>"+json["address"]+"</td><td>"+json["phone"]+"</td><td><a onclick=\"refuseRegister('"
                         +json["id"]+"')\">拒绝</a><a onclick=\"agreeRegister('"+json["id"]+"')\">批准</a></td></tr>";
                 }
                 content = content+"</table>";
@@ -163,10 +174,10 @@ $(function () {
                 var result = data["result"];
 
                 var content = "<table width=\"100%\">\n" +
-                    "                    <tr><th>机构名称</th><th>机构地址</th><th>联系方式</th><th>操作类型</th></tr>";
+                    "                    <tr><th>机构识别号</th><th>机构名称</th><th>机构地址</th><th>联系方式</th><th>操作类型</th></tr>";
                 for(var i=0;i<result.length;i++){
                     var json = JSON.parse(JSON.stringify(result[i]));
-                    content = content+"<tr><td>"+json["name"]+"</td><td>"+json["address"]+"</td><td>"+json["phone"]+"</td><td><a onclick=\"refuseChange('"
+                    content = content+"<tr><td>"+json["id"]+"</td><td>"+json["name"]+"</td><td>"+json["address"]+"</td><td>"+json["phone"]+"</td><td><a onclick=\"refuseChange('"
                         +json["id"]+"')\">拒绝</a><a onclick=\"agreeChange('"+json["id"]+"')\">批准</a></td></tr>";
                 }
                 content = content+"</table>";

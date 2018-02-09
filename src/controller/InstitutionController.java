@@ -4,10 +4,7 @@ import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import service.InstitutionService;
 import utils.Param;
 
@@ -200,6 +197,15 @@ public class InstitutionController {
         getInstitutionService().AgreeChange(id);
         JSONObject json = new JSONObject();
         json.put("result","success");
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/statistics.getAllInstitution",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+    public String doGetAllInstitution(){
+        JSONObject[] jsonObjects = getInstitutionService().GetAllInstitution();
+        JSONObject json = new JSONObject();
+        json.put("result",jsonObjects);
         return json.toString();
     }
 }

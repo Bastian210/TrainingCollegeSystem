@@ -142,4 +142,10 @@ public interface InstitutionService {
      * @param id
      */
     public void AgreeChange(String id);
+
+    /**
+     *
+     * @return
+     */
+    public JSONObject[] GetAllInstitution();
 }

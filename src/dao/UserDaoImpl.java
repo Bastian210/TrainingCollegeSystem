@@ -154,4 +154,16 @@ public class UserDaoImpl implements UserDao {
     public User findManager() {
         return findUserByUserid("500001");
     }
+
+    @Override
+    public List findCommonUser() {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        String hql = "from model.User as u where u.isadmin = 0";
+        Query query = session.createQuery(hql);
+        List list = query.list();
+        transaction.commit();
+        session.close();
+        return list;
+    }
 }

@@ -1,8 +1,6 @@
 package service;
 
-import dao.InstitutionDao;
-import dao.InstitutionDaoImpl;
-import dao.PaymentDao;
+import dao.*;
 import model.Institution;
 import model.Payment;
 import model.Teachers;
@@ -25,6 +23,12 @@ public class InstitutionServiceImpl implements InstitutionService {
 
     @Autowired
     private PaymentDao paymentDao;
+
+    @Autowired
+    private PlanDao planDao;
+
+    @Autowired
+    private OrderDao orderDao;
 
     @Override
     public String Login(String id, String password) {
@@ -247,5 +251,28 @@ public class InstitutionServiceImpl implements InstitutionService {
         institution.setPhone((String) json.get("phone"));
         institution.setChanMess(null);
         institutionDao.update(institution);
+    }
+
+    @Override
+    public JSONObject[] GetAllInstitution() {
+        List list = institutionDao.findInstitutionByState("checked");
+        JSONObject[] jsonObjects = new JSONObject[list.size()];
+        for(int i=0;i<list.size();i++){
+            Institution institution = (Institution) list.get(i);
+            JSONObject json = new JSONObject();
+            json.put("id",institution.getInstitutionid());
+            json.put("name",institution.getInstitutionname());
+            json.put("address",institution.getAddress());
+            json.put("phone",institution.getPhone());
+            json.put("consumption",institution.getConsumption());
+
+            List plansList = planDao.getPlanListByInstitutionId(institution.getInstitutionid());
+            json.put("plans",plansList.size());
+            List ordersList = orderDao.findOrderListByInstitutionId(institution.getInstitutionid());
+            json.put("orders",ordersList.size());
+
+            jsonObjects[i] = json;
+        }
+        return jsonObjects;
     }
 }

@@ -1,9 +1,7 @@
 package service;
 
-import dao.OrderDao;
-import dao.PaymentDao;
-import dao.UserDao;
-import dao.UserDaoImpl;
+import dao.*;
+import model.Lesson;
 import model.Orders;
 import model.Payment;
 import model.User;
@@ -15,10 +13,7 @@ import utils.Param;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -28,6 +23,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PaymentDao paymentDao;
+
+    @Autowired
+    private LessonDao lessonDao;
 
     @Autowired
     private OrderDao orderDao;
@@ -226,5 +224,36 @@ public class UserServiceImpl implements UserService {
             return "wrong id";
         }
         return String.valueOf(user.getLevel());
+    }
+
+    @Override
+    public JSONObject[] GetAllUser() {
+        List list = userDao.findCommonUser();
+        JSONObject[] jsonObjects = new JSONObject[list.size()];
+        for(int i=0;i<list.size();i++){
+            User user = (User) list.get(i);
+            JSONObject json = new JSONObject();
+            json.put("id",user.getUserid());
+            json.put("name",user.getUsername());
+            json.put("email",user.getEmail());
+            json.put("gender",user.getGender());
+            json.put("education",user.getEducation());
+            json.put("level",user.getLevel());
+            json.put("points",user.getPoints());
+            json.put("consumption",user.getConsumption());
+
+            List ordersList = orderDao.findOrderListByUserId(user.getUserid());
+            json.put("order",ordersList.size());
+            List lessonList = lessonDao.findLessonListByName(user.getUsername());
+            json.put("lesson",lessonList.size());
+
+            jsonObjects[i] = json;
+        }
+        return jsonObjects;
+    }
+
+    @Override
+    public double getProfit() {
+        return userDao.findManager().getConsumption();
     }
 }

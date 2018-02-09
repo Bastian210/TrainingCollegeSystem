@@ -3,6 +3,8 @@ package dao;
 import model.Payment;
 import model.User;
 
+import java.util.List;
+
 public interface UserDao {
     public void save(User user);
 
@@ -78,4 +80,10 @@ public interface UserDao {
      * @return
      */
     public User findManager();
+
+    /**
+     * 得到所有普通用户
+     * @return
+     */
+    public List findCommonUser();
 }
