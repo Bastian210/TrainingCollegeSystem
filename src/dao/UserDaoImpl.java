@@ -149,4 +149,9 @@ public class UserDaoImpl implements UserDao {
         transaction.commit();
         session.close();
     }
+
+    @Override
+    public User findManager() {
+        return findUserByUserid("500001");
+    }
 }

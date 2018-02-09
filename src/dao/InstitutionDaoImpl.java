@@ -23,6 +23,15 @@ public class InstitutionDaoImpl implements InstitutionDao {
     }
 
     @Override
+    public void update(Institution institution) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        session.update(institution);
+        transaction.commit();
+        session.close();
+    }
+
+    @Override
     public Institution findInstitutionById(String id) {
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
@@ -142,5 +151,29 @@ public class InstitutionDaoImpl implements InstitutionDao {
         }
         transaction.commit();
         session.close();
+    }
+
+    @Override
+    public List findInstitutionByState(String state) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        String hql = String.format("from model.Institution as i where i.state = '%s'", state);
+        Query query = session.createQuery(hql);
+        List list = query.list();
+        transaction.commit();
+        session.close();
+        return list;
+    }
+
+    @Override
+    public List findInstitutionByChanMess() {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        String hql = "from model.Institution as i where i.chanMess !=null";
+        Query query = session.createQuery(hql);
+        List list = query.list();
+        transaction.commit();
+        session.close();
+        return list;
     }
 }

@@ -7,6 +7,7 @@ import model.Institution;
 import model.Payment;
 import model.Teachers;
 import model.TeachersKey;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,9 @@ public class InstitutionServiceImpl implements InstitutionService {
         }
         if(institution.getState().equals("not checked")){
             return "still in check";
+        }
+        if(institution.getState().equals("fail check")){
+            return "fail check";
         }
         Param.setInstitutionid(id);
         return "success";
@@ -70,6 +74,7 @@ public class InstitutionServiceImpl implements InstitutionService {
             map.put("payid",payid);
             map.put("balance", String.valueOf(paymentDao.findPaymentByPayId(payid).getBalance()));
         }
+        map.put("profit", String.valueOf(institution.getConsumption()));
         return map;
     }
 
@@ -159,5 +164,88 @@ public class InstitutionServiceImpl implements InstitutionService {
     @Override
     public void DeleteTeacher(String id, String name) {
         institutionDao.deleteTeacher(new TeachersKey(id,name));
+    }
+
+    @Override
+    public JSONObject[] GetRegisterApply() {
+        List list = institutionDao.findInstitutionByState("not checked");
+        JSONObject[] jsonObjects = new JSONObject[list.size()];
+        for(int i=0;i<list.size();i++){
+            Institution institution = (Institution) list.get(i);
+            JSONObject json = new JSONObject();
+            json.put("name",institution.getInstitutionname());
+            json.put("address",institution.getAddress());
+            json.put("phone",institution.getPhone());
+            json.put("id",institution.getInstitutionid());
+            jsonObjects[i] = json;
+        }
+        return jsonObjects;
+    }
+
+    @Override
+    public JSONObject[] GetChangeMessApply() {
+        List list = institutionDao.findInstitutionByChanMess();
+
+        JSONObject[] jsonObjects = new JSONObject[list.size()];
+        for(int i=0;i<list.size();i++){
+            Institution institution = (Institution) list.get(i);
+            String chanMess = institution.getChanMess();
+            JSONObject change = new JSONObject(chanMess);
+
+            JSONObject json = new JSONObject();
+            if(change.get("name").equals(institution.getInstitutionname())){
+                json.put("name",institution.getInstitutionname());
+            }else{
+                json.put("name",institution.getInstitutionname()+"→"+change.get("name"));
+            }
+
+            if(change.get("address").equals(institution.getAddress())){
+                json.put("address",institution.getAddress());
+            }else{
+                json.put("address",institution.getAddress()+"→"+change.get("address"));
+            }
+
+            if(change.get("phone").equals(institution.getPhone())){
+                json.put("phone",institution.getPhone());
+            }else{
+                json.put("phone",institution.getPhone()+"→"+change.get("phone"));
+            }
+
+            json.put("id",institution.getInstitutionid());
+            jsonObjects[i] = json;
+        }
+        return jsonObjects;
+    }
+
+    @Override
+    public void RefuseRegister(String id) {
+        Institution institution = institutionDao.findInstitutionById(id);
+        institution.setState("fail check");
+        institutionDao.update(institution);
+    }
+
+    @Override
+    public void AgreeRegister(String id) {
+        Institution institution = institutionDao.findInstitutionById(id);
+        institution.setState("checked");
+        institutionDao.update(institution);
+    }
+
+    @Override
+    public void RefuseChange(String id) {
+        Institution institution = institutionDao.findInstitutionById(id);
+        institution.setChanMess(null);
+        institutionDao.update(institution);
+    }
+
+    @Override
+    public void AgreeChange(String id) {
+        Institution institution = institutionDao.findInstitutionById(id);
+        JSONObject json = new JSONObject(institution.getChanMess());
+        institution.setInstitutionname((String) json.get("name"));
+        institution.setAddress((String) json.get("address"));
+        institution.setPhone((String) json.get("phone"));
+        institution.setChanMess(null);
+        institutionDao.update(institution);
     }
 }

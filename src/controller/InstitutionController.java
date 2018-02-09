@@ -61,6 +61,7 @@ public class InstitutionController {
         json.put("phone",map.get("phone"));
         json.put("payid",map.get("payid"));
         json.put("balance",map.get("balance"));
+        json.put("profit",map.get("profit"));
         return json.toString();
     }
 
@@ -143,6 +144,60 @@ public class InstitutionController {
     @RequestMapping(value = "/insManagement.deleteTeacher",method = RequestMethod.POST)
     public String doDeleteTeacherMessage(@RequestParam(value = "name")String name){
         getInstitutionService().DeleteTeacher(Param.getInstitutionid(),name);
+        JSONObject json = new JSONObject();
+        json.put("result","success");
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/amaldar.getRegisterApply",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+    public String doRegisterApply(){
+        JSONObject[] jsonObjects = getInstitutionService().GetRegisterApply();
+        JSONObject json = new JSONObject();
+        json.put("result",jsonObjects);
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/amaldar.getChangeMessApply",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+    public String doGetChangeMessApply(){
+        JSONObject[] jsonObjects = getInstitutionService().GetChangeMessApply();
+        JSONObject json = new JSONObject();
+        json.put("result",jsonObjects);
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/amaldar.refuseRegister",method = RequestMethod.POST)
+    public String doRefuseRegister(@RequestParam(value = "id")String id){
+        getInstitutionService().RefuseRegister(id);
+        JSONObject json = new JSONObject();
+        json.put("result","success");
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/amaldar.agreeRegister",method = RequestMethod.POST)
+    public String doAgreeRegister(@RequestParam(value = "id")String id){
+        getInstitutionService().AgreeRegister(id);
+        JSONObject json = new JSONObject();
+        json.put("result","success");
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/amaldar.refuseChange",method = RequestMethod.POST)
+    public String doRefuseChange(@RequestParam(value = "id")String id){
+        getInstitutionService().RefuseChange(id);
+        JSONObject json = new JSONObject();
+        json.put("result","success");
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/amaldar.agreeChange",method = RequestMethod.POST)
+    public String doAgreeChange(@RequestParam(value = "id")String id){
+        getInstitutionService().AgreeChange(id);
         JSONObject json = new JSONObject();
         json.put("result","success");
         return json.toString();

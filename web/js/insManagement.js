@@ -38,6 +38,7 @@ $(function () {
                 $("#enter-ins-name").val(data["name"]);
                 $("#enter-ins-address").val(data["address"]);
                 $("#enter-ins-phone").val(data["phone"]);
+                $("#total-profit").html(data["profit"]);
                 var payid = data["payid"];
                 if(payid==""){
                     $("#bind-account-div").show();
@@ -59,11 +60,13 @@ $(function () {
         $("#teachers-li").removeAttr("class");
         $("#pay-account-li").removeAttr("class");
         $("#account-safety-li").removeAttr("class");
+        $("#financial-situation-li").removeAttr("class");
         $("#chosen-li").html("机构信息");
         $("#ins-message-div").show();
         $("#teachers-div").hide();
         $("#pay-account-div").hide();
         $("#account-safety-div").hide();
+        $("#financial-situation-div").hide();
     });
 
     $("#teachers-li").click(function () {
@@ -71,11 +74,13 @@ $(function () {
         $("#teachers-li").attr("class","active");
         $("#pay-account-li").removeAttr("class");
         $("#account-safety-li").removeAttr("class");
+        $("#financial-situation-li").removeAttr("class");
         $("#chosen-li").html("师资力量");
         $("#ins-message-div").hide();
         $("#teachers-div").show();
         $("#pay-account-div").hide();
         $("#account-safety-div").hide();
+        $("#financial-situation-div").hide();
     });
 
     $("#pay-account-li").click(function () {
@@ -83,11 +88,13 @@ $(function () {
         $("#teachers-li").removeAttr("class");
         $("#pay-account-li").attr("class","active");
         $("#account-safety-li").removeAttr("class");
+        $("#financial-situation-li").removeAttr("class");
         $("#chosen-li").html("支付账号");
         $("#ins-message-div").hide();
         $("#teachers-div").hide();
         $("#pay-account-div").show();
         $("#account-safety-div").hide();
+        $("#financial-situation-div").hide();
     });
 
     $("#account-safety-li").click(function () {
@@ -95,11 +102,27 @@ $(function () {
         $("#teachers-li").removeAttr("class");
         $("#pay-account-li").removeAttr("class");
         $("#account-safety-li").attr("class","active");
+        $("#financial-situation-li").removeAttr("class");
         $("#chosen-li").html("账号安全");
         $("#ins-message-div").hide();
         $("#teachers-div").hide();
         $("#pay-account-div").hide();
         $("#account-safety-div").show();
+        $("#financial-situation-div").hide();
+    });
+
+    $("#financial-situation-li").click(function () {
+        $("#ins-message-li").removeAttr("class");
+        $("#teachers-li").removeAttr("class");
+        $("#pay-account-li").removeAttr("class");
+        $("#account-safety-li").removeAttr("class","active");
+        $("#financial-situation-li").attr("class","active");
+        $("#chosen-li").html("财务情况");
+        $("#ins-message-div").hide();
+        $("#teachers-div").hide();
+        $("#pay-account-div").hide();
+        $("#account-safety-div").hide();
+        $("#financial-situation-div").show();
     });
 
     /**

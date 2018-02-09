@@ -28,9 +28,9 @@ public class ViewController {
         return "institution";
     }
 
-    @RequestMapping(value = "/manager",method = RequestMethod.GET)
-    public String getManager(ModelMap model) {
-        return "manager";
+    @RequestMapping(value = "/amaldar",method = RequestMethod.GET)
+    public String getAmaldar(ModelMap model) {
+        return "amaldar";
     }
 
     @RequestMapping(value = "/accountManagement",method = RequestMethod.GET)

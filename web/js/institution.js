@@ -506,6 +506,12 @@ $(function () {
                         setTimeout(function () {
                             $("#institution-login-error").hide();
                         },1000);
+                    }else if(result=="fail check"){
+                        $("#institution-login-error").html("此账号申请失败！");
+                        $("#institution-login-error").show();
+                        setTimeout(function () {
+                            $("#institution-login-error").hide();
+                        },3000);
                     }else{
                         //登录成功
                         window.open("/institution","_self");

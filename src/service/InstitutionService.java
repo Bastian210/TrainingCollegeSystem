@@ -1,5 +1,7 @@
 package service;
 
+import org.json.JSONObject;
+
 import java.util.Map;
 
 public interface InstitutionService {
@@ -104,4 +106,40 @@ public interface InstitutionService {
      * @param name
      */
     public void DeleteTeacher(String id, String name);
+
+    /**
+     * 得到机构申请列表
+     * @return
+     */
+    public JSONObject[] GetRegisterApply();
+
+    /**
+     * 得到机构修改信息申请列表
+     * @return
+     */
+    public JSONObject[] GetChangeMessApply();
+
+    /**
+     * 拒绝注册申请
+     * @param id
+     */
+    public void RefuseRegister(String id);
+
+    /**
+     * 批准注册申请
+     * @param id
+     */
+    public void AgreeRegister(String id);
+
+    /**
+     * 拒绝修改信息
+     * @param id
+     */
+    public void RefuseChange(String id);
+
+    /**
+     * 批准修改信息
+     * @param id
+     */
+    public void AgreeChange(String id);
 }

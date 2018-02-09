@@ -253,7 +253,8 @@ $(function () {
                         },1000);
                     }else{
                         //登录成功
-                        window.open("/manager","_self");
+                        console.log("success");
+                        window.open("/amaldar","_self");
                     }
                 }
             });

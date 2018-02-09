@@ -199,6 +199,9 @@ public class OrderServiceImpl implements OrderService {
                 Payment manage = paymentDao.getManagePayment();
                 manage.setBalance(manage.getBalance()-actualPay*0.9);
                 paymentDao.update(manage);
+                User manager = userDao.findManager();
+                manager.setConsumption(manager.getConsumption()+actualPay*0.1);
+                userDao.update(manager);
             }
         }
 

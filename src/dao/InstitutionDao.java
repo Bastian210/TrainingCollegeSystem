@@ -9,6 +9,8 @@ import java.util.List;
 public interface InstitutionDao {
     public void save(Institution institution);
 
+    public void update(Institution institution);
+
     /**
      * 根据识别码查找机构
      * @param id
@@ -76,4 +78,17 @@ public interface InstitutionDao {
      * @param key
      */
     public void deleteTeacher(TeachersKey key);
+
+    /**
+     * 根据状态查找机构
+     * @param state
+     * @return
+     */
+    public List findInstitutionByState(String state);
+
+    /**
+     * 根据修改信息查找机构
+     * @return
+     */
+    public List findInstitutionByChanMess();
 }

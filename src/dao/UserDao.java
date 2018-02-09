@@ -72,4 +72,10 @@ public interface UserDao {
      * @param userid
      */
     public void updateWriteOffByUserId(String userid);
+
+    /**
+     * 找到经理
+     * @return
+     */
+    public User findManager();
 }
