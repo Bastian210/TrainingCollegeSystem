@@ -161,7 +161,7 @@
     margin-left: 230px;
 }
 
-.main-content .my-button{
+#onsite-pay-div .my-button{
     margin-top: 20px;
     margin-left: 140px;
 }
@@ -178,5 +178,52 @@
 }
 
 #test-vip-a:hover{
+    cursor: pointer;
+}
+
+#select-class-type1{
+    float: left;
+    width: 150px;
+}
+
+#input-number1{
+    float: left;
+}
+
+#input-number2{
+    float: left;
+}
+
+.search-container{
+    padding: 20px;
+    border-bottom: 1px solid #efefef;
+}
+
+#check-div .my-button{
+    margin-left: 100px;
+}
+
+#check-div table{
+    margin-top: 20px;
+}
+
+#check-div tr{
+    height: 40px;
+    border: 1px solid #E4E7ED;
+}
+
+#check-div th{
+    text-align: center;
+}
+
+#check-div td{
+    text-align: center;
+}
+
+#check-div a{
+    text-decoration: none;
+}
+
+#check-div a:hover{
     cursor: pointer;
 }

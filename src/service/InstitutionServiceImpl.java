@@ -49,7 +49,7 @@ public class InstitutionServiceImpl implements InstitutionService {
         }
         int num = institutionDao.getMaxId();
         String institutionid = String.valueOf(num+1);
-        Institution institution = new Institution(institutionid,name,password,address,phone,null,"not checked",null);
+        Institution institution = new Institution(institutionid,name,password,address,phone,null,"not checked",null,0);
         institutionDao.save(institution);
         return institutionid;
     }

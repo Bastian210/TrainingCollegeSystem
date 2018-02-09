@@ -59,7 +59,7 @@ public class OrderServiceImpl implements OrderService {
             int sold = plans.getSold();
             for(int i=0;i<nameList.length;i++){
                 int id = (sold+1)/plans.getStudentnum()+1;
-                Lesson lesson = new Lesson(lessonid,classtype,nameList[i],0,"未开课",String.valueOf(id));
+                Lesson lesson = new Lesson(lessonid,classtype,nameList[i],0,"未开课",String.valueOf(id),genderList[i],educationList[i]);
                 lessonDao.save(lesson);
                 sold++;
             }
@@ -162,7 +162,7 @@ public class OrderServiceImpl implements OrderService {
                     }else{
                         for(int j=0;j<orderMessageList.size();j++){
                             Ordermessage ordermessage = (Ordermessage) orderMessageList.get(j);
-                            lessonDao.save(new Lesson(orders.getLessonid(),assign[j][0],ordermessage.getName(),0,"未开课",assign[j][1]));
+                            lessonDao.save(new Lesson(orders.getLessonid(),assign[j][0],ordermessage.getName(),0,"未开课",assign[j][1],ordermessage.getGender(),ordermessage.getEducation()));
                         }
                         orders.setState("已预订");
                         orderDao.update(orders);
@@ -186,9 +186,19 @@ public class OrderServiceImpl implements OrderService {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            if(date.after(new Date())){
+            if(date.equals(new Date())||date.before(new Date())){
                 orders.setState("已完成");
                 orderDao.update(orders);
+
+                double actualPay = orders.getActualpay();
+                Institution institution = institutionDao.findInstitutionById(orders.getInstitutionid());
+                institution.setConsumption(institution.getConsumption()+actualPay*0.9);
+                Payment payment = paymentDao.findPaymentByPayId(institution.getPayid());
+                payment.setBalance(payment.getBalance()+actualPay*0.9);
+                paymentDao.update(payment);
+                Payment manage = paymentDao.getManagePayment();
+                manage.setBalance(manage.getBalance()-actualPay*0.9);
+                paymentDao.update(manage);
             }
         }
 

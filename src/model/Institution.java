@@ -28,10 +28,12 @@ public class Institution implements Serializable {
     private String state;
     @Column(name = "chanMess")
     private String chanMess;
+    @Column(name = "consumption")
+    private double consumption;
 
     public Institution(){}
 
-    public Institution(String institutionid, String institutionname, String password, String address, String phone, String payid, String state, String chanMess) {
+    public Institution(String institutionid, String institutionname, String password, String address, String phone, String payid, String state, String chanMess, double consumption) {
         this.institutionid = institutionid;
         this.institutionname = institutionname;
         this.password = password;
@@ -40,6 +42,7 @@ public class Institution implements Serializable {
         this.payid = payid;
         this.state = state;
         this.chanMess = chanMess;
+        this.consumption = consumption;
     }
 
     public static long getSerialVersionUID() {
@@ -108,5 +111,13 @@ public class Institution implements Serializable {
 
     public void setChanMess(String chanMess) {
         this.chanMess = chanMess;
+    }
+
+    public double getConsumption() {
+        return consumption;
+    }
+
+    public void setConsumption(double consumption) {
+        this.consumption = consumption;
     }
 }

@@ -244,4 +244,16 @@
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/myLesson.onSiteBook</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/myLesson.searchStudents</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/myLesson.enterGrade</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/myLesson.checkin</url-pattern>
+    </servlet-mapping>
 </web-app>

@@ -58,4 +58,31 @@ public class LessonController {
         json.put("result","success");
         return json.toString();
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/myLesson.searchStudents",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+    public String doSearchStudents(@RequestParam(value = "lessonid")String lessonid,@RequestParam(value = "classtype")String classtype,@RequestParam(value = "classid")String classid,@RequestParam(value = "classhour")String classhour){
+        JSONObject[] jsonObjects = getLessonService().SearchStudents(lessonid, classtype, classid, classhour);
+        JSONObject json = new JSONObject();
+        json.put("result",jsonObjects);
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/myLesson.enterGrade",method = RequestMethod.POST)
+    public String doEnterGrade(@RequestParam(value = "lessonid")String lessonid,@RequestParam(value = "classtype")String classtype,@RequestParam(value = "name")String name,@RequestParam(value = "grade")String grade){
+        getLessonService().EnterGrade(lessonid, classtype, name, grade);
+        JSONObject json = new JSONObject();
+        json.put("result","success");
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/myLesson.checkin",method = RequestMethod.POST)
+    public String doCheckIn(@RequestParam(value = "lessonid")String lessonid,@RequestParam(value = "classtype")String classtype,@RequestParam(value = "name")String name,@RequestParam(value = "classhour")String classhour){
+        getLessonService().CheckIn(lessonid, classtype, name, classhour);
+        JSONObject json = new JSONObject();
+        json.put("result","success");
+        return json.toString();
+    }
 }

@@ -86,12 +86,61 @@
                 <button class="my-button" id="add-order-btn">计算总价</button>
             </div>
             <div id="check-div">
-
+                <div class="search-container">
+                    <label class="float-left">班级类型：</label>
+                    <div id="select-class-type1">
+                        <template>
+                            <el-select v-model="value" placeholder="请选择班级类型" id="enter-class-type1">
+                                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </template>
+                    </div>
+                    <label class="float-left">班级号：</label>
+                    <div id="input-number1">
+                        <template>
+                            <el-input-number v-model="num1" controls-position="right" @change="handleChange" :min="1" id="enter-class-id" style="width: 100px"></el-input-number>
+                        </template>
+                    </div>
+                    <label class="float-left">课时：</label>
+                    <div id="input-number2">
+                        <template>
+                            <el-input-number v-model="num1" controls-position="right" @change="handleChange" :min="1" id="enter-class-hour" style="width: 100px"></el-input-number>
+                        </template>
+                    </div>
+                    <button class="my-button" id="ensure-search-btn"><i class="el-icon-search"></i>搜索</button>
+                    <div class="alert alert-warning" id="ensure-search-error" hidden="hidden"></div>
+                </div>
+                <div id="display-students-div">
+                    <table width="100%">
+                        <tr><th>姓名</th><th>性别</th><th>教育程度</th><th>成绩</th><th>登记</th></tr>
+                        <tr><td>费慧通</td><td>男</td><td>高中</td><td>无<a>录入成绩</a></td><td><a>立即登记</a></td></tr>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
+<div class="modal fade" id="enter-grade-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="my-modal">
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                &times;
+            </button>
+            <div class="my-modal-header">
+                <p class="text-center">录入成绩</p>
+            </div>
+            <div class="my-modal-content">
+                <input type="text" placeholder="请填入成绩" id="enter-grade" class="my-input">
+            </div>
+            <div class="my-modal-footer">
+                <button class="my-button" data-dismiss="modal">取消</button>
+                <button class="my-button" id="enter-grade-btn">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
@@ -125,5 +174,33 @@
     }
     var Ctor1 = Vue.extend(Main1)
     new Ctor1().$mount('#select')
+
+    var Main2 = {
+        data() {
+            return {
+                num1: 1
+            };
+        },
+        methods: {
+            handleChange(value) {
+            }
+        }
+    };
+    var Ctor2 = Vue.extend(Main2);
+    new Ctor2().$mount('#input-number1');
+
+    var Main3 = {
+        data() {
+            return {
+                num1: 1
+            };
+        },
+        methods: {
+            handleChange(value) {
+            }
+        }
+    };
+    var Ctor3 = Vue.extend(Main3);
+    new Ctor3().$mount('#input-number2');
 </script>
 </html>

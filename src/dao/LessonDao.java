@@ -1,5 +1,7 @@
 package dao;
 
+import model.Checkin;
+import model.CheckinKey;
 import model.Lesson;
 import model.LessonKey;
 
@@ -39,4 +41,26 @@ public interface LessonDao {
      * @param state
      */
     public void updateStateByLessonid(String lessonid, String state);
+
+    /**
+     * 根据lessonid、班级类型和班级id来查找lesson
+     * @param lessonid
+     * @param classtype
+     * @param classid
+     * @return
+     */
+    public List findLessonByLessonidAndClassid(String lessonid,String classtype,String classid);
+
+    /**
+     * 根据主键查找登记信息
+     * @param checkinKey
+     * @return
+     */
+    public Checkin findCheckinByKey(CheckinKey checkinKey);
+
+    /**
+     * 保存登记信息
+     * @param checkin
+     */
+    public void saveCheckIn(Checkin checkin);
 }

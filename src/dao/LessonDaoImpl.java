@@ -1,5 +1,7 @@
 package dao;
 
+import model.Checkin;
+import model.CheckinKey;
 import model.Lesson;
 import model.LessonKey;
 import org.hibernate.Session;
@@ -85,6 +87,37 @@ public class LessonDaoImpl implements LessonDao {
             lesson.setState(state);
             session.update(lesson);
         }
+        transaction.commit();
+        session.close();
+    }
+
+    @Override
+    public List findLessonByLessonidAndClassid(String lessonid, String classtype, String classid) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        String hql = String.format("from model.Lesson as l where l.lessonid='%s' and l.classtype = '%s' and l.classid = '%s'", lessonid, classtype, classid);
+        Query query = session.createQuery(hql);
+        List list = query.list();
+        transaction.commit();
+        session.close();
+        return list;
+    }
+
+    @Override
+    public Checkin findCheckinByKey(CheckinKey checkinKey) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        Checkin checkin = session.get(Checkin.class, checkinKey);
+        transaction.commit();;
+        session.close();
+        return checkin;
+    }
+
+    @Override
+    public void saveCheckIn(Checkin checkin) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        session.save(checkin);
         transaction.commit();
         session.close();
     }

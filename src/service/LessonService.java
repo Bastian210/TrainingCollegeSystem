@@ -37,4 +37,32 @@ public interface LessonService {
      * @param educationList
      */
     public void OnSiteBook(String lessonid, String type, String userid, String classtype, String actual, String[] nameList, String[] genderList, String[] educationList);
+
+    /**
+     * 搜索学生
+     * @param lessonid
+     * @param classtype
+     * @param classid
+     * @param classhour
+     * @return
+     */
+    public JSONObject[] SearchStudents(String lessonid,String classtype,String classid,String classhour);
+
+    /**
+     * 录入成绩
+     * @param lessonid
+     * @param classtype
+     * @param name
+     * @param grade
+     */
+    public void EnterGrade(String lessonid,String classtype,String name,String grade);
+
+    /**
+     * 保存登记信息
+     * @param lessonid
+     * @param classtype
+     * @param name
+     * @param classhour
+     */
+    public void CheckIn(String lessonid,String classtype,String name,String classhour);
 }

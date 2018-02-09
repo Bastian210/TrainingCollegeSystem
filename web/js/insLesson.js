@@ -6,6 +6,9 @@ var classes = new Array();
 var students = new Array();
 
 var lessonid = "";
+var classtype = "";
+var username = "";
+
 var level = 0;
 var actual = 0;
 
@@ -69,6 +72,36 @@ function showStudents() {
     }
     content = content+"<a onclick=\"openAddStudentDiv()\" id=\"add-student-a\"><i class=\"el-icon-plus\">新学员</i></a>";
     $("#student-tags").html(content);
+}
+
+/**
+ * 录入成绩
+ */
+function enterGrade(lid,type,name) {
+    lessonid = lid;
+    classtype = type;
+    username = name;
+    $("#enter-grade-modal").modal("show");
+}
+
+/**
+ * 登记
+ */
+function checkin(lessonid,classtype,name,classhour) {
+    $.ajax({
+        url: "/myLesson.checkin",
+        type: "post",
+        dataType: "json",
+        data: {
+            lessonid: lessonid,
+            classtype: classtype,
+            name: name,
+            classhour: classhour,
+        },
+        success: function (data) {
+            $("#ensure-search-btn").click();
+        }
+    });
 }
 
 $(function () {
@@ -171,6 +204,7 @@ $(function () {
                 }
                 var Ctor = Vue.extend(Main);
                 new Ctor().$mount('#select-class-type');
+                new Ctor().$mount('#select-class-type1');
             }
         });
     });
@@ -379,6 +413,86 @@ $(function () {
                     }
                 });
             }
+        }
+    });
+
+    /**
+     * 搜索学生名单
+     */
+    $("#ensure-search-btn").click(function () {
+        var classtype = $("#enter-class-type1").val();
+        var classid = $("#enter-class-id input").val();
+        var classhour = $("#enter-class-hour input").val();
+
+        if(classtype==""){
+            $("#ensure-search-error").html("请将信息填写完整！");
+            $("#ensure-search-error").show();
+            setTimeout(function () {
+                $("#ensure-search-error").hide();
+            },1000);
+        }else {
+            $.ajax({
+                url: "/myLesson.searchStudents",
+                type: "post",
+                dataType: "json",
+                data: {
+                    lessonid: lessonid,
+                    classtype: classtype,
+                    classid: classid,
+                    classhour: classhour,
+                },
+                success: function (data) {
+                    var result = data["result"];
+
+                    var content = "<table width=\"100%\">\n" +
+                        "                        <tr><th>姓名</th><th>性别</th><th>教育程度</th><th>成绩</th><th>登记</th></tr>\n";
+                    for (var i = 0; i < result.length; i++) {
+                        var json = JSON.parse(JSON.stringify(result[i]));
+                        var grade = json["grade"];
+                        var checkin = json["checkin"];
+                        content = content + "<tr><td>" + json["name"] + "</td><td>" + json["gender"] + "</td><td>" + json["education"] + "</td>";
+
+                        if (grade == 0) {
+                            content = content + "<td><a onclick=\"enterGrade('" + lessonid + "','" + classtype + "','" + json["name"] + "')\">录入成绩</a></td>"
+                        } else {
+                            content = content + "<td>" + grade + "分</td>";
+                        }
+
+                        if (checkin == "无") {
+                            content = content + "<td><a onclick=\"checkin('" + lessonid + "','" + classtype + "','" + json["name"] + "','" + classhour + "')\">立即登记</a></td></tr>"
+                        } else {
+                            content = content + "<td>已登记</td></tr>";
+                        }
+                    }
+
+                    content = content + "</table>";
+                    $("#display-students-div").html(content);
+                }
+            });
+        }
+    });
+
+    /**
+     * 录入成绩
+     */
+    $("#enter-grade-btn").click(function () {
+        var grade = $("#enter-grade").val();
+        if(grade!=""){
+            $.ajax({
+                url: "/myLesson.enterGrade",
+                type: "post",
+                dataType: "json",
+                data: {
+                    lessonid: lessonid,
+                    classtype: classtype,
+                    name: username,
+                    grade: grade,
+                },
+                success: function (data) {
+                    $("#ensure-search-btn").click();
+                    $("#enter-grade-modal").modal("hide");
+                }
+            });
         }
     });
 });
