@@ -53,3 +53,8 @@
 .main-content td a:hover{
     cursor: pointer;
 }
+
+.main-content p{
+    margin-top: 10px;
+    padding-left: 30px;
+}

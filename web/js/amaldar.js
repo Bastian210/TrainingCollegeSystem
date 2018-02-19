@@ -84,15 +84,19 @@ function getRegisterApply() {
         success: function (data) {
             var result = data["result"];
 
-            var content = "<table width=\"100%\">\n" +
-                "                    <tr><th>机构名称</th><th>机构地址</th><th>联系方式</th><th>操作类型</th></tr>";
-            for(var i=0;i<result.length;i++){
-                var json = JSON.parse(JSON.stringify(result[i]));
-                content = content+"<tr><td>"+json["name"]+"</td><td>"+json["address"]+"</td><td>"+json["phone"]+"</td><td><a onclick=\"refuseRegister('"
-                    +json["id"]+"')\">拒绝</a><a onclick=\"agreeRegister('"+json["id"]+"')\">批准</a></td></tr>";
+            if(result.length==0){
+                $("#register-apply-div").html("<p>没有等待处理的注册请求！</p>");
+            }else{
+                var content = "<table width=\"100%\">\n" +
+                    "                    <tr><th>机构名称</th><th>机构地址</th><th>联系方式</th><th>操作类型</th></tr>";
+                for(var i=0;i<result.length;i++){
+                    var json = JSON.parse(JSON.stringify(result[i]));
+                    content = content+"<tr><td>"+json["name"]+"</td><td>"+json["address"]+"</td><td>"+json["phone"]+"</td><td><a onclick=\"refuseRegister('"
+                        +json["id"]+"')\">拒绝</a><a onclick=\"agreeRegister('"+json["id"]+"')\">批准</a></td></tr>";
+                }
+                content = content+"</table>";
+                $("#register-apply-div").html(content);
             }
-            content = content+"</table>";
-            $("#register-apply-div").html(content);
         }
     });
 }
@@ -108,15 +112,19 @@ function getChangeMessApply() {
         success: function (data) {
             var result = data["result"];
 
-            var content = "<table width=\"100%\">\n" +
-                "                    <tr><th>机构识别号</th><th>机构名称</th><th>机构地址</th><th>联系方式</th><th>操作类型</th></tr>";
-            for(var i=0;i<result.length;i++){
-                var json = JSON.parse(JSON.stringify(result[i]));
-                content = content+"<tr><td>"+json["id"]+"</td><td>"+json["name"]+"</td><td>"+json["address"]+"</td><td>"+json["phone"]+"</td><td><a onclick=\"refuseChange('"
-                    +json["id"]+"')\">拒绝</a><a onclick=\"agreeChange('"+json["id"]+"')\">批准</a></td></tr>";
+            if(result.length==0){
+                $("#changeMess-apply-div").html("<p>没有等待处理的机构信息修改请求！</p>");
+            }else{
+                var content = "<table width=\"100%\">\n" +
+                    "                    <tr><th>机构识别号</th><th>机构名称</th><th>机构地址</th><th>联系方式</th><th>操作类型</th></tr>";
+                for(var i=0;i<result.length;i++){
+                    var json = JSON.parse(JSON.stringify(result[i]));
+                    content = content+"<tr><td>"+json["id"]+"</td><td>"+json["name"]+"</td><td>"+json["address"]+"</td><td>"+json["phone"]+"</td><td><a onclick=\"refuseChange('"
+                        +json["id"]+"')\">拒绝</a><a onclick=\"agreeChange('"+json["id"]+"')\">批准</a></td></tr>";
+                }
+                content = content+"</table>";
+                $("#changeMess-apply-div").html(content);
             }
-            content = content+"</table>";
-            $("#changeMess-apply-div").html(content);
         }
     });
 }
@@ -149,15 +157,19 @@ $(function () {
             success: function (data) {
                 var result = data["result"];
 
-                var content = "<table width=\"100%\">\n" +
-                    "                    <tr><th>机构名称</th><th>机构地址</th><th>联系方式</th><th>操作类型</th></tr>";
-                for(var i=0;i<result.length;i++){
-                    var json = JSON.parse(JSON.stringify(result[i]));
-                    content = content+"<tr><td>"+json["name"]+"</td><td>"+json["address"]+"</td><td>"+json["phone"]+"</td><td><a onclick=\"refuseRegister('"
-                        +json["id"]+"')\">拒绝</a><a onclick=\"agreeRegister('"+json["id"]+"')\">批准</a></td></tr>";
+                if(result.length==0){
+                    $("#register-apply-div").html("<p>没有等待处理的注册请求！</p>");
+                }else{
+                    var content = "<table width=\"100%\">\n" +
+                        "                    <tr><th>机构名称</th><th>机构地址</th><th>联系方式</th><th>操作类型</th></tr>";
+                    for(var i=0;i<result.length;i++){
+                        var json = JSON.parse(JSON.stringify(result[i]));
+                        content = content+"<tr><td>"+json["name"]+"</td><td>"+json["address"]+"</td><td>"+json["phone"]+"</td><td><a onclick=\"refuseRegister('"
+                            +json["id"]+"')\">拒绝</a><a onclick=\"agreeRegister('"+json["id"]+"')\">批准</a></td></tr>";
+                    }
+                    content = content+"</table>";
+                    $("#register-apply-div").html(content);
                 }
-                content = content+"</table>";
-                $("#register-apply-div").html(content);
             }
         });
     }
@@ -173,15 +185,19 @@ $(function () {
             success: function (data) {
                 var result = data["result"];
 
-                var content = "<table width=\"100%\">\n" +
-                    "                    <tr><th>机构识别号</th><th>机构名称</th><th>机构地址</th><th>联系方式</th><th>操作类型</th></tr>";
-                for(var i=0;i<result.length;i++){
-                    var json = JSON.parse(JSON.stringify(result[i]));
-                    content = content+"<tr><td>"+json["id"]+"</td><td>"+json["name"]+"</td><td>"+json["address"]+"</td><td>"+json["phone"]+"</td><td><a onclick=\"refuseChange('"
-                        +json["id"]+"')\">拒绝</a><a onclick=\"agreeChange('"+json["id"]+"')\">批准</a></td></tr>";
+                if(result.length==0){
+                    $("#changeMess-apply-div").html("<p>没有等待处理的机构信息修改请求！</p>");
+                }else{
+                    var content = "<table width=\"100%\">\n" +
+                        "                    <tr><th>机构识别号</th><th>机构名称</th><th>机构地址</th><th>联系方式</th><th>操作类型</th></tr>";
+                    for(var i=0;i<result.length;i++){
+                        var json = JSON.parse(JSON.stringify(result[i]));
+                        content = content+"<tr><td>"+json["id"]+"</td><td>"+json["name"]+"</td><td>"+json["address"]+"</td><td>"+json["phone"]+"</td><td><a onclick=\"refuseChange('"
+                            +json["id"]+"')\">拒绝</a><a onclick=\"agreeChange('"+json["id"]+"')\">批准</a></td></tr>";
+                    }
+                    content = content+"</table>";
+                    $("#changeMess-apply-div").html(content);
                 }
-                content = content+"</table>";
-                $("#changeMess-apply-div").html(content);
             }
         });
     }

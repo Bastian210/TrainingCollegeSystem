@@ -172,6 +172,10 @@ public class PlanDaoImpl implements PlanDao {
                 session.update(plans);
                 lessonDao.updateStateByLessonid(plans.getLessonid(),"已开课");
             }
+            if((date1.equals(now)||date1.before(now))&&plans.getState().equals("undetermined")){
+                plans.setState("outtime");
+                session.update(plans);
+            }
             if((date.equals(now)||date.before(now))&&plans.getState().equals("start")){
                 plans.setState("end");
                 session.update(plans);
