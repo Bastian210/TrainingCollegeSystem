@@ -128,6 +128,7 @@ $(function () {
      */
     function displayLesson(data) {
         var result = data["result"];
+        console.log(result);
         var content = "";
         for(var i=0;i<result.length;i++){
             var json = JSON.parse(JSON.stringify(result[i]));

@@ -195,8 +195,13 @@ function getAllPlan() {
                         "                        </el-collapse-item>\n" +
                         "                    </el-collapse>\n" +
                         "                    <button class=\"my-button\" onclick=\"releasePlan('"+json["lessonid"]+"')\">发布计划</button></div>";
-                }else if(json["state"]=="end"){
-                    var state = "已结束";
+                }else if(json["state"]=="end"||json["state"]=="outtime"){
+                    var state = "";
+                    if(json["state"]=="end"){
+                        state = "已结束";
+                    }else{
+                        state = "取消发布";
+                    }
                     content2 = content2+"<div class=\"show-one-plan\">\n" +
                         "                    <label class=\"plan-name\">"+json["name"]+"</label>\n" +
                         "                    <label>"+json["type"]+"</label>\n" +
@@ -259,9 +264,21 @@ function getAllPlan() {
                         "                </div>";
                 }
             }
-            $("#undetermined-plan-div").html(content1);
-            $("#past-courses-div").html(content2);
-            $("#recent-courses-div").html(content3);
+            if(content1==""){
+                $("#undetermined-plan-div").html("<p>当前没有待定中的计划！</p>")
+            }else{
+                $("#undetermined-plan-div").html(content1);
+            }
+            if(content2==""){
+                $("#past-courses-div").html("<p>当前没有已结束或者取消发布的计划！</p>");
+            }else{
+                $("#past-courses-div").html(content2);
+            }
+            if(content3==""){
+                $("#recent-courses-div").html("<p>当前没有上课中或者预定中的计划！</p>");
+            }else{
+                $("#recent-courses-div").html(content3);
+            }
             new Vue().$mount('#undetermined-plan-div');
             new Vue().$mount("#past-courses-div");
             new Vue().$mount("#recent-courses-div");
@@ -327,8 +344,13 @@ $(function () {
                             "                        </el-collapse-item>\n" +
                             "                    </el-collapse>\n" +
                             "                    <button class=\"my-button\" onclick=\"releasePlan('"+json["lessonid"]+"')\">发布计划</button></div>";
-                    }else if(json["state"]=="end"){
-                        var state = "已结束";
+                    }else if(json["state"]=="end"||json["state"]=="outtime"){
+                        var state = "";
+                        if(json["state"]=="end"){
+                            state = "已结束";
+                        }else{
+                            state = "取消发布";
+                        }
                         content2 = content2+"<div class=\"show-one-plan\">\n" +
                             "                    <label class=\"plan-name\">"+json["name"]+"</label>\n" +
                             "                    <label>"+json["type"]+"</label>\n" +
@@ -391,9 +413,21 @@ $(function () {
                             "                </div>";
                     }
                 }
-                $("#undetermined-plan-div").html(content1);
-                $("#past-courses-div").html(content2);
-                $("#recent-courses-div").html(content3);
+                if(content1==""){
+                    $("#undetermined-plan-div").html("<p>当前没有待定中的计划！</p>")
+                }else{
+                    $("#undetermined-plan-div").html(content1);
+                }
+                if(content2==""){
+                    $("#past-courses-div").html("<p>当前没有已结束或者取消发布的计划！</p>");
+                }else{
+                    $("#past-courses-div").html(content2);
+                }
+                if(content3==""){
+                    $("#recent-courses-div").html("<p>当前没有上课中或者预定中的计划！</p>");
+                }else{
+                    $("#recent-courses-div").html(content3);
+                }
                 new Vue().$mount('#undetermined-plan-div');
                 new Vue().$mount("#past-courses-div");
                 new Vue().$mount("#recent-courses-div");

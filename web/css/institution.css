@@ -207,3 +207,8 @@
 .show-one-plan a:hover{
     cursor: pointer;
 }
+
+.main-content p{
+    margin-top: 10px;
+    padding-left: 20px;
+}
