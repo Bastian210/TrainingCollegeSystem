@@ -70,7 +70,7 @@ public class OrderDaoImpl implements OrderDao {
     public List findOrderListByUserId(String userid) {
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
-        String hql = String.format("from model.Orders as o where o.userid = '%s'", userid);
+        String hql = String.format("from model.Orders as o where o.userid = '%s' order by o.ordertime desc", userid);
         Query query = session.createQuery(hql);
         List list = query.list();
         transaction.commit();
@@ -118,7 +118,7 @@ public class OrderDaoImpl implements OrderDao {
     public List findOrderListByState(String state) {
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
-        String hql = String.format("from model.Orders as o where o.state = '%s'", state);
+        String hql = String.format("from model.Orders as o where o.state = '%s' order by o.ordertime desc", state);
         Query query = session.createQuery(hql);
         List list = query.list();
         transaction.commit();
@@ -130,7 +130,7 @@ public class OrderDaoImpl implements OrderDao {
     public List findOrderListByInstitutionId(String institutionid) {
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
-        String hql = String.format("from model.Orders as o where o.institutionid = '%s'", institutionid);
+        String hql = String.format("from model.Orders as o where o.institutionid = '%s' order by o.ordertime desc", institutionid);
         Query query = session.createQuery(hql);
         List list = query.list();
         transaction.commit();
