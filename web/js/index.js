@@ -159,7 +159,11 @@ $(function () {
                 "                    </el-collapse>\n" +
                 "                    <button class=\"my-button\" onclick=\"book('"+json["lessonid"]+"')\">立即预订</button></div>";
         }
-        $("#lesson-list-div").html(content);
+        if(content==""){
+            $("#lesson-list-div").html("<p>当前没有推荐的课程！</p>");
+        }else{
+            $("#lesson-list-div").html(content);
+        }
         new Vue().$mount("#lesson-list-div");
     }
 });

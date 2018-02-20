@@ -68,3 +68,8 @@
 .show-one-lesson a:hover{
     cursor: pointer;
 }
+
+.main-content p{
+    margin-top: 10px;
+    padding-left: 30px;
+}

@@ -122,11 +122,31 @@ $(function () {
                     }
                 }
 
-                $("#all-lesson-div").html(content);
-                $("#nostart-lesson-div").html(content1);
-                $("#unsubscribe-lesson-div").html(content2);
-                $("#ing-lesson-div").html(content3);
-                $("#end-lesson-div").html(content4);
+                if(content==""){
+                    $("#all-lesson-div").html("<p>您当前还没有学过任何课程！</p>");
+                }else{
+                    $("#all-lesson-div").html(content);
+                }
+                if(content1==""){
+                    $("#nostart-lesson-div").html("<p>当前没有未开始的课程！</p>")
+                }else{
+                    $("#nostart-lesson-div").html(content1);
+                }
+                if(content2==""){
+                    $("#unsubscribe-lesson-div").html("<p>当前没有已退选的课程！</p>");
+                }else{
+                    $("#unsubscribe-lesson-div").html(content2);
+                }
+                if(content3==""){
+                    $("#ing-lesson-div").html("<p>当前没有正在上的课程！</p>");
+                }else{
+                    $("#ing-lesson-div").html(content3);
+                }
+                if(content4==""){
+                    $("#end-lesson-div").html("<p>当前没有已结束的课程！</p>")
+                }else{
+                    $("#end-lesson-div").html(content4);
+                }
             }
         });
     }

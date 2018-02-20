@@ -111,7 +111,7 @@ public class LessonServiceImpl implements LessonService {
             Lesson lesson = (Lesson) list.get(i);
             JSONObject json = new JSONObject();
             Plans plans = planDao.getPlanByPlanKey(new PlansKey(lesson.getLessonid(),lesson.getClasstype()));
-            json.put("institutionname",institutionDao.findInstitutionById(plans.getInstitutionid()));
+            json.put("institutionname",institutionDao.findInstitutionById(plans.getInstitutionid()).getInstitutionname());
             json.put("type",plans.getType());
             json.put("lessonname",plans.getLesson());
             json.put("begin",plans.getBegin());

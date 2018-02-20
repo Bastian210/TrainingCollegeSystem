@@ -84,3 +84,8 @@
     border: 1px solid #efefef;
     height: 40px;
 }
+
+.main-content p{
+    margin-top: 10px;
+    padding-left: 30px;
+}

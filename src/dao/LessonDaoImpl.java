@@ -10,6 +10,7 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import utils.HibernateUtil;
 
+import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -72,6 +73,7 @@ public class LessonDaoImpl implements LessonDao {
         List list = query.list();
         transaction.commit();
         session.close();
+        Collections.reverse(list);
         return list;
     }
 

@@ -215,7 +215,7 @@ $(function () {
                         }
                         content3 = content3+ "<label class=\"label2\">学员数量："+json["num"]+"</label>\n" +
                             "                    <label class=\"label2\"><span class=\"line\">￥"+json["price"]+"</span><span>￥"+json["actualpay"]+"</span></label>\n" +
-                            "                    <label class=\"label2\">订单状态：已退订</label>\n" +
+                            "                    <label class=\"label2\">订单状态："+state+"</label>\n" +
                             "                    <el-collapse>\n" +
                             "                        <el-collapse-item title=\"查看学员\">\n" +
                             "                            <table width=\"100%\">\n" +
@@ -225,7 +225,7 @@ $(function () {
                             "                                <tbody>";
                         content = content+ "<label class=\"label2\">学员数量："+json["num"]+"</label>\n" +
                             "                    <label class=\"label2\"><span class=\"line\">￥"+json["price"]+"</span><span>￥"+json["actualpay"]+"</span></label>\n" +
-                            "                    <label class=\"label2\">订单状态：已退订</label>\n" +
+                            "                    <label class=\"label2\">订单状态："+state+"</label>\n" +
                             "                    <el-collapse>\n" +
                             "                        <el-collapse-item title=\"查看学员\">\n" +
                             "                            <table width=\"100%\">\n" +
@@ -272,7 +272,7 @@ $(function () {
                         }
                         content4 = content4+ "<label class=\"label2\">学员数量："+json["num"]+"</label>\n" +
                             "                    <label class=\"label2\"><span class=\"line\">￥"+json["price"]+"</span><span>￥"+json["actualpay"]+"</span></label>\n" +
-                            "                    <label class=\"label2\">订单状态：未支付</label>\n" +
+                            "                    <label class=\"label2\">订单状态：已完成</label>\n" +
                             "                    <el-collapse>\n" +
                             "                        <el-collapse-item title=\"查看学员\">\n" +
                             "                            <table width=\"100%\">\n" +
@@ -282,7 +282,7 @@ $(function () {
                             "                                <tbody>";
                         content = content+ "<label class=\"label2\">学员数量："+json["num"]+"</label>\n" +
                             "                    <label class=\"label2\"><span class=\"line\">￥"+json["price"]+"</span><span>￥"+json["actualpay"]+"</span></label>\n" +
-                            "                    <label class=\"label2\">订单状态：未支付</label>\n" +
+                            "                    <label class=\"label2\">订单状态：已完成</label>\n" +
                             "                    <el-collapse>\n" +
                             "                        <el-collapse-item title=\"查看学员\">\n" +
                             "                            <table width=\"100%\">\n" +
@@ -308,11 +308,31 @@ $(function () {
                     }
                 }
 
-                $("#all-order-div").html(content);
-                $("#notpay-order-div").html(content1);
-                $("#hasbook-order-div").html(content2);
-                $("#unsubscribe-order-div").html(content3);
-                $("#finish-order-div").html(content4);
+                if(content==""){
+                    $("#all-order-div").html("<p>您当前没有下过订单！</p>");
+                }else{
+                    $("#all-order-div").html(content);
+                }
+                if(content1==""){
+                    $("#notpay-order-div").html("<p>当前没有未支付的订单！</p>")
+                }else{
+                    $("#notpay-order-div").html(content1);
+                }
+                if(content2==""){
+                    $("#hasbook-order-div").html("<p>当前没有已预订的订单！</p>")
+                }else{
+                    $("#hasbook-order-div").html(content2);
+                }
+                if(content3==""){
+                    $("#unsubscribe-order-div").html("<p>当前没有已退订或者配票失败的订单！</p>")
+                }else{
+                    $("#unsubscribe-order-div").html(content3);
+                }
+                if(content4==""){
+                    $("#finish-order-div").html("<p>当前没有已完成的订单！</p>")
+                }else{
+                    $("#finish-order-div").html(content4);
+                }
                 new Vue().$mount(".main-content");
             }
         });

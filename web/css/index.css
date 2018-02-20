@@ -93,3 +93,8 @@
 .show-one-plan .my-button{
     margin: 20px 0 10px 390px;
 }
+
+.main-content p{
+    margin-top: 10px;
+    padding-left: 30px;
+}
