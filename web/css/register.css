@@ -57,7 +57,7 @@ h2{
     border: 1px solid #409EFF;
     text-align: center;
     font-weight: 500;
-    padding: 10px 20px;
+    padding: 10px 10px;
     font-size: 14px;
     border-radius: 4px;
     width: 120px;
@@ -65,8 +65,9 @@ h2{
 }
 
 .disable-button{
-    background-color: #d8dce5;
-    border-color: #E4E7ED;
+    background-color: #a0cfff;
+    border-color: #a0cfff;
+    cursor: not-allowed;
 }
 
 .reg-tabs{

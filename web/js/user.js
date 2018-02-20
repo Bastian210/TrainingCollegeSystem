@@ -4,6 +4,22 @@ $(function () {
     $(document).ready(function(){
     });
 
+    var time = 60;
+    function leftTimer() {
+        if(time>0){
+            $("#send-code-btn").html("重新发送("+time+")");
+            time = time-1;
+            setTimeout(function () {
+                leftTimer();
+            },1000);
+        }else{
+            $("#send-code-btn").html("获取验证码");
+            $("#send-code-btn").attr("class","my-button1");
+            $("#send-code-btn").removeAttr("disabled");
+            time = 60;
+        }
+    }
+
     /**
      * 学生登录
      */
@@ -88,10 +104,7 @@ $(function () {
         }else{
             $("#send-code-btn").attr("disabled",true);
             $("#send-code-btn").attr("class","my-button1 disable-button");
-            setTimeout(function () {
-                $("#send-code-btn").attr("class","my-button1");
-                $("#send-code-btn").removeAttr("disabled");
-            },10000);
+            leftTimer();
             $.ajax({
                 url: "/register.getCode",
                 type: "post",
