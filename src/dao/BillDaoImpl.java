@@ -4,8 +4,10 @@ import model.Bill;
 import model.BillKey;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.stereotype.Repository;
 import utils.HibernateUtil;
 
+@Repository
 public class BillDaoImpl implements BillDao {
 
     @Override

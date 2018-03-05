@@ -64,7 +64,8 @@ public interface PlanDao {
     public void updatePlan(Plans plans);
 
     /**
-     * 自动更新
+     * 得到所有的计划
+     * @return
      */
-    public void checkPlan();
+    public List getAllPlan();
 }

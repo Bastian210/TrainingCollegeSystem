@@ -1,17 +1,18 @@
 package service;
 
-import dao.InstitutionDao;
-import dao.InstitutionDaoImpl;
-import dao.PlanDao;
-import dao.PlanDaoImpl;
+import dao.*;
 import model.Institution;
+import model.Lesson;
 import model.Plans;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import utils.Param;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,9 @@ public class PlanServiceImpl implements PlanService {
 
     @Autowired
     private PlanDao planDao;
+
+    @Autowired
+    private LessonDao lessonDao;
 
     @Autowired
     private InstitutionDao institutionDao;
@@ -217,6 +221,43 @@ public class PlanServiceImpl implements PlanService {
             jsonObjects[i] = json;
         }
         return jsonObjects;
+    }
+
+    @Override
+    public void CheckPlan() {
+        List list = planDao.getAllPlan();
+        for(int i=0;i<list.size();i++){
+            Plans plans = (Plans) list.get(i);
+            String begin = plans.getBegin();
+            String end = plans.getEnd();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = null;
+            Date date1 = null;
+            try {
+                date = sdf.parse(end);
+                date1 = sdf.parse(begin);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Date now = new Date();
+            //如果当前时间已经到了正在售票的课程的开始时间，则将计划状态置为start，将课程状态置为已开课
+            if((date1.equals(now)||date1.before(now))&&plans.getState().equals("selling")){
+                plans.setState("start");
+                planDao.updatePlan(plans);
+                lessonDao.updateStateByLessonid(plans.getLessonid(),"已开课");
+            }
+            //如果当前时间已经到了待评估的课程的开始时间，则将计划状态置为outtime
+            if((date1.equals(now)||date1.before(now))&&plans.getState().equals("undetermined")){
+                plans.setState("outtime");
+                planDao.updatePlan(plans);
+            }
+            //如果当前时间已经到了已开课的课程的结束时间，则将计划状态置为end，将课程状态置为已结课
+            if((date.equals(now)||date.before(now))&&plans.getState().equals("start")){
+                plans.setState("end");
+                planDao.updatePlan(plans);
+                lessonDao.updateStateByLessonid(plans.getLessonid(),"已结课");
+            }
+        }
     }
 
     private List getLessonId(List list){

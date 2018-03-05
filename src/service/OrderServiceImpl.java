@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,6 +34,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private PaymentDao paymentDao;
+
+    @Autowired
+    private BillDao billDao;
 
     @Override
     public JSONObject AddOrder(String userid, String lessonid, String institutionid, String type, String price, String actualpay, String classtype, String[] nameList, String[] genderList, String[] educationList) {
@@ -84,6 +88,20 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public void UnsubscribeOrder(String orderid) {
+        Orders orders = orderDao.findOrderByOrderId(orderid);
+        orders.setState("已退订");
+        orderDao.update(orders);
+        List OrderMessageList = orderDao.getOrderMessageListByOrderId(orderid);
+        //删除订单相关用户的课程信息
+        for(int i=0;i<OrderMessageList.size();i++){
+            Ordermessage ordermessage = (Ordermessage) OrderMessageList.get(i);
+            Lesson lesson = lessonDao.findLessonByLessonidAndName(orders.getLessonid(),ordermessage.getName());
+            lessonDao.delete(lesson);
+        }
+    }
+
+    @Override
     public JSONObject[] GetAllOrder(String userid) {
         List list = orderDao.findOrderListByUserId(userid);
         return getOrderJsonMessage(list);
@@ -95,19 +113,28 @@ public class OrderServiceImpl implements OrderService {
         orders.setState("已退订");
         orderDao.update(orders);
         List OrderMessageList = orderDao.getOrderMessageListByOrderId(orderid);
+        //删除订单相关用户的课程信息
         for(int i=0;i<OrderMessageList.size();i++){
             Ordermessage ordermessage = (Ordermessage) OrderMessageList.get(i);
             Lesson lesson = lessonDao.findLessonByLessonidAndName(orders.getLessonid(),ordermessage.getName());
             lessonDao.delete(lesson);
         }
 
+        //更新用户余额
         User user = userDao.findUserByUserid(orders.getUserid());
         Payment payment = paymentDao.findPaymentByPayId(user.getPayid());
         payment.setBalance(payment.getBalance()+Double.valueOf(price));
         paymentDao.update(payment);
+        //更新经理账户余额
         Payment manager = paymentDao.getManagePayment();
         payment.setBalance(payment.getBalance()-Double.valueOf(price));
         paymentDao.update(manager);
+
+        String month = orders.getOrdertime().substring(0,7);
+        //更新用户月账单
+        Bill bill = billDao.getBillByBillKey(new BillKey(orders.getUserid(),month));
+        bill.setIncome(bill.getIncome()+Double.valueOf(price));
+        billDao.update(bill);
     }
 
     @Override
@@ -118,6 +145,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void CheckOrder(){
+        //检测未支付订单
         List list1 = orderDao.findOrderListByState("未支付");
         for(int i=0;i<list1.size();i++){
             Orders orders = (Orders) list1.get(i);
@@ -125,6 +153,7 @@ public class OrderServiceImpl implements OrderService {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             try {
                 Date date = sdf.parse(deadline);
+                //如果最晚支付时间已过，则订单状态自动置为已退订
                 if(date.before(new Date())){
                     orders.setState("已退订");
                     orderDao.update(orders);
@@ -134,6 +163,7 @@ public class OrderServiceImpl implements OrderService {
             }
         }
 
+        //检测需要自动配票的订单
         List list2 = orderDao.findOrderListByState("等待配票");
         for(int i=0;i<list2.size();i++){
             Orders orders = (Orders) list2.get(i);
@@ -180,6 +210,7 @@ public class OrderServiceImpl implements OrderService {
             }
         }
 
+        //检测已预订的订单
         List list3 = orderDao.findOrderListByState("已预订");
         for(int i=0;i<list3.size();i++){
             Orders orders = (Orders) list3.get(i);
@@ -193,26 +224,54 @@ public class OrderServiceImpl implements OrderService {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+            //如果当前时间已经到了课程开始时间，则将订单状态置为已完成
             if(date.equals(new Date())||date.before(new Date())){
                 orders.setState("已完成");
                 orderDao.update(orders);
 
+                //经理将费用转给机构
                 double actualPay = orders.getActualpay();
+                double transfer_account = actualPay*0.9;
+                double profit = actualPay-transfer_account;
+                //更新机构的总营业额、账户余额
                 Institution institution = institutionDao.findInstitutionById(orders.getInstitutionid());
-                institution.setConsumption(institution.getConsumption()+actualPay*0.9);
+                institution.setConsumption(institution.getConsumption()+transfer_account);
+                institutionDao.update(institution);
                 Payment payment = paymentDao.findPaymentByPayId(institution.getPayid());
-                payment.setBalance(payment.getBalance()+actualPay*0.9);
+                payment.setBalance(payment.getBalance()+transfer_account);
                 paymentDao.update(payment);
-                Payment manage = paymentDao.getManagePayment();
-                manage.setBalance(manage.getBalance()-actualPay*0.9);
-                paymentDao.update(manage);
+
+                String month = LocalDate.now().toString().substring(0,7);
+                //更新机构的月账单
+                Bill ins_bill = billDao.getBillByBillKey(new BillKey(institution.getInstitutionid(),month));
+                if(ins_bill==null){
+                    ins_bill = new Bill(institution.getInstitutionid(),month,transfer_account);
+                    billDao.save(ins_bill);
+                }else{
+                    ins_bill.setIncome(ins_bill.getIncome()+transfer_account);
+                    billDao.update(ins_bill);
+                }
+
+                //更新经理的总利润额、账户余额
+                Payment manager_payment = paymentDao.getManagePayment();
+                manager_payment.setBalance(manager_payment.getBalance()-transfer_account);
+                paymentDao.update(manager_payment);
                 User manager = userDao.findManager();
-                manager.setConsumption(manager.getConsumption()+actualPay*0.1);
+                manager.setConsumption(manager.getConsumption()+profit);
                 userDao.update(manager);
+
+                //更新经理的月账单
+                String manager_id = manager.getUserid();
+                Bill manager_bill = billDao.getBillByBillKey(new BillKey(manager_id,month));
+                if(manager_bill==null){
+                    manager_bill = new Bill(manager_id,month,profit);
+                    billDao.save(manager_bill);
+                }else{
+                    manager_bill.setIncome(manager_bill.getIncome()+profit);
+                    billDao.update(manager_bill);
+                }
             }
         }
-
-        planDao.checkPlan();
     }
 
     @Override

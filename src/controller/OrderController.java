@@ -61,6 +61,15 @@ public class OrderController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/book.unsubscribeOrder",method = RequestMethod.POST)
+    public String doUnsubscribeOrder(@RequestParam(value = "orderid")String orderid){
+        getOrderService().UnsubscribeOrder(orderid);
+        JSONObject json = new JSONObject();
+        json.put("result","success");
+        return json.toString();
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/myOrder.getAllOrder",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
     public String doGetAllOrder(){
         JSONObject[] jsonObjects = getOrderService().GetAllOrder(Param.getUserid());

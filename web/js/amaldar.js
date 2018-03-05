@@ -143,6 +143,14 @@ $(function () {
 
                 }
             });
+            $.ajax({
+                url: "/amaldar.checkPlan",
+                type: "post",
+                dataType: "json",
+                success: function (data) {
+
+                }
+            });
         },5000);
     });
 

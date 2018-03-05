@@ -84,4 +84,9 @@ public interface PlanService {
      * @return
      */
     public JSONObject[] SearchLessonList(String lessonName,String school, String[] subject);
+
+    /**
+     * 经理检查计划/课程
+     */
+    public void CheckPlan();
 }

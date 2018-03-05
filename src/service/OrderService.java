@@ -21,6 +21,12 @@ public interface OrderService {
                                String classtype, String[] nameList, String[] genderList, String[] educationList);
 
     /**
+     * 自动取消订单
+     * @param orderid
+     */
+    public void UnsubscribeOrder(String orderid);
+
+    /**
      * 得到一个用户的所有订单
      * @param userid
      * @return

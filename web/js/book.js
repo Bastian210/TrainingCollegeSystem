@@ -419,6 +419,17 @@ $(function () {
             },1000);
         }else{
             $("#left-time-p").html("订单已自动取消！");
+            $.ajax({
+                url: "/book.unsubscribeOrder",
+                dataType: "json",
+                type: "post",
+                data: {
+                    orderid: orderid,
+                },
+                success: function (data) {
+                    
+                }
+            });
         }
     }
 

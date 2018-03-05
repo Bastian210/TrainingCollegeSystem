@@ -114,4 +114,13 @@ public class PlanController {
         json.put("result",result);
         return json.toString();
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/amaldar.checkPlan",method = RequestMethod.POST)
+    public String doCheckPlan(){
+        getPlanService().CheckPlan();
+        JSONObject json = new JSONObject();
+        json.put("result","success");
+        return json.toString();
+    }
 }

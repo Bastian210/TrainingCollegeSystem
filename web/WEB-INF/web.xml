@@ -198,6 +198,10 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/book.unsubscribeOrder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
         <url-pattern>/myOrder</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
@@ -283,6 +287,10 @@
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/amaldar.checkOrder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/amaldar.checkPlan</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
