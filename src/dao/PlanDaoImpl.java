@@ -78,7 +78,7 @@ public class PlanDaoImpl implements PlanDao {
     public List getPlanByLessonId(String lessonid) {
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
-        String hql = String.format("from model.Plans as p where p.lessonid = '%s'", lessonid);
+        String hql = String.format("from model.Plans as p where p.lessonid = '%s' order by p.price", lessonid);
         Query query = session.createQuery(hql);
         List list = query.list();
         transaction.commit();

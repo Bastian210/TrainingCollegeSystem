@@ -480,7 +480,7 @@ $(function () {
     /**
      * 删除订单
      */
-    $("#delete-plan-btn").click(function () {
+    $("#delete-order-btn").click(function () {
         $.ajax({
             url: "/myOrder.deleteOrder",
             type: "post",

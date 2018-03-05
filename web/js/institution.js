@@ -238,7 +238,7 @@ function getAllPlan() {
                     content3 = content3+"<div class=\"show-one-plan\">\n" +
                         "                    <label class=\"plan-name\">"+json["name"]+"</label>\n" +
                         "                    <label>"+json["type"]+"</label>\n" +
-                        "                    <a onclick=\"ViewDetail('"+json["lessonid"]+"')\">查看详情</a>\n" +
+                        "                    <a onclick=\"ViewDetail('"+json["lessonid"]+"')\">管理课程</a>\n" +
                         "                    <br>\n" +
                         "                    <span class=\"description\">"+json["description"]+"</span>\n" +
                         "                    <br>\n" +
@@ -387,7 +387,7 @@ $(function () {
                         content3 = content3+"<div class=\"show-one-plan\">\n" +
                             "                    <label class=\"plan-name\">"+json["name"]+"</label>\n" +
                             "                    <label>"+json["type"]+"</label>\n" +
-                            "                    <a onclick=\"ViewDetail('"+json["lessonid"]+"')\">查看详情</a>\n" +
+                            "                    <a onclick=\"ViewDetail('"+json["lessonid"]+"')\">管理课程</a>\n" +
                             "                    <br>\n" +
                             "                    <span class=\"description\">"+json["description"]+"</span>\n" +
                             "                    <br>\n" +

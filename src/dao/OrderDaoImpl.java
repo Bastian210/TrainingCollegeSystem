@@ -107,7 +107,7 @@ public class OrderDaoImpl implements OrderDao {
         Query query = session.createQuery(hql);
         List list = query.list();
         for(int i=0;i<list.size();i++){
-            Orders orders = (Orders) list.get(i);
+            Ordermessage orders = (Ordermessage) list.get(i);
             session.delete(orders);
         }
         transaction.commit();

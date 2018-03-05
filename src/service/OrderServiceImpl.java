@@ -6,10 +6,12 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -177,26 +179,38 @@ public class OrderServiceImpl implements OrderService {
                 c.setTime(date);
                 c.add(Calendar.DATE,-14);
                 Date date1 = c.getTime();
+                //当前时间为课程开始两周前，自动配票
                 if(date1.equals(new Date())||date1.before(new Date())){
                     List orderMessageList = orderDao.getOrderMessageListByOrderId(orders.getOrderid());
+                    //获取配票信息
                     String[][] assign = getAssignMessage(planList,orderMessageList.size(),orders);
-                    if(assign==null){
+                    if(assign==null){//配票失败
+                        //更新订单信息
                         orders.setState("配票失败");
                         orderDao.update(orders);
 
                         double price = orders.getPrice();
+                        //更新用户消费总额、等级
                         User user = userDao.findUserByUserid(orders.getUserid());
                         user.setConsumption(user.getConsumption()-price);
                         user.setLevel((int) (user.getConsumption()/1000+1));
                         userDao.update(user);
-
+                        //更新用户账户余额
                         Payment payment = paymentDao.findPaymentByPayId(user.getPayid());
                         payment.setBalance(payment.getBalance()+price);
                         paymentDao.update(payment);
+                        //更新经理账户余额
                         Payment manager = paymentDao.getManagePayment();
                         manager.setBalance(manager.getBalance()-price);
                         paymentDao.update(manager);
-                    }else{
+
+                        //更新用户月账单
+                        String month = orders.getOrdertime().substring(0,7);
+                        Bill bill = billDao.getBillByBillKey(new BillKey(orders.getUserid(),month));
+                        bill.setIncome(bill.getIncome()-price);
+                        billDao.update(bill);
+                    }else{//配票成功
+                        //保存学生的课程信息
                         for(int j=0;j<orderMessageList.size();j++){
                             Ordermessage ordermessage = (Ordermessage) orderMessageList.get(j);
                             lessonDao.save(new Lesson(orders.getLessonid(),assign[j][0],ordermessage.getName(),0,"未开课",assign[j][1],ordermessage.getGender(),ordermessage.getEducation()));
@@ -320,10 +334,15 @@ public class OrderServiceImpl implements OrderService {
                 nameList[k] = ordermessage.getName();
                 genderList[k] = ordermessage.getGender();
                 educationList[k] = ordermessage.getEducation();
+                String state = orders.getState();
                 if(orders.getType().equals("选班级")){
-                    classidList[k] = orders.getClasstype()+lessonDao.findLessonByLessonKey(new LessonKey(orders.getLessonid(),orders.getClasstype(),nameList[k])).getClassid()+"班";
+                    if(state.equals("已退订")){
+                        classidList[k] = "无";
+                    }else{
+                        classidList[k] = orders.getClasstype()+lessonDao.findLessonByLessonKey(new LessonKey(orders.getLessonid(),orders.getClasstype(),nameList[k])).getClassid()+"班";
+                    }
                 }else{
-                    if(orders.getState().equals("已预订")){
+                    if(state.equals("已预订")){
                         Lesson lesson = lessonDao.findLessonByLessonidAndName(orders.getLessonid(),nameList[k]);
                         classidList[k] = lesson.getClasstype()+lesson.getClassid()+"班";
                     }else{
@@ -350,7 +369,6 @@ public class OrderServiceImpl implements OrderService {
      */
     private String[][] getAssignMessage(List plansList,int num,Orders orders){
         String[][] result = new String[num][2];
-        double price = 0;
         for(int k=0;k<num;k++){
             boolean find = false;
             for(int i=0;i<plansList.size();i++){
@@ -358,36 +376,21 @@ public class OrderServiceImpl implements OrderService {
                 int total = plans.getClassnum()*plans.getStudentnum();
                 int sold = plans.getSold();
                 if(total>sold){
+                    //分配的班级
                     result[k][0] = plans.getClasstype();
+                    //班级号
                     result[k][1] = String.valueOf((sold+1)/plans.getStudentnum()+1);
+                    //更新plan
                     sold++;
                     plans.setSold(sold);
                     planDao.updatePlan(plans);
                     find = true;
-                    price = price+plans.getPrice();
                     break;
                 }
             }
             if (!find){
                 return null;
             }
-        }
-
-        //退去部分款项
-        double past_price = orders.getPrice();
-        double past_actual = orders.getActualpay();
-
-        User user = userDao.findUserByUserid(orders.getUserid());
-        if(price!=past_price){
-            double actual = price*(1-user.getLevel()/100.0);
-            double change = past_actual-actual;
-
-            Payment payment = paymentDao.findPaymentByPayId(user.getPayid());
-            payment.setBalance(payment.getBalance()+change);
-            paymentDao.update(payment);
-            Payment manager = paymentDao.getManagePayment();
-            manager.setBalance(manager.getBalance()-change);
-            paymentDao.update(manager);
         }
         return result;
     }
