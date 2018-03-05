@@ -35,30 +35,33 @@ $(function () {
                 $("#level-label").html(data["level"]+"级");
                 $("#points-label").html(data["points"]+"点");
                 $("#consumption-label").html(data["consumption"]+"元");
+                if(month.length>0){
+                    var myChart = echarts.init(document.getElementById('consume-statistics-div'));
 
-                var myChart = echarts.init(document.getElementById('consume-statistics-div'));
-
-                // 指定图表的配置项和数据
-                var option = {
-                    title: {
-                        text: "您的月消费额统计图"
-                    },
-                    tooltip: {},
-                    legend: {
-                        data:['消费额']
-                    },
-                    xAxis: {
-                        data: month
-                    },
-                    yAxis: {},
-                    series: [{
-                        name: '消费额',
-                        type: 'line',
-                        data: consumption
-                    }]
-                };
-                // 使用刚指定的配置项和数据显示图表。
-                myChart.setOption(option);
+                    // 指定图表的配置项和数据
+                    var option = {
+                        title: {
+                            text: "您的月消费额统计图"
+                        },
+                        tooltip: {},
+                        legend: {
+                            data:['消费额']
+                        },
+                        xAxis: {
+                            data: month
+                        },
+                        yAxis: {},
+                        series: [{
+                            name: '消费额',
+                            type: 'line',
+                            data: consumption
+                        }]
+                    };
+                    // 使用刚指定的配置项和数据显示图表。
+                    myChart.setOption(option);
+                }else{
+                    $("#consume-statistics-div").html("<label>当前没有消费记录！</label>");
+                }
             }
         });
     });

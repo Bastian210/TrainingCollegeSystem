@@ -18,9 +18,9 @@ public interface BillDao {
     public Bill getBillByBillKey(BillKey billKey);
 
     /**
-     * 根据userid得到bill列表
-     * @param userid
+     * 根据id得到bill列表
+     * @param id
      * @return
      */
-    public List getBillListByUserid(String userid);
+    public List getBillListById(String id);
 }

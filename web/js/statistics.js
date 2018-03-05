@@ -50,6 +50,37 @@ $(function () {
             success: function (data) {
                 var result = data["result"];
                 $("#profit-label").html(result+"元");
+
+                var month = data["month"];
+                var profit = data["profit"];
+
+                if(month.length>0){
+                    var myChart = echarts.init(document.getElementById('system-profit-echarts'));
+
+                    // 指定图表的配置项和数据
+                    var option = {
+                        title: {
+                            text: "系统月利润额统计图"
+                        },
+                        tooltip: {},
+                        legend: {
+                            data:['利润额']
+                        },
+                        xAxis: {
+                            data: month
+                        },
+                        yAxis: {},
+                        series: [{
+                            name: '利润额',
+                            type: 'line',
+                            data: profit
+                        }]
+                    };
+                    // 使用刚指定的配置项和数据显示图表。
+                    myChart.setOption(option);
+                }else{
+                    $("#system-profit-echarts").html("<label>当前没有利润！</label>")
+                }
             }
         });
     });

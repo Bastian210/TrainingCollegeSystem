@@ -212,3 +212,9 @@
 .top10{
     margin-top: 10px;
 }
+
+#profit-echarts label{
+    width: 200px;
+    text-align: left;
+    padding-left: 20px;
+}

@@ -174,8 +174,11 @@ public class UserController {
     @RequestMapping(value = "/statistics.getProfit",method = RequestMethod.POST)
     public String doGetProfit(){
         double profit = getUserService().getProfit();
+        JSONObject result = getUserService().GetMonthBill("500001");
         JSONObject json = new JSONObject();
         json.put("result",profit);
+        json.put("month",result.get("month"));
+        json.put("profit",result.get("consume"));
         return json.toString();
     }
 }

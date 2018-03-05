@@ -49,6 +49,36 @@ $(function () {
                     $("#account-id-span").html(payid);
                     $("#account-balance-span").html(data["balance"]);
                 }
+
+                var month = data["month"];
+                var profit_array = data["profit_array"];
+                if(month.length>0){
+                    var myChart = echarts.init(document.getElementById('profit-echarts'));
+
+                    // 指定图表的配置项和数据
+                    var option = {
+                        title: {
+                            text: "月营业额统计图"
+                        },
+                        tooltip: {},
+                        legend: {
+                            data:['营业额']
+                        },
+                        xAxis: {
+                            data: month
+                        },
+                        yAxis: {},
+                        series: [{
+                            name: '营业额',
+                            type: 'line',
+                            data: profit_array
+                        }]
+                    };
+                    // 使用刚指定的配置项和数据显示图表。
+                    myChart.setOption(option);
+                }else{
+                    $("#profit-echarts").html("<label>当前没有营业额！</label>");
+                }
             }
         });
 

@@ -42,10 +42,10 @@ public class BillDaoImpl implements BillDao {
     }
 
     @Override
-    public List getBillListByUserid(String userid) {
+    public List getBillListById(String id) {
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
-        String hql = String.format("from model.Bill as b where b.id='%s'", userid);
+        String hql = String.format("from model.Bill as b where b.id='%s'", id);
         Query query = session.createQuery(hql);
         List list = query.list();
         transaction.commit();

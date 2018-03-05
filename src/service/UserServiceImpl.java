@@ -278,7 +278,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public JSONObject GetMonthBill(String userid) {
         JSONObject json = new JSONObject();
-        List list = billDao.getBillListByUserid(userid);
+        List list = billDao.getBillListById(userid);
         String[] month_list = new String[list.size()];
         double[] consumption_list = new double[list.size()];
         for(int i=0;i<list.size();i++){

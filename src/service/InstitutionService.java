@@ -144,8 +144,15 @@ public interface InstitutionService {
     public void AgreeChange(String id);
 
     /**
-     *
+     * 得到所有机构的信息
      * @return
      */
     public JSONObject[] GetAllInstitution();
+
+    /**
+     * 得到机构的月利润
+     * @param institutionid
+     * @return
+     */
+    public JSONObject GetMonthBill(String institutionid);
 }

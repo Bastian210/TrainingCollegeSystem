@@ -51,6 +51,7 @@ public class InstitutionController {
     @RequestMapping(value = "/insManagement.getInsMess",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
     public String doGetInsMess(){
         Map map = getInstitutionService().GetInsMess(Param.getInstitutionid());
+        JSONObject result = getInstitutionService().GetMonthBill(Param.getInstitutionid());
         JSONObject json = new JSONObject();
         json.put("id",map.get("id"));
         json.put("name",map.get("name"));
@@ -59,6 +60,8 @@ public class InstitutionController {
         json.put("payid",map.get("payid"));
         json.put("balance",map.get("balance"));
         json.put("profit",map.get("profit"));
+        json.put("month",result.get("month"));
+        json.put("profit_array",result.get("profit"));
         return json.toString();
     }
 

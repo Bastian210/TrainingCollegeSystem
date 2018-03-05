@@ -46,7 +46,15 @@
 }
 
 .main-content label{
+    padding-left: 20px;
     font-weight: 400;
     width: 100px;
     text-align: center;
+}
+
+#system-profit-echarts label{
+    padding-left: 20px;
+    width: 200px;
+    text-align: left;
+    margin-top: 30px;
 }

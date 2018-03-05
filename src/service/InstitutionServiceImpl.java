@@ -1,10 +1,7 @@
 package service;
 
 import dao.*;
-import model.Institution;
-import model.Payment;
-import model.Teachers;
-import model.TeachersKey;
+import model.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +26,9 @@ public class InstitutionServiceImpl implements InstitutionService {
 
     @Autowired
     private OrderDao orderDao;
+
+    @Autowired
+    private BillDao billDao;
 
     @Override
     public String Login(String id, String password) {
@@ -274,5 +274,23 @@ public class InstitutionServiceImpl implements InstitutionService {
             jsonObjects[i] = json;
         }
         return jsonObjects;
+    }
+
+    @Override
+    public JSONObject GetMonthBill(String institutionid) {
+        List list = billDao.getBillListById(institutionid);
+        JSONObject json = new JSONObject();
+        int length = list.size();
+        String[] month_list = new String[length];
+        double[] profit_list = new double[length];
+
+        for(int i=0;i<length;i++){
+            Bill bill = (Bill) list.get(i);
+            month_list[i] = bill.getMonth();
+            profit_list[i] = bill.getIncome();
+        }
+        json.put("month",month_list);
+        json.put("profit",profit_list);
+        return json;
     }
 }
