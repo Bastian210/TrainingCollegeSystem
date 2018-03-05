@@ -82,6 +82,8 @@ public class UserController {
     @RequestMapping(value = "/accountManagement.getMessage",method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
     public String doGetMessage(){
         Map map = getUserService().GetUserMessage(Param.getUserid());
+        JSONObject result = getUserService().GetMonthBill(Param.getUserid());
+
         JSONObject json = new JSONObject();
         json.put("userid",Param.getUserid());
         json.put("username",map.get("username"));
@@ -92,6 +94,9 @@ public class UserController {
         json.put("level",map.get("level"));
         json.put("points",map.get("points"));
         json.put("consumption",map.get("consumption"));
+        json.put("month",result.get("month"));
+        json.put("consume",result.get("consume"));
+
         return json.toString();
     }
 

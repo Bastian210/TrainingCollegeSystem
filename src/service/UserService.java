@@ -133,4 +133,11 @@ public interface UserService {
      * @return
      */
     public double getProfit();
+
+    /**
+     * 获取用户的每月账单
+     * @param userid
+     * @return
+     */
+    public JSONObject GetMonthBill(String userid);
 }

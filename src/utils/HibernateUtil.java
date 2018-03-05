@@ -15,6 +15,7 @@ public class HibernateUtil {
 				Configuration config;
 				ServiceRegistry serviceRegistry;
 				config = new Configuration().configure();
+				config.addAnnotatedClass(Bill.class);
 				config.addAnnotatedClass(Checkin.class);
 				config.addAnnotatedClass(Institution.class);
 				config.addAnnotatedClass(Lesson.class);

@@ -1,7 +1,8 @@
 package test;
 
-import dao.PlanDao;
-import dao.PlanDaoImpl;
+import dao.*;
+import model.BillKey;
+import model.LessonKey;
 import org.json.JSONObject;
 import service.*;
 
@@ -9,10 +10,15 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-//        PlanDao dao = new PlanDaoImpl();
-//        dao.checkPlan();
+//        BillDao billDao = new BillDaoImpl();
+//        LessonDao lessonDao = new LessonDaoImpl();
+//        System.out.println(lessonDao.findLessonByLessonKey(new LessonKey("10001","大班","冯超")));
+//        System.out.println(billDao.getBillByBillKey(new BillKey("500002","2017-10")).getIncome());
+//        List list = billDao.getBillListByUserid("500002");
+//        System.out.println(list);
     }
 }

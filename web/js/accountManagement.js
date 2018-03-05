@@ -13,6 +13,8 @@ $(function () {
                 var gender = data["gender"];
                 var education = data["education"];
                 var payid = data["payid"];
+                var month = data["month"];
+                var consumption = data["consume"];
                 $("#userid-label").html(userid);
                 $("#enter-username").val(username);
                 if(gender=="男"){
@@ -33,6 +35,30 @@ $(function () {
                 $("#level-label").html(data["level"]+"级");
                 $("#points-label").html(data["points"]+"点");
                 $("#consumption-label").html(data["consumption"]+"元");
+
+                var myChart = echarts.init(document.getElementById('consume-statistics-div'));
+
+                // 指定图表的配置项和数据
+                var option = {
+                    title: {
+                        text: "您的月消费额统计图"
+                    },
+                    tooltip: {},
+                    legend: {
+                        data:['消费额']
+                    },
+                    xAxis: {
+                        data: month
+                    },
+                    yAxis: {},
+                    series: [{
+                        name: '消费额',
+                        type: 'line',
+                        data: consumption
+                    }]
+                };
+                // 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option);
             }
         });
     });
@@ -42,11 +68,13 @@ $(function () {
         $("#my-points-li").removeAttr("class");
         $("#pay-account-li").removeAttr("class");
         $("#account-safety-li").removeAttr("class");
+        $("#consume-statistics-li").removeAttr("class");
         $("#chosen-li").html("个人信息");
         $("#user-message-div").show();
         $("#my-points-div").hide();
         $("#pay-account-div").hide();
         $("#account-safety-div").hide();
+        $("#consume-statistics-div").hide();
     });
 
     $("#my-points-li").click(function () {
@@ -54,11 +82,13 @@ $(function () {
         $("#my-points-li").attr("class","active");
         $("#pay-account-li").removeAttr("class");
         $("#account-safety-li").removeAttr("class");
+        $("#consume-statistics-li").removeAttr("class");
         $("#chosen-li").html("我的积分");
         $("#user-message-div").hide();
         $("#my-points-div").show();
         $("#pay-account-div").hide();
         $("#account-safety-div").hide();
+        $("#consume-statistics-div").hide();
     });
 
     $("#pay-account-li").click(function () {
@@ -66,11 +96,13 @@ $(function () {
         $("#my-points-li").removeAttr("class");
         $("#pay-account-li").attr("class","active");
         $("#account-safety-li").removeAttr("class");
+        $("#consume-statistics-li").removeAttr("class");
         $("#chosen-li").html("支付账号");
         $("#user-message-div").hide();
         $("#my-points-div").hide();
         $("#pay-account-div").show();
         $("#account-safety-div").hide();
+        $("#consume-statistics-div").hide();
     });
 
     $("#account-safety-li").click(function () {
@@ -78,11 +110,27 @@ $(function () {
         $("#my-points-li").removeAttr("class");
         $("#pay-account-li").removeAttr("class");
         $("#account-safety-li").attr("class","active");
+        $("#consume-statistics-li").removeAttr("class");
         $("#chosen-li").html("账号安全");
         $("#user-message-div").hide();
         $("#my-points-div").hide();
         $("#pay-account-div").hide();
         $("#account-safety-div").show();
+        $("#consume-statistics-div").hide();
+    });
+
+    $("#consume-statistics-li").click(function () {
+        $("#user-message-li").removeAttr("class");
+        $("#my-points-li").removeAttr("class");
+        $("#pay-account-li").removeAttr("class");
+        $("#account-safety-li").removeAttr("class");
+        $("#consume-statistics-li").attr("class","active");
+        $("#chosen-li").html("账号安全");
+        $("#user-message-div").hide();
+        $("#my-points-div").hide();
+        $("#pay-account-div").hide();
+        $("#account-safety-div").hide();
+        $("#consume-statistics-div").show();
     });
 
     /**

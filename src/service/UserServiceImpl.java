@@ -274,4 +274,22 @@ public class UserServiceImpl implements UserService {
     public double getProfit() {
         return userDao.findManager().getConsumption();
     }
+
+    @Override
+    public JSONObject GetMonthBill(String userid) {
+        JSONObject json = new JSONObject();
+        List list = billDao.getBillListByUserid(userid);
+        String[] month_list = new String[list.size()];
+        double[] consumption_list = new double[list.size()];
+        for(int i=0;i<list.size();i++){
+            Bill bill = (Bill) list.get(i);
+            month_list[i] = bill.getMonth();
+            consumption_list[i] = bill.getIncome();
+        }
+        json.put("month",month_list);
+        json.put("consume",consumption_list);
+        return json;
+    }
+
+
 }
