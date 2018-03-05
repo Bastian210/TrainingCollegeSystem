@@ -293,14 +293,14 @@ $(function () {
      * 计算总价
      */
     function calcucate() {
-        if(!$("#switch div").attr("aria-checked")){ //不选班级按最高价计算
-            var max = 0;
+        if(!$("#switch div").attr("aria-checked")){ //不选班级按最低价计算
+            var min = parseFloat(classes[0]["price"]);
             for(var i=0;i<classes.length;i++){
-                if(parseFloat(classes[i]["price"])>max){
-                    max = parseFloat(classes[i]["price"]);
+                if(parseFloat(classes[i]["price"])<min){
+                    min = parseFloat(classes[i]["price"]);
                 }
             }
-            total = max*students.length;
+            total = min*students.length;
         }else{
             var type = $("#enter-class-type").val();
             for(var i=0;i<classes.length;i++){
@@ -319,6 +319,9 @@ $(function () {
         $("#actual-pay").html("需付"+actual+"元");
     }
 
+    /**
+     * 去绑定支付账号
+     */
     $("#bind-pay-account-btn").click(function () {
         window.open("/accountManagement","_self");
     });
@@ -392,11 +395,32 @@ $(function () {
                         if(type=="不选班级"){
                             $("#no-choose-class").show();
                         }
+                        leftTimer();
                     },1000);
                 }
             });
         }
     });
+
+    var minute = 15;
+    var second = 0;
+    function leftTimer() {
+        var time = minute*60+second;
+        if(time>0){
+            if(second>0){
+                second = second-1;
+            }else{
+                second = 59;
+                minute = minute-1;
+            }
+            $("#left-time-p").html("当前剩余"+minute+"分"+second+"秒！")
+            setTimeout(function () {
+                leftTimer();
+            },1000);
+        }else{
+            $("#left-time-p").html("订单已自动取消！");
+        }
+    }
 
     /**
      * 支付

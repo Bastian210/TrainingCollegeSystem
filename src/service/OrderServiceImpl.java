@@ -36,8 +36,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public JSONObject AddOrder(String userid, String lessonid, String institutionid, String type, String price, String actualpay, String classtype, String[] nameList, String[] genderList, String[] educationList) {
+        //分配orderid
         String max_id = orderDao.getMaxId();
         String orderid = String.valueOf(Integer.valueOf(max_id)+1);
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Calendar now= Calendar.getInstance();
         String time = sdf.format(now.getTimeInMillis());
@@ -45,25 +47,30 @@ public class OrderServiceImpl implements OrderService {
         String deadline = sdf.format(now.getTimeInMillis());
         String state = "未支付";
 
+        //保存order信息
         Orders orders = new Orders(orderid,userid,institutionid,lessonid,type,nameList.length,time,Double.valueOf(price),Double.valueOf(actualpay),classtype,deadline,state);
         orderDao.save(orders);
 
+        //保存订单中所有学生的信息
         for(int i=0;i<nameList.length;i++){
             Ordermessage ordermessage = new Ordermessage(orderid,nameList[i],genderList[i],educationList[i]);
             orderDao.saveOrderMessage(ordermessage);
         }
 
+        //如果用户选择了班级，则更新plan中的班级名额剩余情况
         if(type.equals("选班级")){
             Plans plans = planDao.getPlanByPlanKey(new PlansKey(lessonid,classtype));
             int total = plans.getClassnum()*plans.getStudentnum();
             int sold = plans.getSold();
             for(int i=0;i<nameList.length;i++){
+                //分配班级
                 int id = (sold+1)/plans.getStudentnum()+1;
                 Lesson lesson = new Lesson(lessonid,classtype,nameList[i],0,"未开课",String.valueOf(id),genderList[i],educationList[i]);
                 lessonDao.save(lesson);
                 sold++;
             }
             plans.setSold(sold);
+            //如果订单已经分配完
             if(total==sold){
                 plans.setState("soldout");
             }

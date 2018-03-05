@@ -1,10 +1,7 @@
 package service;
 
 import dao.*;
-import model.Lesson;
-import model.Orders;
-import model.Payment;
-import model.User;
+import model.*;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +10,7 @@ import utils.Param;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -29,6 +27,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private OrderDao orderDao;
+
+    @Autowired
+    private BillDao billDao;
 
     @Override
     public String Login(String email, String password) {
@@ -175,6 +176,7 @@ public class UserServiceImpl implements UserService {
         double num = Double.valueOf(price);
         User user = userDao.findUserByUserid(userid);
         Payment payment = paymentDao.findPaymentByPayId(user.getPayid());
+        //检验支付密码和账户余额
         if(!payment.getPassword().equals(password)){
             return "wrong password";
         }else if(payment.getBalance()<num){
@@ -185,6 +187,7 @@ public class UserServiceImpl implements UserService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             Date date = sdf.parse(deadline);
+            //检验支付时间是否已过
             if(date.before(new Date())){
                 orders.setState("已退订");
                 orderDao.update(orders);
@@ -193,11 +196,14 @@ public class UserServiceImpl implements UserService {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        //更新用户账户余额
         payment.setBalance(payment.getBalance()-num);
         paymentDao.update(payment);
+        //更新经理账户余额
         Payment manager = paymentDao.getManagePayment();
         manager.setBalance(manager.getBalance()+num);
         paymentDao.update(manager);
+        //更新订单状态
         if(orders.getType().equals("不选班级")){
             orders.setState("等待配票");
         }else{
@@ -205,15 +211,27 @@ public class UserServiceImpl implements UserService {
         }
         orderDao.update(orders);
 
-        double actual = Double.valueOf(price);
+        //更新积分、消费总额和用户等级
         if(checkbox.equals("yes")){
-            user.setPoints((int) actual);
+            user.setPoints((int) num);
         }else{
-            user.setPoints((int) (user.getPoints()+actual));
+            user.setPoints((int) (user.getPoints()+num));
         }
-        user.setConsumption(user.getConsumption()+actual);
+        user.setConsumption(user.getConsumption()+num);
         user.setLevel((int) (user.getConsumption()/1000+1));
         userDao.update(user);
+
+        String current_month = LocalDate.now().toString().substring(0,7);
+        Bill bill = billDao.getBillByBillKey(new BillKey(userid,current_month));
+        //检测时候存在当前用户此月份的消费记录
+        if(bill==null){
+            bill = new Bill(userid,current_month,num);
+            billDao.save(bill);
+        }else{
+            //更新月消费记录
+            bill.setIncome(bill.getIncome()+num);
+            billDao.update(bill);
+        }
         return "success";
     }
 
