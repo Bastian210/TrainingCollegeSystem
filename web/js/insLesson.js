@@ -480,28 +480,33 @@ $(function () {
                 success: function (data) {
                     var result = data["result"];
 
-                    var content = "<table width=\"100%\">\n" +
-                        "                        <tr><th>姓名</th><th>性别</th><th>教育程度</th><th>成绩</th><th>登记</th></tr>\n";
-                    for (var i = 0; i < result.length; i++) {
-                        var json = JSON.parse(JSON.stringify(result[i]));
-                        var grade = json["grade"];
-                        var checkin = json["checkin"];
-                        content = content + "<tr><td>" + json["name"] + "</td><td>" + json["gender"] + "</td><td>" + json["education"] + "</td>";
+                    var content = "";
+                    if(result.length>0){
+                        content = "<table width=\"100%\">\n" +
+                            "                        <tr><th>姓名</th><th>性别</th><th>教育程度</th><th>成绩</th><th>登记</th></tr>\n";
+                        for (var i = 0; i < result.length; i++) {
+                            var json = JSON.parse(JSON.stringify(result[i]));
+                            var grade = json["grade"];
+                            var checkin = json["checkin"];
+                            content = content + "<tr><td>" + json["name"] + "</td><td>" + json["gender"] + "</td><td>" + json["education"] + "</td>";
 
-                        if (grade == 0) {
-                            content = content + "<td><a onclick=\"enterGrade('" + lessonid + "','" + classtype + "','" + json["name"] + "')\">录入成绩</a></td>"
-                        } else {
-                            content = content + "<td>" + grade + "分</td>";
+                            if (grade == 0) {
+                                content = content + "<td><a onclick=\"enterGrade('" + lessonid + "','" + classtype + "','" + json["name"] + "')\">录入成绩</a></td>"
+                            } else {
+                                content = content + "<td>" + grade + "分</td>";
+                            }
+
+                            if (checkin == "无") {
+                                content = content + "<td><a onclick=\"checkin('" + lessonid + "','" + classtype + "','" + json["name"] + "','" + classhour + "')\">立即登记</a></td></tr>"
+                            } else {
+                                content = content + "<td>已登记</td></tr>";
+                            }
                         }
 
-                        if (checkin == "无") {
-                            content = content + "<td><a onclick=\"checkin('" + lessonid + "','" + classtype + "','" + json["name"] + "','" + classhour + "')\">立即登记</a></td></tr>"
-                        } else {
-                            content = content + "<td>已登记</td></tr>";
-                        }
+                        content = content + "</table>";
+                    }else{
+                        content = "<p>"+classtype+classid+"班没有找到任何学员！</p>";
                     }
-
-                    content = content + "</table>";
                     $("#display-students-div").html(content);
                 }
             });
