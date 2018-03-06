@@ -28,11 +28,15 @@ public class Lesson implements Serializable {
     private String gender;
     @Column(name = "education")
     private String education;
+    @Column(name = "time")
+    private String time;
+    @Column(name = "checkin")
+    private int checkin;
 
     public Lesson() {
     }
 
-    public Lesson(String lessonid, String classtype, String name, double grade, String state, String classid, String gender, String education) {
+    public Lesson(String lessonid, String classtype, String name, double grade, String state, String classid, String gender, String education, String time, int checkin) {
         this.lessonid = lessonid;
         this.classtype = classtype;
         this.name = name;
@@ -41,6 +45,8 @@ public class Lesson implements Serializable {
         this.classid = classid;
         this.gender = gender;
         this.education = education;
+        this.time = time;
+        this.checkin = checkin;
     }
 
     public static long getSerialVersionUID() {
@@ -109,5 +115,21 @@ public class Lesson implements Serializable {
 
     public void setEducation(String education) {
         this.education = education;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public int getCheckin() {
+        return checkin;
+    }
+
+    public void setCheckin(int checkin) {
+        this.checkin = checkin;
     }
 }

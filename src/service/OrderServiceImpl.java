@@ -71,7 +71,7 @@ public class OrderServiceImpl implements OrderService {
             for(int i=0;i<nameList.length;i++){
                 //分配班级
                 int id = (sold+1)/plans.getStudentnum()+1;
-                Lesson lesson = new Lesson(lessonid,classtype,nameList[i],0,"未开课",String.valueOf(id),genderList[i],educationList[i]);
+                Lesson lesson = new Lesson(lessonid,classtype,nameList[i],0,"未开课",String.valueOf(id),genderList[i],educationList[i],null,0);
                 lessonDao.save(lesson);
                 sold++;
             }
@@ -213,7 +213,7 @@ public class OrderServiceImpl implements OrderService {
                         //保存学生的课程信息
                         for(int j=0;j<orderMessageList.size();j++){
                             Ordermessage ordermessage = (Ordermessage) orderMessageList.get(j);
-                            lessonDao.save(new Lesson(orders.getLessonid(),assign[j][0],ordermessage.getName(),0,"未开课",assign[j][1],ordermessage.getGender(),ordermessage.getEducation()));
+                            lessonDao.save(new Lesson(orders.getLessonid(),assign[j][0],ordermessage.getName(),0,"未开课",assign[j][1],ordermessage.getGender(),ordermessage.getEducation(),null,0));
                         }
                         orders.setState("已预订");
                         orderDao.update(orders);

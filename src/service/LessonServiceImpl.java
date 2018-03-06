@@ -1,9 +1,6 @@
 package service;
 
-import dao.InstitutionDao;
-import dao.LessonDao;
-import dao.PlanDao;
-import dao.UserDao;
+import dao.*;
 import model.*;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +24,9 @@ public class LessonServiceImpl implements LessonService {
     @Autowired
     private PlanDao planDao;
 
+    @Autowired
+    private BillDao billDao;
+
     @Override
     public JSONObject[] GetLessonByUserId(String userid) {
         User user = userDao.findUserByUserid(userid);
@@ -48,28 +48,59 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public void OnSiteBook(String lessonid, String type, String userid, String classtype, String actual, String[] nameList, String[] genderList, String[] educationList) {
+    public int[] OnSiteBook(String lessonid, String type, String userid, String classtype, String actual, String[] nameList, String[] genderList, String[] educationList) {
+        Plans plans = planDao.getPlanByPlanKey(new PlansKey(lessonid,classtype));
+        double total_price = Double.valueOf(actual);
+
+        //如果订票者是本系统的会员
         if(type.equals("是")){
+            //更新用户的积分、消费总额和等级
             User user = userDao.findUserByUserid(userid);
-            user.setPoints((int) (user.getPoints()+Double.valueOf(actual)));
-            user.setConsumption(user.getConsumption()+Double.valueOf(actual));
+            user.setPoints((int) (user.getPoints()+total_price));
+            user.setConsumption(user.getConsumption()+total_price);
             user.setLevel((int) (user.getConsumption()/1000+1));
             userDao.update(user);
+
+            //更新用户的月账单
+            String month = LocalDate.now().toString().substring(0,7);
+            Bill bill = billDao.getBillByBillKey(new BillKey(userid,month));
+            if(bill==null){
+                bill = new Bill(userid,month,total_price);
+                billDao.save(bill);
+            }else{
+                bill.setIncome(bill.getIncome()+total_price);
+                billDao.update(bill);
+            }
+
+            //更新机构的月账单
+            Bill ins_bill = billDao.getBillByBillKey(new BillKey(plans.getInstitutionid(),month));
+            if(ins_bill==null){
+                ins_bill = new Bill(plans.getInstitutionid(),month,total_price);
+                billDao.save(ins_bill);
+            }else{
+                ins_bill.setIncome(ins_bill.getIncome()+total_price);
+                billDao.update(ins_bill);
+            }
         }
 
-        Plans plans = planDao.getPlanByPlanKey(new PlansKey(lessonid,classtype));
         int sold = plans.getSold();
+        int[] classList = new int[nameList.length];
+
+        //分配班级
         for(int i=0;i<nameList.length;i++){
             int id = (sold+1)/plans.getStudentnum()+1;
-            lessonDao.save(new Lesson(lessonid,classtype,nameList[i],0,"未开课",String.valueOf(id),genderList[i],educationList[i]));
+            classList[i] = id;
+            lessonDao.save(new Lesson(lessonid,classtype,nameList[i],0,"未开课",String.valueOf(id),genderList[i],educationList[i],null,0));
             sold++;
         }
         plans.setSold(sold);
         planDao.updatePlan(plans);
+
+        return classList;
     }
 
     @Override
-    public JSONObject[] SearchStudents(String lessonid, String classtype, String classid, String classhour) {
+    public JSONObject[] SearchStudents(String lessonid, String classtype, String classid) {
         List list = lessonDao.findLessonByLessonidAndClassid(lessonid, classtype, classid);
 
         JSONObject[] jsonObjects = new JSONObject[list.size()];
@@ -82,8 +113,8 @@ public class LessonServiceImpl implements LessonService {
             json.put("education",lesson.getEducation());
             json.put("grade",lesson.getGrade());
 
-            Checkin checkin = lessonDao.findCheckinByKey(new CheckinKey(lessonid,classtype,lesson.getName(),Integer.valueOf(classhour)));
-            if(checkin==null){
+            int checkin = lesson.getCheckin();
+            if(checkin==0){
                 json.put("checkin","无");
             }else{
                 json.put("checkin","已登记");
@@ -101,8 +132,11 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public void CheckIn(String lessonid, String classtype, String name, String classhour) {
-        lessonDao.saveCheckIn(new Checkin(lessonid,classtype,name,Integer.valueOf(classhour), LocalDate.now().toString(),1));
+    public void CheckIn(String lessonid, String classtype, String name) {
+        Lesson lesson = lessonDao.findLessonByLessonKey(new LessonKey(lessonid,classtype,name));
+        lesson.setTime(LocalDate.now().toString());
+        lesson.setCheckin(1);
+        lessonDao.update(lesson);
     }
 
     private JSONObject[] getLessonJsonMessage(List list){

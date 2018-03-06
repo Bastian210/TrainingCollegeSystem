@@ -35,18 +35,18 @@ public interface LessonService {
      * @param nameList
      * @param genderList
      * @param educationList
+     * @return
      */
-    public void OnSiteBook(String lessonid, String type, String userid, String classtype, String actual, String[] nameList, String[] genderList, String[] educationList);
+    public int[] OnSiteBook(String lessonid, String type, String userid, String classtype, String actual, String[] nameList, String[] genderList, String[] educationList);
 
     /**
      * 搜索学生
      * @param lessonid
      * @param classtype
      * @param classid
-     * @param classhour
      * @return
      */
-    public JSONObject[] SearchStudents(String lessonid,String classtype,String classid,String classhour);
+    public JSONObject[] SearchStudents(String lessonid,String classtype,String classid);
 
     /**
      * 录入成绩
@@ -62,7 +62,6 @@ public interface LessonService {
      * @param lessonid
      * @param classtype
      * @param name
-     * @param classhour
      */
-    public void CheckIn(String lessonid,String classtype,String name,String classhour);
+    public void CheckIn(String lessonid,String classtype,String name);
 }

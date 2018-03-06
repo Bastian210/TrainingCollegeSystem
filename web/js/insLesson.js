@@ -105,7 +105,7 @@ function enterGrade(lid,type,name) {
 /**
  * 登记
  */
-function checkin(lessonid,classtype,name,classhour) {
+function checkin(lessonid,classtype,name) {
     $.ajax({
         url: "/myLesson.checkin",
         type: "post",
@@ -114,7 +114,6 @@ function checkin(lessonid,classtype,name,classhour) {
             lessonid: lessonid,
             classtype: classtype,
             name: name,
-            classhour: classhour,
         },
         success: function (data) {
             $("#ensure-search-btn").click();
@@ -438,11 +437,17 @@ $(function () {
                 },
                 dataType: "json",
                 success: function (data) {
-                    $("#add-order-error").html("下单成功！");
-                    $("#add-order-error").show();
-                    setTimeout(function () {
-                        $("#add-order-error").hide();
-                    },1000);
+                    var classList = data["result"];
+                    var content = "<p>下单成功！学员分配的班级如下表：</p>";
+                    content = content+"<table>\n" +
+                        "                        <tr><th>学员</th><th>班级</th></tr>";
+
+                    for(var i=0;i<classList.length;i++){
+                        content = content+"<tr><td>"+name[i]+"</td><td>"+classList[i]+"</td></tr>";
+                    }
+                    content = content+"</table>"
+                    $("#onsite-book-result").show();
+                    $("#onsite-book-result").html(content);
                 }
             });
         }
@@ -471,7 +476,6 @@ $(function () {
                     lessonid: lessonid,
                     classtype: classtype,
                     classid: classid,
-                    classhour: classhour,
                 },
                 success: function (data) {
                     var result = data["result"];

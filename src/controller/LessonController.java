@@ -53,16 +53,16 @@ public class LessonController {
     public String doOnSiteBook(@RequestParam(value = "lessonid")String lessonid,@RequestParam(value = "type")String type,@RequestParam(value = "userid")String userid,
                                @RequestParam(value = "classtype")String classtype,@RequestParam(value = "actual")String actual,@RequestParam(value = "nameList[]")String[] nameList,
                                @RequestParam(value = "genderList[]")String[] genderList,@RequestParam(value = "educationList[]")String[] educationList){
-        getLessonService().OnSiteBook(lessonid, type, userid, classtype, actual, nameList, genderList, educationList);
+        int[] classList = getLessonService().OnSiteBook(lessonid, type, userid, classtype, actual, nameList, genderList, educationList);
         JSONObject json = new JSONObject();
-        json.put("result","success");
+        json.put("result",classList);
         return json.toString();
     }
 
     @ResponseBody
     @RequestMapping(value = "/myLesson.searchStudents",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
-    public String doSearchStudents(@RequestParam(value = "lessonid")String lessonid,@RequestParam(value = "classtype")String classtype,@RequestParam(value = "classid")String classid,@RequestParam(value = "classhour")String classhour){
-        JSONObject[] jsonObjects = getLessonService().SearchStudents(lessonid, classtype, classid, classhour);
+    public String doSearchStudents(@RequestParam(value = "lessonid")String lessonid,@RequestParam(value = "classtype")String classtype,@RequestParam(value = "classid")String classid){
+        JSONObject[] jsonObjects = getLessonService().SearchStudents(lessonid, classtype, classid);
         JSONObject json = new JSONObject();
         json.put("result",jsonObjects);
         return json.toString();
@@ -79,8 +79,8 @@ public class LessonController {
 
     @ResponseBody
     @RequestMapping(value = "/myLesson.checkin",method = RequestMethod.POST)
-    public String doCheckIn(@RequestParam(value = "lessonid")String lessonid,@RequestParam(value = "classtype")String classtype,@RequestParam(value = "name")String name,@RequestParam(value = "classhour")String classhour){
-        getLessonService().CheckIn(lessonid, classtype, name, classhour);
+    public String doCheckIn(@RequestParam(value = "lessonid")String lessonid,@RequestParam(value = "classtype")String classtype,@RequestParam(value = "name")String name){
+        getLessonService().CheckIn(lessonid, classtype, name);
         JSONObject json = new JSONObject();
         json.put("result","success");
         return json.toString();

@@ -84,6 +84,7 @@
                 <br>
                 <div class="alert alert-warning" id="add-order-error" hidden="hidden"></div>
                 <button class="my-button" id="add-order-btn">立即下单</button>
+                <div id="onsite-book-result" hidden="hidden"></div>
             </div>
             <div id="check-div" hidden="hidden">
                 <div class="search-container">
@@ -100,12 +101,6 @@
                     <div id="input-number1">
                         <template>
                             <el-input-number v-model="num1" controls-position="right" @change="handleChange" :min="1" id="enter-class-id" style="width: 100px"></el-input-number>
-                        </template>
-                    </div>
-                    <label class="float-left">课时：</label>
-                    <div id="input-number2">
-                        <template>
-                            <el-input-number v-model="num1" controls-position="right" @change="handleChange" :min="1" id="enter-class-hour" style="width: 100px"></el-input-number>
                         </template>
                     </div>
                     <button class="my-button" id="ensure-search-btn"><i class="el-icon-search"></i>搜索</button>
@@ -153,7 +148,10 @@
     var Main1 = {
         data() {
             return {
-                options: [ {
+                options: [{
+                    value: "",
+                    label: "大学",
+                },{
                     value: '选项1',
                     label: '高中'
                 }, {
@@ -183,19 +181,5 @@
     };
     var Ctor2 = Vue.extend(Main2);
     new Ctor2().$mount('#input-number1');
-
-    var Main3 = {
-        data() {
-            return {
-                num1: 1
-            };
-        },
-        methods: {
-            handleChange(value) {
-            }
-        }
-    };
-    var Ctor3 = Vue.extend(Main3);
-    new Ctor3().$mount('#input-number2');
 </script>
 </html>

@@ -1,7 +1,5 @@
 package dao;
 
-import model.Checkin;
-import model.CheckinKey;
 import model.Lesson;
 import model.LessonKey;
 
@@ -50,17 +48,4 @@ public interface LessonDao {
      * @return
      */
     public List findLessonByLessonidAndClassid(String lessonid,String classtype,String classid);
-
-    /**
-     * 根据主键查找登记信息
-     * @param checkinKey
-     * @return
-     */
-    public Checkin findCheckinByKey(CheckinKey checkinKey);
-
-    /**
-     * 保存登记信息
-     * @param checkin
-     */
-    public void saveCheckIn(Checkin checkin);
 }
