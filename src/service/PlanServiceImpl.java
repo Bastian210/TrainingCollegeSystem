@@ -4,6 +4,7 @@ import dao.*;
 import model.Institution;
 import model.Lesson;
 import model.Plans;
+import model.User;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,9 @@ import java.util.*;
 
 @Service
 public class PlanServiceImpl implements PlanService {
+
+    @Autowired
+    private UserDao userDao;
 
     @Autowired
     private PlanDao planDao;
@@ -174,9 +178,18 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public JSONObject[] GetLessonList() {
-        String[] subject = {"语文","数学","英语","物理","化学","政治","历史","地理","生物"};
-        return SearchLessonList("","高中",subject);
+    public JSONObject[] GetLessonList(String userid) {
+        User user = userDao.findUserByUserid(userid);
+        String education = user.getEducation();
+        String[] subject;
+        if(education.equals("高中")){
+            subject = new String[]{"语文", "数学", "英语", "物理", "化学", "政治", "历史", "地理", "生物"};
+        }else if(education.equals("初中")){
+            subject = new String[]{"语文", "数学", "英语", "物理", "化学"};
+        }else{
+            subject = new String[]{"语文", "数学", "英语"};
+        }
+        return SearchLessonList("",education,subject);
     }
 
     @Override

@@ -100,7 +100,7 @@ public class PlanController {
     @ResponseBody
     @RequestMapping(value = "/index.getLessonList",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
     public String doGetLessonList(){
-        JSONObject[] result = getPlanService().GetLessonList();
+        JSONObject[] result = getPlanService().GetLessonList(Param.getUserid());
         JSONObject json = new JSONObject();
         json.put("result",result);
         return json.toString();

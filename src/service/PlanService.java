@@ -72,9 +72,10 @@ public interface PlanService {
 
     /**
      * 得到推荐课程列表
+     * @param userid
      * @return
      */
-    public JSONObject[] GetLessonList();
+    public JSONObject[] GetLessonList(String userid);
 
     /**
      * 搜索课程
