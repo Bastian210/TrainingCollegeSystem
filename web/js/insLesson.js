@@ -23,11 +23,9 @@ function openAddStudentDiv() {
         setTimeout(function () {
             $("#add-order-error").hide();
         },1000);
-        console.log("每单不能超过"+max+"个学员！");
     }else{
         var classtype = $("#enter-class-type").val();
         if(classtype!=""){
-            console.log(classes);
             for(var i=0;i<classes.length;i++){
                 if(classes[i]["classtype"]==classtype){
                     if(parseInt(classes[i]["left"])==students.length){
@@ -55,10 +53,11 @@ function openAddStudentDiv() {
 function deleteStudent(name) {
     for(var i=0;i<students.length;i++){
         if(students[i]["name"]==name){
-            students.splice(students[i],1);
+            students.splice(i,1);
             break;
         }
     }
+    calcucate();
     showStudents();
 }
 
@@ -72,6 +71,25 @@ function showStudents() {
     }
     content = content+"<a onclick=\"openAddStudentDiv()\" id=\"add-student-a\"><i class=\"el-icon-plus\">新学员</i></a>";
     $("#student-tags").html(content);
+}
+
+/**
+ * 计算总价
+ */
+function calcucate() {
+    var total = 0;
+    var type = $("#enter-class-type").val();
+    for(var i=0;i<classes.length;i++){
+        if(classes[i]["classtype"]==type){
+            total = students.length*parseFloat(classes[i]["price"]);
+            break;
+        }
+    }
+    actual = total*(1-level/100.0);
+    actual = actual.toFixed(2);
+    if(actual!=0){
+        $("#actual-pay").html("需付"+actual+"元");
+    }
 }
 
 /**
@@ -147,6 +165,13 @@ $(function () {
                 $("#lesson-message-div").html(content);
                 new Vue().$mount("#lesson-message-div");
 
+                var is_begin = data["is_begin"];
+                if(is_begin=="false"){
+                    $("#check-div").html("<p>当前课程尚未开始！</p>");
+                }else{
+                    $("#onsite-pay-div").html("<p>当前课程已经开课，不能再购票！</p>");
+                }
+
                 lessonid = data["lessonid"];
 
                 var leftList = data["leftList"];
@@ -166,6 +191,11 @@ $(function () {
                                 }],
                                 value: ''
                             }
+                        },
+                        methods: {
+                            classTypeChanged(){
+                                calcucate();
+                            }
                         }
                     };
                 }else if(typeList.length==2){
@@ -180,6 +210,11 @@ $(function () {
                                     label: typeList[1]
                                 }],
                                 value: ''
+                            }
+                        },
+                        methods: {
+                            classTypeChanged(){
+                                calcucate();
                             }
                         }
                     }
@@ -198,6 +233,11 @@ $(function () {
                                     label: typeList[2]
                                 }],
                                 value: ''
+                            }
+                        },
+                        methods: {
+                            classTypeChanged(){
+                                calcucate();
                             }
                         }
                     }
@@ -263,12 +303,28 @@ $(function () {
                 $("#add-student-error").hide();
             },1000);
         }else{
-            var student = {name: name, gender: gender, education: education};
-            students.push(student);
-            showStudents();
-            $("#add-student-div").hide();
+            var isRepeat = false;
+            for(var i=0;i<students.length;i++){
+                if(students[i]["name"]==name){
+                    isRepeat = true;
+                    break;
+                }
+            }
+            if(isRepeat){
+                $("#add-student-error").html("已经添加了此学员！");
+                $("#add-student-error").show();
+                setTimeout(function () {
+                    $("#add-student-error").hide();
+                },1000);
+            }else{
+                var student = {name: name, gender: gender, education: education};
+                students.push(student);
+                showStudents();
+                $("#add-student-div").hide();
 
-            clearAddStudentDiv();
+                calcucate();
+                clearAddStudentDiv();
+            }
         }
     });
 
@@ -292,25 +348,6 @@ $(function () {
         }
         content = content+"<a onclick=\"openAddStudentDiv()\" id=\"add-student-a\"><i class=\"el-icon-plus\">新学员</i></a>";
         $("#student-tags").html(content);
-    }
-
-    /**
-     * 计算总价
-     */
-    function calcucate() {
-        var total = 0;
-        var type = $("#enter-class-type").val();
-        for(var i=0;i<classes.length;i++){
-            if(classes[i]["classtype"]==type){
-                total = students.length*parseFloat(classes[i]["price"]);
-                break;
-            }
-        }
-        actual = total*(1-level/100.0);
-        actual = actual.toFixed(2);
-        if(actual!=0){
-            $("#actual-pay").html("需付"+actual+"元");
-        }
     }
 
     /**
@@ -386,33 +423,28 @@ $(function () {
                 $("#add-order-error").hide();
             },1000);
         }else{
-            if($("#add-order-btn").text()=="计算总价"){
-                calcucate();
-                $("#add-order-btn").html("立即下单");
-            }else{
-                $.ajax({
-                    url: "/myLesson.onSiteBook",
-                    type: "post",
-                    data: {
-                        lessonid: lessonid,
-                        type: type,
-                        userid: userid,
-                        classtype: classtype,
-                        actual: actual,
-                        nameList: name,
-                        genderList: gender,
-                        educationList: education,
-                    },
-                    dataType: "json",
-                    success: function (data) {
-                        $("#add-order-error").html("下单成功！");
-                        $("#add-order-error").show();
-                        setTimeout(function () {
-                            $("#add-order-error").hide();
-                        },1000);
-                    }
-                });
-            }
+            $.ajax({
+                url: "/myLesson.onSiteBook",
+                type: "post",
+                data: {
+                    lessonid: lessonid,
+                    type: type,
+                    userid: userid,
+                    classtype: classtype,
+                    actual: actual,
+                    nameList: name,
+                    genderList: gender,
+                    educationList: education,
+                },
+                dataType: "json",
+                success: function (data) {
+                    $("#add-order-error").html("下单成功！");
+                    $("#add-order-error").show();
+                    setTimeout(function () {
+                        $("#add-order-error").hide();
+                    },1000);
+                }
+            });
         }
     });
 

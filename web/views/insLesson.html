@@ -46,7 +46,7 @@
                 <label class="float-left">选择班级：</label>
                 <div id="select-class-type">
                     <template>
-                        <el-select v-model="value" placeholder="请选择班级类型" id="enter-class-type">
+                        <el-select v-model="value" placeholder="请选择班级类型" id="enter-class-type" @blur="classTypeChanged()">
                             <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                             </el-option>
                         </el-select>
@@ -58,7 +58,7 @@
                     <a onclick="openAddStudentDiv()" id="add-student-a"><i class="el-icon-plus">新学员</i></a>
                 </div>
                 <br>
-                <div id="add-student-div" hidden="hidden">
+                <div id="add-student-div">
                     <label class="float-left">姓名：</label>
                     <input type="text" class="my-input float-left" id="enter-student-name" placeholder="请填入学员姓名">
                     <label class="float-left">性别：</label>
@@ -83,9 +83,9 @@
                 <span id="actual-pay" class="pay-span"></span>
                 <br>
                 <div class="alert alert-warning" id="add-order-error" hidden="hidden"></div>
-                <button class="my-button" id="add-order-btn">计算总价</button>
+                <button class="my-button" id="add-order-btn">立即下单</button>
             </div>
-            <div id="check-div">
+            <div id="check-div" hidden="hidden">
                 <div class="search-container">
                     <label class="float-left">班级类型：</label>
                     <div id="select-class-type1">

@@ -101,6 +101,14 @@ public class PlanServiceImpl implements PlanService {
             c.add(Calendar.DATE,-14);
             Date two_week = c.getTime();
             Date now = new Date();
+
+            //比较课程开始时间和当前时间
+            if(now.before(begin)){
+                json.put("is_begin","false");
+            }else{
+                json.put("is_begin","true");
+            }
+
             //比较课程开始两周前的时间和当前时间
             if(now.before(two_week)){
                 json.put("is_two_week","true");
