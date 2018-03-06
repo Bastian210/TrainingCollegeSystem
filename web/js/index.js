@@ -20,6 +20,8 @@ function book(lessonid) {
 
 $(function () {
     $(document).ready(function () {
+        $("#college-subject").hide();
+
         $.ajax({
             url: "/index.getLessonList",
             type: "post",
@@ -32,6 +34,9 @@ $(function () {
     
     $("#primary-school").click(function () {
         if($("#primary-school input").prop("checked")){
+            $("#under-college-subject").show();
+            $("#college-subject").hide();
+
             $("#physics input").attr("disabled",true);
             $("#chemistry input").attr("disabled",true);
             $("#politics input").attr("disabled",true);
@@ -43,6 +48,9 @@ $(function () {
 
     $("#middle-school").click(function () {
         if($("#middle-school input").prop("checked")){
+            $("#under-college-subject").show();
+            $("#college-subject").hide();
+
             $("#physics input").removeAttr("disabled");
             $("#chemistry input").removeAttr("disabled");
             $("#politics input").attr("disabled",true);
@@ -53,13 +61,23 @@ $(function () {
     });
 
     $("#high-school").click(function () {
-        if($("#high-school").prop("checked")){
+        if($("#high-school input").prop("checked")){
+            $("#under-college-subject").show();
+            $("#college-subject").hide();
+
             $("#physics input").removeAttr("disabled");
             $("#chemistry input").removeAttr("disabled");
             $("#politics input").removeAttr("disabled");
             $("#history input").removeAttr("disabled");
             $("#geography input").removeAttr("disabled");
             $("#biology input").removeAttr("disabled");
+        }
+    });
+
+    $("#college").click(function () {
+        if($("#college input").prop("checked")){
+            $("#under-college-subject").hide();
+            $("#college-subject").show();
         }
     });
 
@@ -78,33 +96,78 @@ $(function () {
         if($("#high-school input").prop("checked")){
             school = "高中";
         }
+        if($("#college input").prop("checked")){
+            school = "大学";
+        }
         var subject = new Array();
-        if($("#chinese input").prop("checked")){
-            subject.push("语文");
-        }
-        if($("#math input").prop("checked")){
-            subject.push("数学");
-        }
-        if($("#english input").prop("checked")){
-            subject.push("英语");
-        }
-        if($("#physics input").prop("checked")){
-            subject.push("物理");
-        }
-        if($("#chemistry input").prop("checked")){
-            subject.push("化学");
-        }
-        if($("#politics input").prop("checked")){
-            subject.push("政治");
-        }
-        if($("#history input").prop("checked")){
-            subject.push("历史");
-        }
-        if($("#geography input").prop("checked")){
-            subject.push("地理");
-        }
-        if($("#biology input").prop("checked")){
-            subject.push("生物");
+        if(school=="大学"){
+            if($("#philosophy input").prop("checked")){
+                subject.push("哲学");
+            }
+            if($("#economy input").prop("checked")){
+                subject.push("经济学");
+            }
+            if($("#law input").prop("checked")){
+                subject.push("法学");
+            }
+            if($("#education input").prop("checked")){
+                subject.push("教育学");
+            }
+            if($("#literature input").prop("checked")){
+                subject.push("文学");
+            }
+            if($("#college-history input").prop("checked")){
+                subject.push("历史学");
+            }
+            if($("#science input").prop("checked")){
+                subject.push("理学");
+            }
+            if($("#engineering input").prop("checked")){
+                subject.push("工学");
+            }
+            if($("#agronomy input").prop("checked")){
+                subject.push("农学");
+            }
+            if($("#medical input").prop("checked")){
+                subject.push("医学");
+            }
+            if($("#military input").prop("checked")){
+                subject.push("军事学");
+            }
+            if($("#management input").prop("checked")){
+                subject.push("管理学");
+            }
+            if($("#art input").prop("checked")){
+                subject.push("艺术学");
+            }
+        }else{
+            if($("#chinese input").prop("checked")){
+                subject.push("语文");
+            }
+            if($("#math input").prop("checked")){
+                subject.push("数学");
+            }
+            if($("#english input").prop("checked")){
+                subject.push("英语");
+            }
+            if($("#physics input").prop("checked")){
+                subject.push("物理");
+            }
+            if($("#chemistry input").prop("checked")){
+                subject.push("化学");
+            }
+            if($("#politics input").prop("checked")){
+                subject.push("政治");
+            }
+            if($("#history input").prop("checked")){
+                subject.push("历史");
+            }
+            if($("#geography input").prop("checked")){
+                subject.push("地理");
+            }
+            if($("#biology input").prop("checked")){
+                subject.push("生物");
+            }
         }
         
         $.ajax({
