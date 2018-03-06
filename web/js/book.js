@@ -25,19 +25,15 @@ function openAddStudentDiv() {
     }else{
         max = 3;
     }
-    console.log(max);
     if(students.length==max){
         $("#add-order-error").html("每单不能超过"+max+"个学员！");
         $("#add-order-error").show();
         setTimeout(function () {
             $("#add-order-error").hide();
         },1000);
-        console.log("每单不能超过"+max+"个学员！");
     }else{
-        var classtype = $("#enter-class-type").val();
+        var classtype = $("#book-enter-class-type").val();
         if($("#switch div").attr("aria-checked")&&classtype!=""){
-            console.log(classtype);
-            console.log(classes);
             for(var i=0;i<classes.length;i++){
                 if(classes[i]["classtype"]==classtype){
                     if(parseInt(classes[i]["left"])==students.length){
@@ -52,10 +48,8 @@ function openAddStudentDiv() {
                     break;
                 }
             }
-            console.log("名额不够");
         }else{
             $("#add-student-div").show();
-            console.log("显示！");
         }
     }
 }
@@ -67,11 +61,12 @@ function openAddStudentDiv() {
 function deleteStudent(name) {
     for(var i=0;i<students.length;i++){
         if(students[i]["name"]==name){
-            students.splice(students[i],1);
+            students.splice(i,1);
             break;
         }
     }
     showStudents();
+    calcucate();
 }
 
 /**
@@ -84,6 +79,38 @@ function showStudents() {
     }
     content = content+"<a onclick=\"openAddStudentDiv()\" id=\"add-student-a\"><i class=\"el-icon-plus\">新学员</i></a>";
     $("#student-tags").html(content);
+}
+
+/**
+ * 计算总价
+ */
+function calcucate() {
+    if(!$("#switch div").attr("aria-checked")){ //不选班级按最低价计算
+        var min = parseFloat(classes[0]["price"]);
+        for(var i=0;i<classes.length;i++){
+            if(parseFloat(classes[i]["price"])<min){
+                min = parseFloat(classes[i]["price"]);
+            }
+        }
+        total = min*students.length;
+    }else{
+        var type = $("#book-enter-class-type").val();
+        for(var i=0;i<classes.length;i++){
+            if(classes[i]["classtype"]==type){
+                total = students.length*parseFloat(classes[i]["price"]);
+                break;
+            }
+        }
+    }
+    actual = total*(1-discount);
+    if($("#use-points").prop("checked")){
+        actual = actual-reserve;
+    }
+    actual = actual.toFixed(2);
+    if(actual>0){
+        $("#need-price").html("合计"+total+"元");
+        $("#actual-pay").html("需付"+actual+"元");
+    }
 }
 
 $(function () {
@@ -137,7 +164,11 @@ $(function () {
                 $("#lesson-message-div").html(content);
                 new Vue().$mount("#lesson-message-div");
 
-                console.log(leftList);
+                var is_two_week = data["is_two_week"];
+                if(is_two_week=="false"){
+                    $("#switch").hide();
+                }
+
                 for(var i=0;i<typeList.length;i++){
                     var cla = {classtype: typeList[i],price: priceList[i],left: leftList[i]};
                     classes.push(cla);
@@ -154,6 +185,11 @@ $(function () {
                                 }],
                                 value: ''
                             }
+                        },
+                        methods: {
+                            classTypeChanged(){
+                                calcucate();
+                            }
                         }
                     };
                 }else if(typeList.length==2){
@@ -168,6 +204,11 @@ $(function () {
                                     label: typeList[1]
                                 }],
                                 value: ''
+                            }
+                        },
+                        methods: {
+                            classTypeChanged(){
+                                calcucate();
                             }
                         }
                     }
@@ -186,6 +227,11 @@ $(function () {
                                     label: typeList[2]
                                 }],
                                 value: ''
+                            }
+                        },
+                        methods: {
+                            classTypeChanged(){
+                                calcucate();
                             }
                         }
                     }
@@ -249,18 +295,29 @@ $(function () {
                 $("#add-student-error").hide();
             },1000);
         }else{
-            var student = {name: name, gender: gender, education: education};
-            students.push(student);
-            showStudents();
-            $("#add-student-div").hide();
+            var isRepeat = false;
+            for(var i=0;i<students.length;i++){
+                if(students[i]["name"]==name){
+                    isRepeat = true;
+                    break;
+                }
+            }
+            if(isRepeat){
+                $("#add-student-error").html("已经添加了此学员！");
+                $("#add-student-error").show();
+                setTimeout(function () {
+                    $("#add-student-error").hide();
+                },1000);
+            }else{
+                var student = {name: name, gender: gender, education: education};
+                students.push(student);
+                showStudents();
+                $("#add-student-div").hide();
 
-            calcucate();
-            clearAddStudentDiv();
+                calcucate();
+                clearAddStudentDiv();
+            }
         }
-    });
-
-    $('#enter-class-type').bind('input propertychange', function() {
-        calcucate();
     });
 
     $("#use-points").click(function () {
@@ -290,36 +347,6 @@ $(function () {
     }
 
     /**
-     * 计算总价
-     */
-    function calcucate() {
-        if(!$("#switch div").attr("aria-checked")){ //不选班级按最低价计算
-            var min = parseFloat(classes[0]["price"]);
-            for(var i=0;i<classes.length;i++){
-                if(parseFloat(classes[i]["price"])<min){
-                    min = parseFloat(classes[i]["price"]);
-                }
-            }
-            total = min*students.length;
-        }else{
-            var type = $("#enter-class-type").val();
-            for(var i=0;i<classes.length;i++){
-                if(classes[i]["classtype"]==type){
-                    total = students.length*parseFloat(classes[i]["price"]);
-                    break;
-                }
-            }
-        }
-        $("#need-price").html("合计"+total+"元");
-        actual = total*(1-discount);
-        if($("#use-points").prop("checked")){
-            actual = actual-reserve;
-        }
-        actual = actual.toFixed(2);
-        $("#actual-pay").html("需付"+actual+"元");
-    }
-
-    /**
      * 去绑定支付账号
      */
     $("#bind-pay-account-btn").click(function () {
@@ -338,7 +365,7 @@ $(function () {
             max = 9;
         }else{
             type = "选班级";
-            classtype = $("#enter-class-type").val();
+            classtype = $("#book-enter-class-type").val();
             max = 3;
         }
         var name = new Array(students.length);
@@ -482,7 +509,6 @@ $(function () {
                             $("#pay-error").hide();
                         },1000);
                     }else{
-                        console.log("success");
                         window.open("/myOrder","_self");
                     }
                 }

@@ -35,13 +35,15 @@
             </div>
             <br>
             <label class="float-left" id="class-type-label">班级：</label>
-            <div id="select-class-type">
-                <template>
-                    <el-select v-model="value" placeholder="请选择班级类型" id="enter-class-type">
-                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                    </el-select>
-                </template>
+            <div class="select-class-type">
+                <div id="select-class-type">
+                    <template>
+                        <el-select v-model="value" clearable placeholder="请选择班级类型" id="book-enter-class-type" @blur="classTypeChanged()">
+                            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </template>
+                </div>
             </div>
             <br>
             <label class="float-left">学员：</label>
@@ -49,7 +51,7 @@
                 <a onclick="openAddStudentDiv()" id="add-student-a"><i class="el-icon-plus">新学员</i></a>
             </div>
             <br>
-            <div id="add-student-div" hidden="hidden">
+            <div id="add-student-div">
                 <label class="float-left">姓名：</label>
                 <input type="text" class="my-input float-left" id="enter-student-name" placeholder="请填入学员姓名">
                 <label class="float-left">性别：</label>

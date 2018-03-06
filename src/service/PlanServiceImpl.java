@@ -11,10 +11,7 @@ import utils.Param;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class PlanServiceImpl implements PlanService {
@@ -91,6 +88,24 @@ public class PlanServiceImpl implements PlanService {
         json.put("priceList",priceList);
         json.put("price",getPriceRange(priceList));
         json.put("leftList",leftList);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date begin = sdf.parse(first.getBegin());
+            Calendar c = Calendar.getInstance();
+            c.setTime(begin);
+            c.add(Calendar.DATE,-14);
+            Date two_week = c.getTime();
+            Date now = new Date();
+            //比较课程开始两周前的时间和当前时间
+            if(now.before(two_week)){
+                json.put("is_two_week","true");
+            }else{
+                json.put("is_two_week","false");
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return json;
     }
 
@@ -124,7 +139,6 @@ public class PlanServiceImpl implements PlanService {
             String[] classNumList = new String[newList.size()];
             String[] stuNumList = new String[newList.size()];
             String[] priceList = new String[newList.size()];
-//            String[] leftList = new String[newList.size()];
             for(int k=0;k<newList.size();k++){
                 Plans plans = (Plans) newList.get(k);
                 teacherList[k] = plans.getTeacher();
@@ -132,7 +146,6 @@ public class PlanServiceImpl implements PlanService {
                 classNumList[k] = String.valueOf(plans.getClassnum());
                 stuNumList[k] = String.valueOf(plans.getStudentnum());
                 priceList[k] = String.valueOf(plans.getPrice());
-//                leftList[k] = String.valueOf(plans.getStudentnum()*plans.getClassnum()-plans.getSold());
             }
             json.put("price",getPriceRange(priceList));
             json.put("teacherList",teacherList);
@@ -140,7 +153,6 @@ public class PlanServiceImpl implements PlanService {
             json.put("classNumList",classNumList);
             json.put("stuNumList",stuNumList);
             json.put("priceList",priceList);
-//            json.put("leftList",leftList);
             jsonObjects[i] = json;
         }
         return jsonObjects;
