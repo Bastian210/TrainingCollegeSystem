@@ -53,6 +53,13 @@ public interface InstitutionDao {
     public void updatePasswordById(String id,String password);
 
     /**
+     * 根据teacherskey来找teacher
+     * @param key
+     * @return
+     */
+    public Teachers findTeacherByTeacherKey(TeachersKey key);
+
+    /**
      * 保存教师
      * @param teachers
      */

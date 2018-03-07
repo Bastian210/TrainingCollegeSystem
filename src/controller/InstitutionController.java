@@ -113,9 +113,9 @@ public class InstitutionController {
     @ResponseBody
     @RequestMapping(value = "/insManagement.addTeacher",method = RequestMethod.POST)
     public String doAddTeacher(@RequestParam(value = "name")String name,@RequestParam(value = "gender")String gender,@RequestParam(value = "type")String type){
-        getInstitutionService().AddTeacher(Param.getInstitutionid(),name,gender,type);
+        String result = getInstitutionService().AddTeacher(Param.getInstitutionid(),name,gender,type);
         JSONObject json = new JSONObject();
-        json.put("result","success");
+        json.put("result",result);
         return json.toString();
     }
 

@@ -1,5 +1,11 @@
 
 'use strict';
+
+var indexlist;
+var namelist;
+var genderlist;
+var typelist;
+
 /**
  * 打开改变教师信息的模态框
  * @param name
@@ -22,7 +28,6 @@ function changeTeacher(name,gender,type) {
  * @param name
  */
 function deleteTeacher(name) {
-    console.log(name);
     $("#teacher-name-span").html(name);
     $("#delete-teacher-modal").modal("show");
 }
@@ -391,6 +396,7 @@ $(function () {
     $("#cancel-add-btn").click(function () {
         $("#add-teacher-div").hide();
         $("#display-teachers-div").show();
+        clearAddTeacherDiv();
     });
 
     /**
@@ -423,9 +429,19 @@ $(function () {
                 },
                 dataType: "json",
                 success: function (data) {
-                    $("#add-teacher-div").hide();
-                    $("#display-teachers-div").show();
-                    getAllTeacher();
+                    var result = data["result"];
+                    if(result=="success"){
+                        $("#add-teacher-div").hide();
+                        $("#display-teachers-div").show();
+                        getAllTeacher();
+                        clearAddTeacherDiv();
+                    }else{
+                        $("#add-teacher-error").html("已经添加了此教师！");
+                        $("#add-teacher-error").show();
+                        setTimeout(function () {
+                            $("#add-teacher-error").hide();
+                        },1000);
+                    }
                 }
             });
         }
@@ -440,19 +456,53 @@ $(function () {
             type: "post",
             dataType: "json",
             success: function (data) {
-                var indexlist = data["index"];
-                var namelist = data["name"];
-                var genderlist = data["gender"];
-                var typelist = data["type"];
-                var content = "";
-                for(var i=0;i<indexlist.length;i++){
-                    content = content+"<tr><td>"+indexlist[i]+"</td><td>"+namelist[i]+"</td><td>"+genderlist[i]
-                        +"</td><td>"+typelist[i]+"</td><td><a onclick=\"changeTeacher('"+namelist[i]+"','"
-                        +genderlist[i]+"','"+typelist[i]+"')\">修改</a><a onclick=\"deleteTeacher('"+namelist[i]+"')\">删除</a></td></tr>";
+                indexlist = data["index"];
+                namelist = data["name"];
+                genderlist = data["gender"];
+                typelist = data["type"];
+
+                if(indexlist.length>10){
+                    var content = "<el-pagination background layout=\"total, prev, pager, next, jumper\" :page-size=\"10\" :total=\""+indexlist.length+"\" @current-change=\"handleCurrentChange\">\n" +
+                        "                </el-pagination>";
+                    $("#my-pagination").html(content);
+
+                    var Main = {
+                        methods: {
+                            handleCurrentChange(val) {
+                                PagingDisplay(val);
+                            }
+                        }
+                    }
+                    var Ctor = Vue.extend(Main)
+                    new Ctor().$mount('#my-pagination')
                 }
-                $("#display-content").html(content);
+
+                PagingDisplay(1);
             }
         });
+    }
+
+    /**
+     * 分页展示教师信息
+     * @param val
+     * @constructor
+     */
+    function PagingDisplay(val) {
+        var content = "";
+
+        var begin = (val-1)*10;
+        var end = 0;
+        if(indexlist.length-begin<10){
+            end = indexlist.length;
+        }else{
+            end = begin+10;
+        }
+        for(var i=begin;i<end;i++){
+            content = content+"<tr><td>"+indexlist[i]+"</td><td>"+namelist[i]+"</td><td>"+genderlist[i]
+                +"</td><td>"+typelist[i]+"</td><td><a onclick=\"changeTeacher('"+namelist[i]+"','"
+                +genderlist[i]+"','"+typelist[i]+"')\">修改</a><a onclick=\"deleteTeacher('"+namelist[i]+"')\">删除</a></td></tr>";
+        }
+        $("#display-content").html(content);
     }
 
     /**
@@ -500,4 +550,14 @@ $(function () {
             }
         });
     });
+
+    /**
+     * 清空添加教师输入框中的内容
+     */
+    function clearAddTeacherDiv() {
+        $("#enter-teacher-name").val("");
+        $("#man").removeAttr("checked");
+        $("#woman").removeAttr("checked");
+        $("#cascader input").val("");
+    }
 });

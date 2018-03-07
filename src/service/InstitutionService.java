@@ -81,8 +81,9 @@ public interface InstitutionService {
      * @param name
      * @param gender
      * @param type
+     * @return
      */
-    public void AddTeacher(String id,String name,String gender,String type);
+    public String AddTeacher(String id,String name,String gender,String type);
 
     /**
      * 得到教育机构的所有老师

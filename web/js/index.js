@@ -1,5 +1,7 @@
 'use strict';
 
+var result;
+
 /**
  * 保存lessonid到java静态变量中
  * @param lessonid
@@ -190,10 +192,41 @@ $(function () {
      * @param data
      */
     function displayLesson(data) {
-        var result = data["result"];
-        console.log(result);
+        result = data["result"];
+        
+        var content = "<el-pagination background layout=\"total, prev, pager, next, jumper\" :page-size=\"5\" :total=\""+result.length+"\" @current-change=\"handleCurrentChange\">\n" +
+            "                </el-pagination>";
+        $("#my-pagination").html(content);
+        
+        var Main = {
+            methods: {
+                handleCurrentChange(val) {
+                    PagingDisplay(val);
+                }
+            }
+        }
+        var Ctor = Vue.extend(Main)
+        new Ctor().$mount('#my-pagination')
+
+        PagingDisplay(1);
+    }
+
+    /**
+     * 分页展示
+     * @param val
+     * @constructor
+     */
+    function PagingDisplay(val) {
         var content = "";
-        for(var i=0;i<result.length;i++){
+
+        var begin = (val-1)*5;
+        var last = 0;
+        if(result.length-begin<5){
+            last = result.length;
+        }else{
+            last = begin+5;
+        }
+        for(var i=begin;i<last;i++){
             var json = JSON.parse(JSON.stringify(result[i]));
             content = content+"<div class=\"show-one-plan\">\n" +
                 "                    <label class=\"plan-name\">"+json["name"]+"</label>\n" +

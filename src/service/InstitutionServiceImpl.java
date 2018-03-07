@@ -132,9 +132,15 @@ public class InstitutionServiceImpl implements InstitutionService {
     }
 
     @Override
-    public void AddTeacher(String id, String name, String gender, String type) {
-        Teachers teachers = new Teachers(id,name,gender,type);
-        institutionDao.saveTeacher(teachers);
+    public String AddTeacher(String id, String name, String gender, String type) {
+        Teachers teachers = institutionDao.findTeacherByTeacherKey(new TeachersKey(id,name));
+        if(teachers!=null){
+            return "fail";
+        }else{
+            teachers = new Teachers(id,name,gender,type);
+            institutionDao.saveTeacher(teachers);
+            return "success";
+        }
     }
 
     @Override

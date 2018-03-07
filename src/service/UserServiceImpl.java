@@ -45,6 +45,7 @@ public class UserServiceImpl implements UserService {
             Param.setUserid(user.getUserid());
             result = "success";
         }
+        System.out.println("login:"+Param.getUserid());
         return result;
     }
 

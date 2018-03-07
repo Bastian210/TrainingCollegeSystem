@@ -74,6 +74,10 @@
                             <tbody id="display-content">
                             </tbody>
                         </table>
+                        <div id="my-pagination">
+                            <el-pagination background layout="total, prev, pager, next, jumper" :page-size="5" :total="18" @current-change="handleCurrentChange">
+                            </el-pagination>
+                        </div>
                     </div>
                     <div id="add-teacher-div" hidden="hidden">
                         <label>教师姓名：</label>
@@ -280,6 +284,49 @@
                     },{
                         value: 'shengwu',
                         label: '生物',
+                    }]
+                },{
+                    value: "",
+                    label: "大学",
+                    children: [{
+                        value: "",
+                        label: "哲学",
+                    },{
+                        value: "",
+                        label: "经济学"
+                    },{
+                        value: "",
+                        label: "法学"
+                    },{
+                        value: "",
+                        label: "教育学"
+                    },{
+                        value: "",
+                        label: "文学"
+                    },{
+                        value: "",
+                        label: "历史学"
+                    },{
+                        value: "",
+                        label: "理学"
+                    },{
+                        value: "",
+                        label: "工学"
+                    },{
+                        value: "",
+                        label: "农学"
+                    },{
+                        value: "",
+                        label: "医学"
+                    },{
+                        value: "",
+                        label: "军事学"
+                    },{
+                        value: "",
+                        label: "管理学"
+                    },{
+                        value: "",
+                        label: "艺术学"
                     }]
                 }],
                 selectedOptions: [],
