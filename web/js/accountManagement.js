@@ -128,7 +128,7 @@ $(function () {
         $("#pay-account-li").removeAttr("class");
         $("#account-safety-li").removeAttr("class");
         $("#consume-statistics-li").attr("class","active");
-        $("#chosen-li").html("账号安全");
+        $("#chosen-li").html("消费统计");
         $("#user-message-div").hide();
         $("#my-points-div").hide();
         $("#pay-account-div").hide();

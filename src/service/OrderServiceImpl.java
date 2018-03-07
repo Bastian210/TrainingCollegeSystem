@@ -298,11 +298,12 @@ public class OrderServiceImpl implements OrderService {
         JSONObject[] jsonObjects = new JSONObject[list.size()];
         for(int i=0;i<list.size();i++){
             Orders orders = (Orders) list.get(i);
+            User user = userDao.findUserByUserid(orders.getUserid());
             JSONObject json = new JSONObject();
             json.put("time",orders.getOrdertime().substring(0,10));
             json.put("orderid",orders.getOrderid());
             json.put("institutionname",institutionDao.findInstitutionById(orders.getInstitutionid()).getInstitutionname());
-            json.put("username",userDao.findUserByUserid(orders.getUserid()).getUsername());
+            json.put("username",user.getUsername());
             List list1 = planDao.getPlanByLessonId(orders.getLessonid());
             Plans plans = (Plans) list1.get(0);
             json.put("lessonname",plans.getLesson());
@@ -314,7 +315,6 @@ public class OrderServiceImpl implements OrderService {
             json.put("state",orders.getState());
             json.put("begintime",plans.getBegin());
             if(orders.getState().equals("未支付")){
-                User user = userDao.findUserByUserid(orders.getUserid());
                 int level = user.getLevel();
                 if(orders.getPrice()*(1-level/100.0)==orders.getActualpay()){
                     json.put("checkbox","no");

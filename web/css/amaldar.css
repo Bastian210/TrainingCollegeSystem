@@ -27,6 +27,7 @@
 
 .title a.active{
     background-color: #409EFF;
+    color: white;
 }
 
 .main-content {
