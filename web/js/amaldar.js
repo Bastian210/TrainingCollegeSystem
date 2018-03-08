@@ -1,6 +1,9 @@
 
 'use strict'
 
+var register_array;
+var changeMess_array;
+
 /**
  * 拒绝注册申请
  * @param id
@@ -82,20 +85,27 @@ function getRegisterApply() {
         type: "post",
         dataType: 'json',
         success: function (data) {
-            var result = data["result"];
+            register_array = data["result"];
 
-            if(result.length==0){
+            if(register_array.length==0){
                 $("#register-apply-div").html("<p>没有等待处理的注册请求！</p>");
             }else{
-                var content = "<table width=\"100%\">\n" +
-                    "                    <tr><th>机构名称</th><th>机构地址</th><th>联系方式</th><th>操作类型</th></tr>";
-                for(var i=0;i<result.length;i++){
-                    var json = JSON.parse(JSON.stringify(result[i]));
-                    content = content+"<tr><td>"+json["name"]+"</td><td>"+json["address"]+"</td><td>"+json["phone"]+"</td><td><a onclick=\"refuseRegister('"
-                        +json["id"]+"')\">拒绝</a><a onclick=\"agreeRegister('"+json["id"]+"')\">批准</a></td></tr>";
+                if(register_array.length>10){
+                    var content = "<el-pagination background layout=\"total, prev, pager, next, jumper\" :page-size=\"10\" :total=\""+register_array.length+"\" @current-change=\"handleCurrentChange\">\n" +
+                        "                </el-pagination>";
+                    $("#register-apply-pagination").html(content);
+
+                    var Main = {
+                        methods: {
+                            handleCurrentChange(val) {
+                                PagingDisplayRegister(val);
+                            }
+                        }
+                    }
+                    var Ctor = Vue.extend(Main);
+                    new Ctor().$mount("#register-apply-pagination");
                 }
-                content = content+"</table>";
-                $("#register-apply-div").html(content);
+                PagingDisplayRegister(1);
             }
         }
     });
@@ -110,23 +120,80 @@ function getChangeMessApply() {
         type: "post",
         dataType: 'json',
         success: function (data) {
-            var result = data["result"];
+            changeMess_array = data["result"];
 
-            if(result.length==0){
+            if(changeMess_array.length==0){
                 $("#changeMess-apply-div").html("<p>没有等待处理的机构信息修改请求！</p>");
             }else{
-                var content = "<table width=\"100%\">\n" +
-                    "                    <tr><th>机构识别号</th><th>机构名称</th><th>机构地址</th><th>联系方式</th><th>操作类型</th></tr>";
-                for(var i=0;i<result.length;i++){
-                    var json = JSON.parse(JSON.stringify(result[i]));
-                    content = content+"<tr><td>"+json["id"]+"</td><td>"+json["name"]+"</td><td>"+json["address"]+"</td><td>"+json["phone"]+"</td><td><a onclick=\"refuseChange('"
-                        +json["id"]+"')\">拒绝</a><a onclick=\"agreeChange('"+json["id"]+"')\">批准</a></td></tr>";
+                if(changeMess_array.length>10){
+                    var content = "<el-pagination background layout=\"total, prev, pager, next, jumper\" :page-size=\"10\" :total=\""+changeMess_array.length+"\" @current-change=\"handleCurrentChange\">\n" +
+                        "                </el-pagination>";
+                    $("#changeMess-apply-pagination").html(content);
+
+                    var Main = {
+                        methods: {
+                            handleCurrentChange(val) {
+                                PagingDisplayChangeMess(val);
+                            }
+                        }
+                    }
+                    var Ctor = Vue.extend(Main);
+                    new Ctor().$mount("#changeMess-apply-pagination");
                 }
-                content = content+"</table>";
-                $("#changeMess-apply-div").html(content);
+                PagingDisplayChangeMess(1);
             }
         }
     });
+}
+
+/**
+ * 分页展示注册申请列表
+ * @param val
+ * @constructor
+ */
+function PagingDisplayRegister(val) {
+    var begin = (val-1)*10;
+    var end = 0;
+    if(register_array.length-begin<10){
+        end = register_array.length;
+    }else{
+        end = begin+10;
+    }
+
+    var content = "<table width=\"100%\">\n" +
+        "                    <tr><th>机构名称</th><th>机构地址</th><th>联系方式</th><th>操作类型</th></tr>";
+    for(var i=begin;i<end;i++){
+        var json = JSON.parse(JSON.stringify(register_array[i]));
+        content = content+"<tr><td>"+json["name"]+"</td><td>"+json["address"]+"</td><td>"+json["phone"]+"</td><td><a onclick=\"refuseRegister('"
+            +json["id"]+"')\">拒绝</a><a onclick=\"agreeRegister('"+json["id"]+"')\">批准</a></td></tr>";
+    }
+    content = content+"</table>";
+    $("#register-apply-div").html(content);
+}
+
+/**
+ * 分页展示修改机构信息申请列表
+ * @param val
+ * @constructor
+ */
+function PagingDisplayChangeMess(val) {
+    var begin = (val-1)*10;
+    var end = 0;
+    if(changeMess_array.length-begin<10){
+        end = changeMess_array.length;
+    }else{
+        end = begin+10;
+    }
+
+    var content = "<table width=\"100%\">\n" +
+        "                    <tr><th>机构识别号</th><th>机构名称</th><th>机构地址</th><th>联系方式</th><th>操作类型</th></tr>";
+    for(var i=begin;i<end;i++){
+        var json = JSON.parse(JSON.stringify(changeMess_array[i]));
+        content = content+"<tr><td>"+json["id"]+"</td><td>"+json["name"]+"</td><td>"+json["address"]+"</td><td>"+json["phone"]+"</td><td><a onclick=\"refuseChange('"
+            +json["id"]+"')\">拒绝</a><a onclick=\"agreeChange('"+json["id"]+"')\">批准</a></td></tr>";
+    }
+    content = content+"</table>";
+    $("#changeMess-apply-div").html(content);
 }
 
 $(function () {
@@ -153,62 +220,6 @@ $(function () {
             });
         },5000);
     });
-
-    /**
-     * 得到所有注册申请
-     */
-    function getRegisterApply() {
-        $.ajax({
-            url:"/amaldar.getRegisterApply",
-            type: "post",
-            dataType: 'json',
-            success: function (data) {
-                var result = data["result"];
-
-                if(result.length==0){
-                    $("#register-apply-div").html("<p>没有等待处理的注册请求！</p>");
-                }else{
-                    var content = "<table width=\"100%\">\n" +
-                        "                    <tr><th>机构名称</th><th>机构地址</th><th>联系方式</th><th>操作类型</th></tr>";
-                    for(var i=0;i<result.length;i++){
-                        var json = JSON.parse(JSON.stringify(result[i]));
-                        content = content+"<tr><td>"+json["name"]+"</td><td>"+json["address"]+"</td><td>"+json["phone"]+"</td><td><a onclick=\"refuseRegister('"
-                            +json["id"]+"')\">拒绝</a><a onclick=\"agreeRegister('"+json["id"]+"')\">批准</a></td></tr>";
-                    }
-                    content = content+"</table>";
-                    $("#register-apply-div").html(content);
-                }
-            }
-        });
-    }
-
-    /**
-     * 得到所有消息修改申请
-     */
-    function getChangeMessApply() {
-        $.ajax({
-            url:"/amaldar.getChangeMessApply",
-            type: "post",
-            dataType: 'json',
-            success: function (data) {
-                var result = data["result"];
-
-                if(result.length==0){
-                    $("#changeMess-apply-div").html("<p>没有等待处理的机构信息修改请求！</p>");
-                }else{
-                    var content = "<table width=\"100%\">\n" +
-                        "                    <tr><th>机构识别号</th><th>机构名称</th><th>机构地址</th><th>联系方式</th><th>操作类型</th></tr>";
-                    for(var i=0;i<result.length;i++){
-                        var json = JSON.parse(JSON.stringify(result[i]));
-                        content = content+"<tr><td>"+json["id"]+"</td><td>"+json["name"]+"</td><td>"+json["address"]+"</td><td>"+json["phone"]+"</td><td><a onclick=\"refuseChange('"
-                            +json["id"]+"')\">拒绝</a><a onclick=\"agreeChange('"+json["id"]+"')\">批准</a></td></tr>";
-                    }
-                    content = content+"</table>";
-                    $("#changeMess-apply-div").html(content);
-                }
-            }
-        });
-    }
 
     $("#register-apply-a").click(function () {
         $("#register-apply-a").attr("class","active");
