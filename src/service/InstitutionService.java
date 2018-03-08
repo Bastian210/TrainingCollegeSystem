@@ -109,6 +109,14 @@ public interface InstitutionService {
     public void DeleteTeacher(String id, String name);
 
     /**
+     * 得到一个机构内主教某门课的教师列表
+     * @param institutionid
+     * @param type
+     * @return
+     */
+    public String[] GetTeacherName(String institutionid,String type);
+
+    /**
      * 得到机构申请列表
      * @return
      */

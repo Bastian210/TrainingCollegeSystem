@@ -165,6 +165,18 @@ public class InstitutionDaoImpl implements InstitutionDao {
     }
 
     @Override
+    public List findTeacherByIdAndType(String id, String type) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        String hql = String.format("from model.Teachers as t where t.institutionid = '%s' and t.type='%s'", id, type);
+        Query query = session.createQuery(hql);
+        List list = query.list();
+        transaction.commit();
+        session.close();
+        return list;
+    }
+
+    @Override
     public List findInstitutionByState(String state) {
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();

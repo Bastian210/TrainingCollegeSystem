@@ -142,6 +142,10 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/institution.getTeacher</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
         <url-pattern>/institution.addPlan</url-pattern>
     </servlet-mapping>
     <servlet-mapping>

@@ -87,6 +87,14 @@ public interface InstitutionDao {
     public void deleteTeacher(TeachersKey key);
 
     /**
+     * 根据id和type查找教师
+     * @param id
+     * @param type
+     * @return
+     */
+    public List findTeacherByIdAndType(String id,String type);
+
+    /**
      * 根据状态查找机构
      * @param state
      * @return

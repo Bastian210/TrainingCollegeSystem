@@ -150,6 +150,15 @@ public class InstitutionController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/institution.getTeacher",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+    public String doGetTeacherByLessonType(@RequestParam(value = "type")String type){
+        String[] result = getInstitutionService().GetTeacherName(Param.getInstitutionid(),type);
+        JSONObject json = new JSONObject();
+        json.put("result",result);
+        return json.toString();
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/amaldar.getRegisterApply",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
     public String doRegisterApply(){
         JSONObject[] jsonObjects = getInstitutionService().GetRegisterApply();

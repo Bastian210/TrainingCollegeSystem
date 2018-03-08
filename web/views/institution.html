@@ -40,7 +40,7 @@
                 <label class="float-left top10">课程类型：</label>
                 <div id="cascader">
                     <div class="block">
-                        <el-cascader expand-trigger="hover" :options="options" v-model="selectedOptions">
+                        <el-cascader expand-trigger="hover" :options="options" v-model="selectedOptions" @change="changeLessonType">
                         </el-cascader>
                     </div>
                 </div>
@@ -86,7 +86,14 @@
                     <div id="edit-class-div">
                         <span hidden="hidden" id="type">add</span>
                         <label>教师：</label>
-                        <input class="my-input" id="enter-teachers" placeholder="请填入教师名称">
+                        <div id="enter-teachers">
+                            <template>
+                                <el-select v-model="value5" multiple placeholder="请选择">
+                                    <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </template>
+                        </div>
                         <a id="add-teacher-a">添加教师</a>
                         <br>
                         <label class="float-left top10">班级类型：</label>
@@ -322,53 +329,66 @@
                         label: '生物',
                     }]
                 },{
-                    value: "",
+                    value: "college",
                     label: "大学",
                     children: [{
-                        value: "",
+                        value: "zhexue",
                         label: "哲学",
                     },{
-                        value: "",
+                        value: "jingji",
                         label: "经济学"
                     },{
-                        value: "",
+                        value: "faxue",
                         label: "法学"
                     },{
-                        value: "",
+                        value: "jiaoyu",
                         label: "教育学"
                     },{
-                        value: "",
+                        value: "wenxue",
                         label: "文学"
                     },{
-                        value: "",
+                        value: "lishi",
                         label: "历史学"
                     },{
-                        value: "",
+                        value: "lixue",
                         label: "理学"
                     },{
-                        value: "",
+                        value: "gongxue",
                         label: "工学"
                     },{
-                        value: "",
+                        value: "nongxue",
                         label: "农学"
                     },{
-                        value: "",
+                        value: "yixue",
                         label: "医学"
                     },{
-                        value: "",
+                        value: "junshi",
                         label: "军事学"
                     },{
-                        value: "",
+                        value: "guanli",
                         label: "管理学"
                     },{
-                        value: "",
+                        value: "yishu",
                         label: "艺术学"
                     }]
                 }],
                 selectedOptions: [],
             };
         },
-
+        methods: {
+            changeLessonType(value){
+                var obj = {};
+                obj = this.options.find((item)=>{
+                    return item.value === value[0];
+                });
+                var subject = {};
+                subject = obj.children.find((item)=>{
+                    return item.value===value[1];
+                })
+                var result = obj.label+"/"+subject.label;
+                GetTeacher(result);
+            }
+        }
     };
     var Ctor6 = Vue.extend(Main6)
     new Ctor6().$mount('#cascader')

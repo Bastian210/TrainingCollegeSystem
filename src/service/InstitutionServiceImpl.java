@@ -177,6 +177,17 @@ public class InstitutionServiceImpl implements InstitutionService {
     }
 
     @Override
+    public String[] GetTeacherName(String institutionid, String type) {
+        List list = institutionDao.findTeacherByIdAndType(institutionid, type);
+        String[] result = new String[list.size()];
+        for(int i=0;i<list.size();i++){
+            Teachers teacher = (Teachers) list.get(i);
+            result[i] = teacher.getName();
+        }
+        return result;
+    }
+
+    @Override
     public JSONObject[] GetRegisterApply() {
         List list = institutionDao.findInstitutionByState("not checked");
         JSONObject[] jsonObjects = new JSONObject[list.size()];

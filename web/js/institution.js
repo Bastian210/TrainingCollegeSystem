@@ -8,6 +8,39 @@ var stunumlist = new Array(3);
 var pricelist = new Array(3);
 
 /**
+ * 根据选中的课程类型得到相应的教师名单
+ * @constructor
+ */
+function GetTeacher(val) {
+    $.ajax({
+        url: "/institution.getTeacher",
+        type: "post",
+        dataType: "json",
+        data: {
+            type: val
+        },
+        success: function (data) {
+            var result = data["result"];
+            var choose = new Array(result.length);
+            for(var i=0;i<result.length;i++){
+                var value = "选项"+i;
+                var option = {
+                    value: value,
+                    label: result[i]
+                };
+                choose[i] = option;
+            }
+
+            var content = "";
+            for(var i=0;i<result.length;i++){
+                content = content+"<li class=\"el-select-dropdown__item hover\"><span>"+result[i]+"</span></li>";
+            }
+            $("div.el-scrollbar ul").html(content);
+        }
+    });
+}
+
+/**
  * 编辑班级
  * @param i
  */
@@ -134,6 +167,11 @@ function releasePlan(lessonid) {
     });
 }
 
+/**
+ * 保存lessonid到Java静态变量中，打开insLesson界面
+ * @param lessonid
+ * @constructor
+ */
 function ViewDetail(lessonid) {
     $.ajax({
         url: "/institution.saveLessonid",
@@ -297,143 +335,21 @@ $(function () {
         }
 
         getAllPlan();
-    });
 
-    /**
-     * 得到所有计划
-     */
-    function getAllPlan() {
-        $.ajax({
-            url: "/institution.getPlanList",
-            type: "post",
-            dataType: "json",
-            success: function (data) {
-                var result = data["result"];
-                var content1 = "";
-                var content2 = "";
-                var content3 = "";
-                for(var i=0;i<result.length;i++){
-                    var json = JSON.parse(JSON.stringify(result[i]));
-                    if(json["state"]=="undetermined"){
-                        var state = "待定中";
-                        content1 = content1+"<div class=\"show-one-plan\">\n" +
-                            "                    <label class=\"plan-name\">"+json["name"]+"</label>\n" +
-                            "                    <label>"+json["type"]+"</label>\n" +
-                            "                    <i class=\"el-icon-delete\" onclick=\"deletePlan('"+json["lessonid"]+"')\"></i>\n" +
-                            "                    <i class=\"el-icon-edit\" onclick=\"editPlan('"+json["lessonid"]+"')\"></i>\n" +
-                            "                    <br>\n" +
-                            "                    <span class=\"description\">"+json["description"]+"</span>\n" +
-                            "                    <br>\n" +
-                            "                    <label class=\"detail\">课程时间："+json["begin"]+"至"+json["end"]+"</label>\n" +
-                            "                    <label class=\"detail\">地址："+json["address"]+"</label>\n" +
-                            "                    <label class=\"detail\">状态："+state+"</label>\n" +
-                            "                    <label class=\"detail\">价格："+json["price"]+"元</label>\n" +
-                            "                    <el-collapse>\n" +
-                            "                        <el-collapse-item title=\"查看班级\">\n" +
-                            "                            <table width=\"100%\">";
-                        var teacherList = json["teacherList"];
-                        var typeList = json["typeList"];
-                        var classNumList = json["classNumList"];
-                        var stuNumList = json["stuNumList"];
-                        var priceList = json["priceList"];
-                        for(var k=0;k<teacherList.length;k++){
-                            content1 = content1+"<tr><td>教师："+teacherList[k]+"</td><td>班级类型："+typeList[k]+"</td><td>班级数："+classNumList[k]
-                                +"</td><td>容纳人数："+stuNumList[k]+"</td><td>价格："+priceList[k]+"元</td></tr>";
-                        }
-                        content1 = content1+"</table>\n" +
-                            "                        </el-collapse-item>\n" +
-                            "                    </el-collapse>\n" +
-                            "                    <button class=\"my-button\" onclick=\"releasePlan('"+json["lessonid"]+"')\">发布计划</button></div>";
-                    }else if(json["state"]=="end"||json["state"]=="outtime"){
-                        var state = "";
-                        if(json["state"]=="end"){
-                            state = "已结束";
-                        }else{
-                            state = "取消发布";
-                        }
-                        content2 = content2+"<div class=\"show-one-plan\">\n" +
-                            "                    <label class=\"plan-name\">"+json["name"]+"</label>\n" +
-                            "                    <label>"+json["type"]+"</label>\n" +
-                            "                    <br>\n" +
-                            "                    <span class=\"description\">"+json["description"]+"</span>\n" +
-                            "                    <br>\n" +
-                            "                    <label class=\"detail\">课程时间："+json["begin"]+"至"+json["end"]+"</label>\n" +
-                            "                    <label class=\"detail\">地址："+json["address"]+"</label>\n" +
-                            "                    <label class=\"detail\">状态："+state+"</label>\n" +
-                            "                    <label class=\"detail\">价格："+json["price"]+"元</label>\n" +
-                            "                    <el-collapse>\n" +
-                            "                        <el-collapse-item title=\"查看班级\">\n" +
-                            "                            <table width=\"100%\">";
-                        var teacherList = json["teacherList"];
-                        var typeList = json["typeList"];
-                        var classNumList = json["classNumList"];
-                        var stuNumList = json["stuNumList"];
-                        var priceList = json["priceList"];
-                        for(var k=0;k<teacherList.length;k++){
-                            content2 = content2+"<tr><td>教师："+teacherList[k]+"</td><td>班级类型："+typeList[k]+"</td><td>班级数："+classNumList[k]
-                                +"</td><td>容纳人数："+stuNumList[k]+"</td><td>价格："+priceList[k]+"元</td></tr>";
-                        }
-                        content2 = content2+"</table>\n" +
-                            "                        </el-collapse-item>\n" +
-                            "                    </el-collapse>\n" +
-                            "                </div>";
-                    }else{
-                        var state = "";
-                        if(json["state"]=="start"){
-                            state = "开课中";
-                        }else{
-                            state = "预订中";
-                        }
-                        content3 = content3+"<div class=\"show-one-plan\">\n" +
-                            "                    <label class=\"plan-name\">"+json["name"]+"</label>\n" +
-                            "                    <label>"+json["type"]+"</label>\n" +
-                            "                    <a onclick=\"ViewDetail('"+json["lessonid"]+"')\">管理课程</a>\n" +
-                            "                    <br>\n" +
-                            "                    <span class=\"description\">"+json["description"]+"</span>\n" +
-                            "                    <br>\n" +
-                            "                    <label class=\"detail\">课程时间："+json["begin"]+"至"+json["end"]+"</label>\n" +
-                            "                    <label class=\"detail\">地址："+json["address"]+"</label>\n" +
-                            "                    <label class=\"detail\">状态："+state+"</label>\n" +
-                            "                    <label class=\"detail\">价格："+json["price"]+"元</label>\n" +
-                            "                    <el-collapse>\n" +
-                            "                        <el-collapse-item title=\"查看班级\">\n" +
-                            "                            <table width=\"100%\">";
-                        var teacherList = json["teacherList"];
-                        var typeList = json["typeList"];
-                        var classNumList = json["classNumList"];
-                        var stuNumList = json["stuNumList"];
-                        var priceList = json["priceList"];
-                        for(var k=0;k<teacherList.length;k++){
-                            content3 = content3+"<tr><td>教师："+teacherList[k]+"</td><td>班级类型："+typeList[k]+"</td><td>班级数："+classNumList[k]
-                                +"</td><td>容纳人数："+stuNumList[k]+"</td><td>价格："+priceList[k]+"元</td></tr>";
-                        }
-                        content3= content3+"</table>\n" +
-                            "                        </el-collapse-item>\n" +
-                            "                    </el-collapse>\n" +
-                            "                </div>";
-                    }
+        var Main = {
+            data() {
+                return {
+                    options: [{
+                        value: "",
+                        label: "text",
+                    }],
+                    value5: ''
                 }
-                if(content1==""){
-                    $("#undetermined-plan-div").html("<p>当前没有待定中的计划！</p>")
-                }else{
-                    $("#undetermined-plan-div").html(content1);
-                }
-                if(content2==""){
-                    $("#past-courses-div").html("<p>当前没有已结束或者取消发布的计划！</p>");
-                }else{
-                    $("#past-courses-div").html(content2);
-                }
-                if(content3==""){
-                    $("#recent-courses-div").html("<p>当前没有上课中或者预定中的计划！</p>");
-                }else{
-                    $("#recent-courses-div").html(content3);
-                }
-                new Vue().$mount('#undetermined-plan-div');
-                new Vue().$mount("#past-courses-div");
-                new Vue().$mount("#recent-courses-div");
             }
-        });
-    }
+        };
+        var Ctor = Vue.extend(Main);
+        new Ctor().$mount('#enter-teachers');
+    });
 
     /**
      * 机构注册
@@ -620,11 +536,7 @@ $(function () {
      * 添加教师
      */
     $("#add-teacher-a").click(function () {
-        var teachers = $("#enter-teachers").val();
-        if(teachers==""||teachers[teachers.length-1]==";"){
-        }else{
-            $("#enter-teachers").val(teachers+";");
-        }
+        window.open("/insManagement");
     });
 
     /**
@@ -633,7 +545,7 @@ $(function () {
     $("#cancel-edit-btn").click(function () {
         $("#edit-class-div").hide();
         $("#add-class-a").show();
-        $("#enter-teachers").val("");
+        $("#enter-teachers div.el-select__tags").html("<span></span>");
         $("#select-class-type").val("");
         $("#enter-class-number input").val(1);
         $("#enter-student-number input").val(1);
@@ -644,7 +556,14 @@ $(function () {
      * 保存添加/编辑
      */
     $("#save-class-btn").click(function () {
-        var teachers = $("#enter-teachers").val();
+        var teachers = "";
+        $("#enter-teachers span.el-select__tags-text").each(function () {
+            if(teachers===""){
+                teachers = $(this).text();
+            }else{
+                teachers = teachers+";"+$(this).text();
+            }
+        });
         var type = $("#select-class-type").val();
         var classNum = $("#enter-class-number input").val();
         var stuNum = $("#enter-student-number input").val();
