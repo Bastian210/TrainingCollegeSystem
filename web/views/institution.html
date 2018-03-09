@@ -6,6 +6,10 @@
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap-select/2.0.0-beta1/css/bootstrap-select.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/bootstrap-select/2.0.0-beta1/js/bootstrap-select.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-select/2.0.0-beta1/js/i18n/defaults-zh_CN.min.js"></script>
+
     <script src="/js/institution.js"></script>
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/institution.css">
@@ -86,14 +90,7 @@
                     <div id="edit-class-div">
                         <span hidden="hidden" id="type">add</span>
                         <label>教师：</label>
-                        <div id="enter-teachers">
-                            <template>
-                                <el-select v-model="value5" multiple placeholder="请选择">
-                                    <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-                                    </el-option>
-                                </el-select>
-                            </template>
-                        </div>
+                        <select class="selectpicker" id="enter-teachers" multiple></select>
                         <a id="add-teacher-a">添加教师</a>
                         <br>
                         <label class="float-left top10">班级类型：</label>

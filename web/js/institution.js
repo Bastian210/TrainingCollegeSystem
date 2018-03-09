@@ -21,21 +21,12 @@ function GetTeacher(val) {
         },
         success: function (data) {
             var result = data["result"];
-            var choose = new Array(result.length);
-            for(var i=0;i<result.length;i++){
-                var value = "选项"+i;
-                var option = {
-                    value: value,
-                    label: result[i]
-                };
-                choose[i] = option;
-            }
-
             var content = "";
             for(var i=0;i<result.length;i++){
-                content = content+"<li class=\"el-select-dropdown__item hover\"><span>"+result[i]+"</span></li>";
+                content = content+"<option value='"+result[i]+"'>"+result[i]+"</option>";
             }
-            $("div.el-scrollbar ul").html(content);
+            $("#enter-teachers").html(content);
+            $('.selectpicker').selectpicker('refresh');
         }
     });
 }
@@ -336,19 +327,9 @@ $(function () {
 
         getAllPlan();
 
-        var Main = {
-            data() {
-                return {
-                    options: [{
-                        value: "",
-                        label: "text",
-                    }],
-                    value5: ''
-                }
-            }
-        };
-        var Ctor = Vue.extend(Main);
-        new Ctor().$mount('#enter-teachers');
+        $(".selectpicker").selectpicker({
+            noneSelectedText : '请选择教师'
+        });
     });
 
     /**
@@ -545,7 +526,7 @@ $(function () {
     $("#cancel-edit-btn").click(function () {
         $("#edit-class-div").hide();
         $("#add-class-a").show();
-        $("#enter-teachers div.el-select__tags").html("<span></span>");
+        $("#enter-teachers").val("");
         $("#select-class-type").val("");
         $("#enter-class-number input").val(1);
         $("#enter-student-number input").val(1);
@@ -556,14 +537,15 @@ $(function () {
      * 保存添加/编辑
      */
     $("#save-class-btn").click(function () {
+        var list = $("#enter-teachers").val();
         var teachers = "";
-        $("#enter-teachers span.el-select__tags-text").each(function () {
-            if(teachers===""){
-                teachers = $(this).text();
+        for(var i=0;i<list.length;i++){
+            if(teachers==""){
+                teachers = teachers+list[i];
             }else{
-                teachers = teachers+";"+$(this).text();
+                teachers = teachers+";"+list[i];
             }
-        });
+        }
         var type = $("#select-class-type").val();
         var classNum = $("#enter-class-number input").val();
         var stuNum = $("#enter-student-number input").val();
