@@ -21,7 +21,6 @@ public class ViewController {
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String getIndex(ModelMap model){
-        System.out.println("\n"+Param.getUserid()+"\n");
         if(Param.getUserid()==null){
             return "login";
         }

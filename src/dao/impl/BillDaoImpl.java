@@ -1,7 +1,8 @@
-package dao;
+package dao.impl;
 
+import dao.BillDao;
 import model.Bill;
-import model.BillKey;
+import model.key.BillKey;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;

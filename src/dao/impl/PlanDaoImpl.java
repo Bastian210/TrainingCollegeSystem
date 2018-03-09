@@ -1,17 +1,14 @@
-package dao;
+package dao.impl;
 
+import dao.PlanDao;
 import model.Plans;
-import model.PlansKey;
+import model.key.PlansKey;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
-import service.PlanService;
 import utils.HibernateUtil;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @Repository

@@ -1,9 +1,9 @@
-package dao;
+package dao.impl;
 
+import dao.InstitutionDao;
 import model.Institution;
 import model.Teachers;
-import model.TeachersKey;
-import org.hibernate.Criteria;
+import model.key.TeachersKey;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;

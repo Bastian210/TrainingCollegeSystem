@@ -1,7 +1,8 @@
-package dao;
+package dao.impl;
 
+import dao.LessonDao;
 import model.Lesson;
-import model.LessonKey;
+import model.key.LessonKey;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;

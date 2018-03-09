@@ -2,7 +2,7 @@ package dao;
 
 import model.Institution;
 import model.Teachers;
-import model.TeachersKey;
+import model.key.TeachersKey;
 
 import java.util.List;
 

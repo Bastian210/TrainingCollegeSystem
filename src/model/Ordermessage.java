@@ -1,5 +1,7 @@
 package model;
 
+import model.key.OrdermessageKey;
+
 import javax.persistence.*;
 import java.io.Serializable;
 

@@ -1,7 +1,7 @@
 package dao;
 
 import model.Plans;
-import model.PlansKey;
+import model.key.PlansKey;
 
 import java.util.List;
 

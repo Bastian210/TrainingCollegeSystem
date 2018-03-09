@@ -1,5 +1,6 @@
-package dao;
+package dao.impl;
 
+import dao.UserDao;
 import model.SecurityCode;
 import model.User;
 import org.hibernate.Session;

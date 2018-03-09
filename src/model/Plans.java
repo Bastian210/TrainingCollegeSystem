@@ -1,6 +1,7 @@
 package model;
 
-import javax.naming.Name;
+import model.key.PlansKey;
+
 import javax.persistence.*;
 import java.io.Serializable;
 

@@ -1,5 +1,6 @@
-package dao;
+package dao.impl;
 
+import dao.OrderDao;
 import model.Ordermessage;
 import model.Orders;
 import org.hibernate.Session;

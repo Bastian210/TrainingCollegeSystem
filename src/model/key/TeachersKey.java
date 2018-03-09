@@ -1,8 +1,6 @@
-package model;
+package model.key;
 
-import javax.persistence.Column;
 import java.io.Serializable;
-import java.util.Objects;
 
 public class TeachersKey implements Serializable {
     private static final long serialVersionUID = 1L;

@@ -1,5 +1,6 @@
-package dao;
+package dao.impl;
 
+import dao.PaymentDao;
 import model.Payment;
 import org.hibernate.Session;
 import org.hibernate.Transaction;

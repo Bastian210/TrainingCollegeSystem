@@ -1,7 +1,7 @@
 package dao;
 
 import model.Lesson;
-import model.LessonKey;
+import model.key.LessonKey;
 
 import java.util.List;
 

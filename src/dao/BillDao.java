@@ -1,7 +1,7 @@
 package dao;
 
 import model.Bill;
-import model.BillKey;
+import model.key.BillKey;
 
 import java.util.List;
 

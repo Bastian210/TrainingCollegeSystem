@@ -1,5 +1,7 @@
 package model;
 
+import model.key.BillKey;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
