@@ -61,6 +61,7 @@
                         <button class="my-button" id="show-add-teacher-btn">新增教师</button>
                     </div>
                     <div id="display-teachers-div">
+                        <p id="none-teachers-p">机构内尚无教师！</p>
                         <table class="display-table">
                             <thead>
                             <tr>
@@ -74,10 +75,7 @@
                             <tbody id="display-content">
                             </tbody>
                         </table>
-                        <div id="my-pagination">
-                            <el-pagination background layout="total, prev, pager, next, jumper" :page-size="5" :total="18" @current-change="handleCurrentChange">
-                            </el-pagination>
-                        </div>
+                        <div id="my-pagination"></div>
                     </div>
                     <div id="add-teacher-div" hidden="hidden">
                         <label>教师姓名：</label>
@@ -187,8 +185,13 @@
                 <input type="radio" name="change-gender-option" class="my-input-radio" id="choose-man">男
                 <input type="radio" name="change-gender-option" class="my-input-radio" id="choose-woman">女
                 <br>
-                <label>课程类型</label>
-                <input type="text" class="my-input" id="enter-change-type" placeholder="请填入主教课程">
+                <label class="float-left top10">课程类型：</label>
+                <div id="enter-change-type">
+                    <div class="block">
+                        <el-cascader expand-trigger="hover" :options="options" v-model="selectedOptions">
+                        </el-cascader>
+                    </div>
+                </div>
             </div>
             <div class="form-modal-footer">
                 <button class="my-button" data-dismiss="modal">取消</button>
@@ -286,46 +289,46 @@
                         label: '生物',
                     }]
                 },{
-                    value: "",
+                    value: "daxue",
                     label: "大学",
                     children: [{
-                        value: "",
+                        value: "zhexue",
                         label: "哲学",
                     },{
-                        value: "",
+                        value: "jingji",
                         label: "经济学"
                     },{
-                        value: "",
+                        value: "faxue",
                         label: "法学"
                     },{
-                        value: "",
+                        value: "jiaoyu",
                         label: "教育学"
                     },{
-                        value: "",
+                        value: "wenxue",
                         label: "文学"
                     },{
-                        value: "",
+                        value: "lishi",
                         label: "历史学"
                     },{
-                        value: "",
+                        value: "lixue",
                         label: "理学"
                     },{
-                        value: "",
+                        value: "gongxue",
                         label: "工学"
                     },{
-                        value: "",
+                        value: "nongxue",
                         label: "农学"
                     },{
-                        value: "",
+                        value: "yixue",
                         label: "医学"
                     },{
-                        value: "",
+                        value: "junshi",
                         label: "军事学"
                     },{
-                        value: "",
+                        value: "guanli",
                         label: "管理学"
                     },{
-                        value: "",
+                        value: "yishu",
                         label: "艺术学"
                     }]
                 }],
@@ -336,5 +339,8 @@
     };
     var Ctor = Vue.extend(Main)
     new Ctor().$mount('#cascader')
+
+    var Ctor2 = Vue.extend(Main);
+    new Ctor2().$mount("#enter-change-type");
 </script>
 </html>

@@ -2,10 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>教育机构</title>
+    <title>修改计划</title>
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap-select/2.0.0-beta1/css/bootstrap-select.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/bootstrap-select/2.0.0-beta1/js/bootstrap-select.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-select/2.0.0-beta1/js/i18n/defaults-zh_CN.min.js"></script>
+
     <script src="/js/editPlan.js"></script>
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/institution.css">
@@ -35,7 +39,7 @@
                 <label class="float-left top10">课程类型：</label>
                 <div id="cascader">
                     <div class="block">
-                        <el-cascader expand-trigger="hover" :options="options" v-model="selectedOptions">
+                        <el-cascader expand-trigger="hover" :options="options" v-model="selectedOptions" @change="changeLessonType">
                         </el-cascader>
                     </div>
                 </div>
@@ -69,7 +73,7 @@
 
                 <div class="manage-class">
                     <span>管理班级</span>
-                    <a id="add-class-a" hidden="hidden">新增班级</a>
+                    <a id="add-class-a">新增班级</a>
                 </div>
 
                 <div id="edit-class-container">
@@ -78,10 +82,10 @@
                         <table width="100%" id="display-class">
                         </table>
                     </div>
-                    <div id="edit-class-div">
+                    <div id="edit-class-div" hidden="hidden">
                         <span hidden="hidden" id="type">add</span>
                         <label>教师：</label>
-                        <input class="my-input" id="enter-teachers" placeholder="请填入教师名称">
+                        <select class="selectpicker" id="enter-teachers" multiple></select>
                         <a id="add-teacher-a">添加教师</a>
                         <br>
                         <label class="float-left top10">班级类型：</label>
@@ -216,13 +220,13 @@
             return {
                 options: [{
                     value: '选项1',
-                    label: '大班'
+                    label: '冲刺班'
                 }, {
                     value: '选项2',
-                    label: '中班'
+                    label: '提高班'
                 }, {
                     value: '选项3',
-                    label: '小班'
+                    label: '普通班'
                 }],
                 value: ''
             }
@@ -297,11 +301,67 @@
                         value: 'shengwu',
                         label: '生物',
                     }]
+                },{
+                    value: "college",
+                    label: "大学",
+                    children: [{
+                        value: "zhexue",
+                        label: "哲学",
+                    },{
+                        value: "jingji",
+                        label: "经济学"
+                    },{
+                        value: "faxue",
+                        label: "法学"
+                    },{
+                        value: "jiaoyu",
+                        label: "教育学"
+                    },{
+                        value: "wenxue",
+                        label: "文学"
+                    },{
+                        value: "lishi",
+                        label: "历史学"
+                    },{
+                        value: "lixue",
+                        label: "理学"
+                    },{
+                        value: "gongxue",
+                        label: "工学"
+                    },{
+                        value: "nongxue",
+                        label: "农学"
+                    },{
+                        value: "yixue",
+                        label: "医学"
+                    },{
+                        value: "junshi",
+                        label: "军事学"
+                    },{
+                        value: "guanli",
+                        label: "管理学"
+                    },{
+                        value: "yishu",
+                        label: "艺术学"
+                    }]
                 }],
                 selectedOptions: [],
             };
         },
-
+        methods: {
+            changeLessonType(value){
+                var obj = {};
+                obj = this.options.find((item)=>{
+                    return item.value === value[0];
+                });
+                var subject = {};
+                subject = obj.children.find((item)=>{
+                    return item.value===value[1];
+                })
+                var result = obj.label+"/"+subject.label;
+                GetTeacher(result);
+            }
+        }
     };
     var Ctor6 = Vue.extend(Main6)
     new Ctor6().$mount('#cascader')

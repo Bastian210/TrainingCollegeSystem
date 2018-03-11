@@ -19,7 +19,7 @@ function changeTeacher(name,gender,type) {
     }else{
         $("#choose-woman").prop("checked",true);
     }
-    $("#enter-change-type").val(type);
+    $("#enter-change-type input").attr("value",type);
     $("#change-teacher-modal").modal("show");
 }
 
@@ -43,7 +43,7 @@ $(function () {
                 $("#enter-ins-name").val(data["name"]);
                 $("#enter-ins-address").val(data["address"]);
                 $("#enter-ins-phone").val(data["phone"]);
-                $("#total-profit").html(data["profit"]);
+                $("#total-profit").html("￥"+data["profit"]);
                 var payid = data["payid"];
                 if(payid==""){
                     $("#bind-account-div").show();
@@ -52,7 +52,7 @@ $(function () {
                     $("#bind-account-div").hide();
                     $("#has-bind-div").show();
                     $("#account-id-span").html(payid);
-                    $("#account-balance-span").html(data["balance"]);
+                    $("#account-balance-span").html("￥"+data["balance"]);
                 }
 
                 var month = data["month"];
@@ -461,23 +461,30 @@ $(function () {
                 genderlist = data["gender"];
                 typelist = data["type"];
 
-                if(indexlist.length>10){
-                    var content = "<el-pagination background layout=\"total, prev, pager, next, jumper\" :page-size=\"10\" :total=\""+indexlist.length+"\" @current-change=\"handleCurrentChange\">\n" +
-                        "                </el-pagination>";
-                    $("#my-pagination").html(content);
+                if(indexlist.length===0){
+                    $("#none-teachers-p").show();
+                    $(".display-table").hide();
+                }else{
+                    $("#none-teachers-p").hide();
+                    $(".display-table").show();
+                    if(indexlist.length>10){
+                        var content = "<el-pagination background layout=\"total, prev, pager, next, jumper\" :page-size=\"10\" :total=\""+indexlist.length+"\" @current-change=\"handleCurrentChange\">\n" +
+                            "                </el-pagination>";
+                        $("#my-pagination").html(content);
 
-                    var Main = {
-                        methods: {
-                            handleCurrentChange(val) {
-                                PagingDisplay(val);
+                        var Main = {
+                            methods: {
+                                handleCurrentChange(val) {
+                                    PagingDisplay(val);
+                                }
                             }
                         }
+                        var Ctor = Vue.extend(Main)
+                        new Ctor().$mount('#my-pagination')
                     }
-                    var Ctor = Vue.extend(Main)
-                    new Ctor().$mount('#my-pagination')
-                }
 
-                PagingDisplay(1);
+                    PagingDisplay(1);
+                }
             }
         });
     }
@@ -516,7 +523,7 @@ $(function () {
         }else{
             gender = "女";
         }
-        var type = $("#enter-change-type").val();
+        var type = $("#enter-change-type input").attr("value");
         $.ajax({
             url: "/insManagement.changeTeacherMess",
             type: "post",

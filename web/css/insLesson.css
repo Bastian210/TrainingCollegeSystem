@@ -158,19 +158,15 @@
     margin-top: -10px;
 }
 
-#add-student-div .my-button{
-    margin-left: 230px;
-}
-
 #onsite-pay-div .my-button{
     margin-top: 20px;
-    margin-left: 140px;
+    margin-left: 250px;
 }
 
 .pay-span{
     font-size: 14px;
     padding: 20px;
-    line-height: 30px;
+    line-height: 50px;
 }
 
 #test-vip-a{
@@ -235,7 +231,6 @@
 }
 
 #onsite-book-result{
-    margin-top: 40px;
     padding-left: 20px;
 }
 

@@ -242,8 +242,11 @@ $(function () {
                     }
                 }
                 var Ctor = Vue.extend(Main);
-                new Ctor().$mount('#select-class-type');
-                new Ctor().$mount('#select-class-type1');
+                if(is_begin=="false"){
+                    new Ctor().$mount('#select-class-type');
+                }else{
+                    new Ctor().$mount('#select-class-type1');
+                }
             }
         });
     });
@@ -253,6 +256,10 @@ $(function () {
         $("#check-a").removeAttr("class");
         $("#onsite-pay-div").show();
         $("#check-div").hide();
+
+        clearOnsitePayDiv();
+        $("#add-order-form").show();
+        $("#onsite-book-result").hide();
     });
 
     $("#check-a").click(function () {
@@ -262,6 +269,9 @@ $(function () {
         $("#check-div").show();
     });
 
+    /**
+     * 根据有无会员选择来显示会员号输入框
+     */
     $("#switch div").click(function () {
         if($("#switch div").attr("aria-checked")){
             $("#user-id-label").hide();
@@ -381,6 +391,18 @@ $(function () {
             }
         });
     });
+    
+    //清空现场缴费的输入框
+    function clearOnsitePayDiv() {
+        $("#switch div").removeAttr("aria-checked");
+        $("#user-id-label").show();
+        $("#enter-user-id").show();
+        $("#enter-class-type").val("");
+        students = [];
+        showStudents();
+        $("#add-student-div").show();
+        $("#actual-pay").hide();
+    }
 
     /**
      * 立即下单
@@ -448,6 +470,7 @@ $(function () {
                     content = content+"</table>"
                     $("#onsite-book-result").show();
                     $("#onsite-book-result").html(content);
+                    $("#add-order-form").hide();
                 }
             });
         }

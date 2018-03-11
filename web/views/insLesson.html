@@ -31,59 +31,61 @@
         </div>
         <div class="main-content">
             <div id="onsite-pay-div">
-                <label class="float-left less10">是否会员：</label>
-                <div id="switch">
-                    <template>
-                        <el-switch v-model="value1" active-text="是" inactive-text="否">
-                        </el-switch>
-                    </template>
-                </div>
-                <br>
-                <label id="user-id-label">会员号：</label>
-                <input type="text" class="my-input" id="enter-user-id" placeholder="请填入会员号">
-                <a id="test-vip-a">验证</a>
-                <br>
-                <label class="float-left">选择班级：</label>
-                <div id="select-class-type">
-                    <template>
-                        <el-select v-model="value" placeholder="请选择班级类型" id="enter-class-type" @blur="classTypeChanged()">
-                            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-                            </el-option>
-                        </el-select>
-                    </template>
-                </div>
-                <br>
-                <label class="float-left">学员：</label>
-                <div id="student-tags">
-                    <a onclick="openAddStudentDiv()" id="add-student-a"><i class="el-icon-plus">新学员</i></a>
-                </div>
-                <br>
-                <div id="add-student-div">
-                    <label class="float-left">姓名：</label>
-                    <input type="text" class="my-input float-left" id="enter-student-name" placeholder="请填入学员姓名">
-                    <label class="float-left">性别：</label>
-                    <div class="radio">
-                        <label><input type="radio" name="options-gender" id="option-man">男</label>
-                        <label><input type="radio" name="options-gender" id="option-woman">女</label>
-                    </div>
-                    <label class="float-left">教育背景：</label>
-                    <div id="select">
+                <div id="add-order-form">
+                    <label class="float-left less10">是否会员：</label>
+                    <div id="switch">
                         <template>
-                            <el-select v-model="value" placeholder="请选择教育背景">
+                            <el-switch v-model="value1" active-text="是" inactive-text="否">
+                            </el-switch>
+                        </template>
+                    </div>
+                    <br>
+                    <label id="user-id-label">会员号：</label>
+                    <input type="text" class="my-input" id="enter-user-id" placeholder="请填入会员号">
+                    <a id="test-vip-a">验证</a>
+                    <br>
+                    <label class="float-left">选择班级：</label>
+                    <div id="select-class-type">
+                        <template>
+                            <el-select v-model="value" placeholder="请选择班级类型" id="enter-class-type" @blur="classTypeChanged()">
                                 <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                                 </el-option>
                             </el-select>
                         </template>
                     </div>
                     <br>
-                    <div hidden="hidden" class="alert alert-warning" id="add-student-error"></div>
-                    <button class="my-button" id="cancel-add-student-btn">取消</button>
-                    <button class="my-button" id="add-student-btn">添加</button>
+                    <label class="float-left">学员：</label>
+                    <div id="student-tags">
+                        <a onclick="openAddStudentDiv()" id="add-student-a"><i class="el-icon-plus">新学员</i></a>
+                    </div>
+                    <br>
+                    <div id="add-student-div">
+                        <label class="float-left">姓名：</label>
+                        <input type="text" class="my-input float-left" id="enter-student-name" placeholder="请填入学员姓名">
+                        <label class="float-left">性别：</label>
+                        <div class="radio">
+                            <label><input type="radio" name="options-gender" id="option-man">男</label>
+                            <label><input type="radio" name="options-gender" id="option-woman">女</label>
+                        </div>
+                        <label class="float-left">教育背景：</label>
+                        <div id="select">
+                            <template>
+                                <el-select v-model="value" placeholder="请选择教育背景">
+                                    <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </template>
+                        </div>
+                        <br>
+                        <div hidden="hidden" class="alert alert-warning" id="add-student-error"></div>
+                        <button class="my-button" id="cancel-add-student-btn">取消</button>
+                        <button class="my-button" id="add-student-btn">添加</button>
+                    </div>
+                    <span id="actual-pay" class="pay-span"></span>
+                    <br>
+                    <div class="alert alert-warning" id="add-order-error" hidden="hidden"></div>
+                    <button class="my-button" id="add-order-btn" style="margin-left: 400px;">立即下单</button>
                 </div>
-                <span id="actual-pay" class="pay-span"></span>
-                <br>
-                <div class="alert alert-warning" id="add-order-error" hidden="hidden"></div>
-                <button class="my-button" id="add-order-btn">立即下单</button>
                 <div id="onsite-book-result" hidden="hidden"></div>
             </div>
             <div id="check-div" hidden="hidden">

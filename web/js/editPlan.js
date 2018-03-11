@@ -8,11 +8,37 @@ var stunumlist = new Array(3);
 var pricelist = new Array(3);
 
 /**
+ * 根据选中的课程类型得到相应的教师名单
+ * @constructor
+ */
+function GetTeacher(val) {
+    $.ajax({
+        url: "/institution.getTeacher",
+        type: "post",
+        dataType: "json",
+        data: {
+            type: val
+        },
+        success: function (data) {
+            var result = data["result"];
+            var content = "";
+            for(var i=0;i<result.length;i++){
+                content = content+"<option value='"+result[i]+"'>"+result[i]+"</option>";
+            }
+            $("#enter-teachers").html(content);
+            $('.selectpicker').selectpicker('refresh');
+        }
+    });
+}
+
+/**
  * 编辑班级
  * @param i
  */
 function editClass(i) {
-    $("#enter-teachers").val(teacherslist[i]);
+    var list = teacherslist[i].split(";");
+    $("#enter-teachers").selectpicker("val",list);
+    $("#enter-teachers").selectpicker("refresh");
     $("#select-class-type").val(typelist[i]);
     $("#enter-class-number input").val(classnumlist[i]);
     $("#enter-student-number input").val(stunumlist[i]);
@@ -69,18 +95,18 @@ function deleteClass(i) {
         pricelist[i] = priceList[i];
     }
 
-    diaplayAllClass();
+    displayAllClass();
 }
 
 /**
  * 展示已保存的班级
  */
-function diaplayAllClass() {
+function displayAllClass() {
     var content = "";
     for(var i=0;i<3;i++){
         if(teacherslist[i]!==""){
             content = content+"<tr><td>教师："+teacherslist[i]+"</td><td>班级类型："+typelist[i]+"</td><td>班级数："+classnumlist[i]
-                +"</td><td>容纳人数："+stunumlist[i]+"</td><td>价格："+pricelist[i]+"元</td><td><i class=\"el-icon-edit\" onclick='editClass("
+                +"</td><td>每班容纳人数："+stunumlist[i]+"</td><td>价格："+pricelist[i]+"元</td><td><i class=\"el-icon-edit\" onclick='editClass("
                 +i+")'></i><i class=\"el-icon-delete\" onclick='deleteClass("+i+")'></i></td></tr>";
         }
     }
@@ -119,7 +145,7 @@ $(function () {
                 var content = "";
                 for(var i=0;i<teacherList.length;i++){
                     content = content+"<tr><td>教师："+teacherList[i]+"</td><td>班级类型："+typeList[i]+"</td><td>班级数："+classNumList[i]
-                        +"</td><td>容纳人数："+stuNumList[i]+"</td><td>价格："+priceList[i]+"元</td><td><i class=\"el-icon-edit\" onclick='editClass("
+                        +"</td><td>每班容纳人数："+stuNumList[i]+"</td><td>价格："+priceList[i]+"元</td><td><i class=\"el-icon-edit\" onclick='editClass("
                         +i+")'></i><i class=\"el-icon-delete\" onclick='deleteClass("+i+")'></i></td></tr>";
                 }
                 $("#display-class").html(content);
@@ -139,7 +165,13 @@ $(function () {
                         pricelist[i] = "";
                     }
                 }
+
+                GetTeacher(type);
             }
+        });
+
+        $(".selectpicker").selectpicker({
+            noneSelectedText : '请选择教师'
         });
     });
 
@@ -164,11 +196,7 @@ $(function () {
      * 添加教师
      */
     $("#add-teacher-a").click(function () {
-        var teachers = $("#enter-teachers").val();
-        if(teachers==""||teachers[teachers.length-1]==";"){
-        }else{
-            $("#enter-teachers").val(teachers+";");
-        }
+        window.open("/insManagement");
     });
 
     /**
@@ -177,7 +205,8 @@ $(function () {
     $("#cancel-edit-btn").click(function () {
         $("#edit-class-div").hide();
         $("#add-class-a").show();
-        $("#enter-teachers").val("");
+        $("#enter-teachers").selectpicker("val",[]);
+        $("#enter-teachers").selectpicker("refresh");
         $("#select-class-type").val("");
         $("#enter-class-number input").val(1);
         $("#enter-student-number input").val(1);
@@ -188,7 +217,15 @@ $(function () {
      * 保存添加/编辑班级
      */
     $("#save-class-btn").click(function () {
-        var teachers = $("#enter-teachers").val();
+        var list = $("#enter-teachers").val();
+        var teachers = "";
+        for(var i=0;i<list.length;i++){
+            if(teachers==""){
+                teachers = teachers+list[i];
+            }else{
+                teachers = teachers+";"+list[i];
+            }
+        }
         var type = $("#select-class-type").val();
         var classNum = $("#enter-class-number input").val();
         var stuNum = $("#enter-student-number input").val();
@@ -208,23 +245,28 @@ $(function () {
             setTimeout(function () {
                 $("#edit-class-error").hide();
             },1000);
-        }else if(type==typelist[0]||type==typelist[1]||type==typelist[2]){
-            $("#edit-class-error").html("已有此班级类型！");
-            $("#edit-class-error").show();
-            setTimeout(function () {
-                $("#edit-class-error").hide();
-            },1000);
         }else{
+            var save_type = $("#type").text();
+
             var i = 0;
-            if($("#type").text()=="add"){
-                for(var i=0;i<3;i++){
-                    if(teacherslist[i]==""){
-                        teacherslist[i] = teachers;
-                        typelist[i] = type;
-                        classnumlist[i] = classNum;
-                        stunumlist[i] = stuNum;
-                        pricelist[i] = price;
-                        break;
+            if(save_type==="add"){
+                if(type===typelist[0]||type===typelist[1]||type===typelist[2]) {
+                    $("#edit-class-error").html("已有此班级类型！");
+                    $("#edit-class-error").show();
+                    setTimeout(function () {
+                        $("#edit-class-error").hide();
+                    }, 1000);
+                    return;
+                }else{
+                    for(var i=0;i<3;i++){
+                        if(teacherslist[i]==""){
+                            teacherslist[i] = teachers;
+                            typelist[i] = type;
+                            classnumlist[i] = classNum;
+                            stunumlist[i] = stuNum;
+                            pricelist[i] = price;
+                            break;
+                        }
                     }
                 }
             }else{
@@ -238,9 +280,10 @@ $(function () {
 
             $("#edit-class-div").hide();
             $("#add-class-a").show();
-            diaplayAllClass();
+            displayAllClass();
 
-            $("#enter-teachers").val("");
+            $("#enter-teachers").selectpicker("val",[]);
+            $("#enter-teachers").selectpicker("refresh");
             $("#select-class-type").val("");
             $("#enter-class-number input").val(1);
             $("#enter-student-number input").val(1);
@@ -249,22 +292,7 @@ $(function () {
     });
 
     /**
-     * 展示已保存的班级
-     */
-    function diaplayAllClass() {
-        var content = "";
-        for(var i=0;i<3;i++){
-            if(teacherslist[i]!=""){
-                content = content+"<tr><td>教师："+teacherslist[i]+"</td><td>班级类型："+typelist[i]+"</td><td>班级数："+classnumlist[i]
-                    +"</td><td>容纳人数："+stunumlist[i]+"</td><td>价格："+pricelist[i]+"元</td><td><i class=\"el-icon-edit\" onclick='editClass("
-                    +i+")'></i><i class=\"el-icon-delete\" onclick='deleteClass("+i+")'></i></td></tr>";
-            }
-        }
-        $("#display-class").html(content);
-    }
-
-    /**
-     * 添加计划
+     * 保存计划
      */
     $("#add-plan-btn").click(function () {
         var teacherList = new Array();

@@ -36,7 +36,9 @@ function GetTeacher(val) {
  * @param i
  */
 function editClass(i) {
-    $("#enter-teachers").val(teacherslist[i]);
+    var list = teacherslist[i].split(";");
+    $("#enter-teachers").selectpicker("val",list);
+    $("#enter-teachers").selectpicker("refresh");
     $("#select-class-type").val(typelist[i]);
     $("#enter-class-number input").val(classnumlist[i]);
     $("#enter-student-number input").val(stunumlist[i]);
@@ -93,18 +95,18 @@ function deleteClass(i) {
         pricelist[i] = priceList[i];
     }
 
-    diaplayAllClass();
+    displayAllClass();
 }
 
 /**
  * 展示已保存的班级
  */
-function diaplayAllClass() {
+function displayAllClass() {
     var content = "";
     for(var i=0;i<3;i++){
         if(teacherslist[i]!==""){
             content = content+"<tr><td>教师："+teacherslist[i]+"</td><td>班级类型："+typelist[i]+"</td><td>班级数："+classnumlist[i]
-                +"</td><td>容纳人数："+stunumlist[i]+"</td><td>价格："+pricelist[i]+"元</td><td><i class=\"el-icon-edit\" onclick='editClass("
+                +"</td><td>每班容纳人数："+stunumlist[i]+"</td><td>价格："+pricelist[i]+"元</td><td><i class=\"el-icon-edit\" onclick='editClass("
                 +i+")'></i><i class=\"el-icon-delete\" onclick='deleteClass("+i+")'></i></td></tr>";
         }
     }
@@ -332,126 +334,6 @@ $(function () {
         });
     });
 
-    /**
-     * 机构注册
-     */
-    $("#institution-register-btn").click(function () {
-        var name = $("#enter-institution-name").val();
-        var address = $("#enter-address").val();
-        var phone = $("#enter-phone").val();
-        var password1 = $("#enter-institution-password1").val();
-        var password2 = $("#enter-institution-password2").val();
-        var reg1 = /^1(3|4|5|7|8)\\d{9}$/;
-        var reg2 = /^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/;
-        if(name==""||address==""||phone==""||password1==""||password2==""){
-            $("#institution-register-error").html("请将注册信息填写完整！");
-            $("#institution-register-error").show();
-            setTimeout(function () {
-                $("#institution-register-error").hide();
-            },1000);
-        }else if(password1.length<6||password1.length>16){
-            $("#institution-register-error").html("密码长度不规范！");
-            $("#institution-register-error").show();
-            setTimeout(function () {
-                $("#institution-register-error").hide();
-            },1000);
-        }else if(password2!=password1){
-            $("#institution-register-error").html("两次密码不相同！");
-            $("#institution-register-error").show();
-            setTimeout(function () {
-                $("#institution-register-error").hide();
-            },1000);
-        }else if(!(reg1.test(phone)||reg2.test(phone))){
-            $("#institution-register-error").html("联系方式填写不正确！");
-            $("#institution-register-error").show();
-            setTimeout(function () {
-                $("#institution-register-error").hide();
-            },1000);
-        }else{
-            $.ajax({
-                url: "/register.institution",
-                type: "post",
-                data: {
-                    name: name,
-                    address: address,
-                    phone: phone,
-                    password: password1
-                },
-                dataType: "json",
-                success: function (data) {
-                    var result = data["result"];
-                    if(result=="has register"){
-                        $("#institution-register-error").html("该机构已被注册！");
-                        $("#institution-register-error").show();
-                        setTimeout(function () {
-                            $("#institution-register-error").hide();
-                        },1000);
-                    }else{
-                        //显示识别码，并让其等待审核
-                        $("#ins-id").html("此机构识别码为"+result+"！");
-                        $("#insReg-success-modal").modal("show");
-                    }
-                }
-            });
-        }
-    });
-
-    /**
-     * 机构登录
-     */
-    $("#institution-login-btn").click(function () {
-        var id = $("#enter-institution-id").val();
-        var password = $("#enter-institution-password").val();
-        if(id==""||password==""){
-            $("#institution-login-error").html("登陆信息填写不完整！");
-            $("#institution-login-error").show();
-            setTimeout(function () {
-                $("#institution-login-error").hide();
-            },1000);
-        }else{
-            $.ajax({
-                url: "/login.institution",
-                type: "post",
-                dataType: "json",
-                data: {
-                    id: id,
-                    password: password
-                },
-                success: function (data) {
-                    var result = data["result"];
-                    if(result=="wrong id"){
-                        $("#institution-login-error").html("识别码错误！");
-                        $("#institution-login-error").show();
-                        setTimeout(function () {
-                            $("#institution-login-error").hide();
-                        },1000);
-                    }else if(result=="wrong password"){
-                        $("#institution-login-error").html("密码错误！");
-                        $("#institution-login-error").show();
-                        setTimeout(function () {
-                            $("#institution-login-error").hide();
-                        },1000);
-                    }else if(result=="still in check"){
-                        $("#institution-login-error").html("此账号仍在审核中！");
-                        $("#institution-login-error").show();
-                        setTimeout(function () {
-                            $("#institution-login-error").hide();
-                        },1000);
-                    }else if(result=="fail check"){
-                        $("#institution-login-error").html("此账号申请失败！");
-                        $("#institution-login-error").show();
-                        setTimeout(function () {
-                            $("#institution-login-error").hide();
-                        },3000);
-                    }else{
-                        //登录成功
-                        window.open("/institution","_self");
-                    }
-                }
-            });
-        }
-    });
-
     $("#recent-courses-a").click(function () {
         $("#recent-courses-a").attr("class","active");
         $("#past-courses-a").removeAttr("class");
@@ -526,7 +408,8 @@ $(function () {
     $("#cancel-edit-btn").click(function () {
         $("#edit-class-div").hide();
         $("#add-class-a").show();
-        $("#enter-teachers").val("");
+        $("#enter-teachers").selectpicker("val",[]);
+        $("#enter-teachers").selectpicker("refresh");
         $("#select-class-type").val("");
         $("#enter-class-number input").val(1);
         $("#enter-student-number input").val(1);
@@ -565,23 +448,28 @@ $(function () {
             setTimeout(function () {
                 $("#edit-class-error").hide();
             },1000);
-        }else if(type==typelist[0]||type==typelist[1]||type==typelist[2]){
-            $("#edit-class-error").html("已有此班级类型！");
-            $("#edit-class-error").show();
-            setTimeout(function () {
-                $("#edit-class-error").hide();
-            },1000);
-        }else{
+        }else {
+            var save_type = $("#type").text();
+
             var i = 0;
-            if($("#type").text()=="add"){
-                for(var i=0;i<3;i++){
-                    if(teacherslist[i]==""){
-                        teacherslist[i] = teachers;
-                        typelist[i] = type;
-                        classnumlist[i] = classNum;
-                        stunumlist[i] = stuNum;
-                        pricelist[i] = price;
-                        break;
+            if(save_type==="add"){
+                if(type===typelist[0]||type===typelist[1]||type===typelist[2]) {
+                    $("#edit-class-error").html("已有此班级类型！");
+                    $("#edit-class-error").show();
+                    setTimeout(function () {
+                        $("#edit-class-error").hide();
+                    }, 1000);
+                    return;
+                }else{
+                    for(var i=0;i<3;i++){
+                        if(teacherslist[i]==""){
+                            teacherslist[i] = teachers;
+                            typelist[i] = type;
+                            classnumlist[i] = classNum;
+                            stunumlist[i] = stuNum;
+                            pricelist[i] = price;
+                            break;
+                        }
                     }
                 }
             }else{
@@ -595,30 +483,16 @@ $(function () {
 
             $("#edit-class-div").hide();
             $("#add-class-a").show();
-            diaplayAllClass();
+            displayAllClass();
 
-            $("#enter-teachers").val("");
+            $("#enter-teachers").selectpicker("val",[]);
+            $("#enter-teachers").selectpicker("refresh");
             $("#select-class-type").val("");
             $("#enter-class-number input").val(1);
             $("#enter-student-number input").val(1);
             $("#enter-price").val("");
         }
     });
-
-    /**
-     * 展示已保存的班级
-     */
-    function diaplayAllClass() {
-        var content = "";
-        for(var i=0;i<3;i++){
-            if(teacherslist[i]!=""){
-                content = content+"<tr><td>教师："+teacherslist[i]+"</td><td>班级类型："+typelist[i]+"</td><td>班级数："+classnumlist[i]
-                    +"</td><td>容纳人数："+stunumlist[i]+"</td><td>价格："+pricelist[i]+"元</td><td><i class=\"el-icon-edit\" onclick='editClass("
-                    +i+")'></i><i class=\"el-icon-delete\" onclick='deleteClass("+i+")'></i></td></tr>";
-            }
-        }
-        $("#display-class").html(content);
-    }
 
     /**
      * 添加计划
