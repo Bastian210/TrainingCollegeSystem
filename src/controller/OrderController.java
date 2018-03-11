@@ -72,9 +72,14 @@ public class OrderController {
     @ResponseBody
     @RequestMapping(value = "/myOrder.getAllOrder",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
     public String doGetAllOrder(){
-        JSONObject[] jsonObjects = getOrderService().GetAllOrder(Param.getUserid());
-        JSONObject json = new JSONObject();
-        json.put("result",jsonObjects);
+        JSONObject json = getOrderService().GetAllOrder(Param.getUserid());
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/myOrder.getOrderMessage",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+    public String doGetOrderMessage(@RequestParam(value = "orderid")String orderid){
+        JSONObject json = getOrderService().GetOrderMessage(orderid);
         return json.toString();
     }
 
@@ -99,9 +104,7 @@ public class OrderController {
     @ResponseBody
     @RequestMapping(value = "/insOrder.getAllInsOrder",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
     public String GetAllInsOrder(){
-        JSONObject[] jsonObjects = getOrderService().GetAllInsOrder(Param.getInstitutionid());
-        JSONObject json = new JSONObject();
-        json.put("result",jsonObjects);
+        JSONObject json = getOrderService().GetAllInsOrder(Param.getInstitutionid());
         return json.toString();
     }
 

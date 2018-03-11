@@ -1,10 +1,12 @@
 package service.impl;
 
 import dao.*;
+import dao.impl.*;
 import model.*;
 import model.key.BillKey;
 import model.key.LessonKey;
 import model.key.PlansKey;
+import org.hibernate.criterion.Order;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import service.OrderService;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -21,25 +24,25 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
-    private OrderDao orderDao;
+    private OrderDao orderDao = new OrderDaoImpl();
 
     @Autowired
-    private PlanDao planDao;
+    private PlanDao planDao = new PlanDaoImpl();
 
     @Autowired
-    private LessonDao lessonDao;
+    private LessonDao lessonDao = new LessonDaoImpl();
 
     @Autowired
-    private UserDao userDao;
+    private UserDao userDao = new UserDaoImpl();
 
     @Autowired
-    private InstitutionDao institutionDao;
+    private InstitutionDao institutionDao = new InstitutionDaoImpl();
 
     @Autowired
-    private PaymentDao paymentDao;
+    private PaymentDao paymentDao = new PaymentDaoImpl();
 
     @Autowired
-    private BillDao billDao;
+    private BillDao billDao = new BillDaoImpl();
 
     @Override
     public JSONObject AddOrder(String userid, String lessonid, String institutionid, String type, String price, String actualpay, String classtype, String[] nameList, String[] genderList, String[] educationList) {
@@ -105,9 +108,48 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public JSONObject[] GetAllOrder(String userid) {
+    public JSONObject GetAllOrder(String userid) {
         List list = orderDao.findOrderListByUserId(userid);
         return getOrderJsonMessage(list);
+    }
+
+    @Override
+    public JSONObject GetOrderMessage(String orderid) {
+        JSONObject json = new JSONObject();
+        Orders orders = orderDao.findOrderByOrderId(orderid);
+
+        List orderMessageList = orderDao.getOrderMessageListByOrderId(orderid);
+        int length = orderMessageList.size();
+        String[] nameList = new String[length];
+        String[] genderList = new String[length];
+        String[] educationList = new String[length];
+        String[] classidList = new String[length];
+        for(int k=0;k<length;k++){
+            Ordermessage ordermessage = (Ordermessage) orderMessageList.get(k);
+            nameList[k] = ordermessage.getName();
+            genderList[k] = ordermessage.getGender();
+            educationList[k] = ordermessage.getEducation();
+            String state = orders.getState();
+            if(orders.getType().equals("选班级")){
+                if(state.equals("已退订")){
+                    classidList[k] = "无";
+                }else{
+                    classidList[k] = orders.getClasstype()+lessonDao.findLessonByLessonKey(new LessonKey(orders.getLessonid(),orders.getClasstype(),nameList[k])).getClassid()+"班";
+                }
+            }else{
+                if(state.equals("已预订")){
+                    Lesson lesson = lessonDao.findLessonByLessonidAndName(orders.getLessonid(),nameList[k]);
+                    classidList[k] = lesson.getClasstype()+lesson.getClassid()+"班";
+                }else{
+                    classidList[k] = "尚未配班";
+                }
+            }
+        }
+        json.put("nameList",nameList);
+        json.put("genderList",genderList);
+        json.put("educationList",educationList);
+        json.put("classidList",classidList);
+        return json;
     }
 
     @Override
@@ -290,75 +332,70 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public JSONObject[] GetAllInsOrder(String institutionid) {
+    public JSONObject GetAllInsOrder(String institutionid) {
         List list = orderDao.findOrderListByInstitutionId(institutionid);
         return getOrderJsonMessage(list);
     }
 
-    private JSONObject[] getOrderJsonMessage(List list){
+    private JSONObject getOrderJsonMessage(List list){
         JSONObject[] jsonObjects = new JSONObject[list.size()];
+
+        //全部订单
+        ArrayList<JSONObject> list1 = new ArrayList<>();
+        //未支付的订单
+        ArrayList<JSONObject> list2 = new ArrayList<>();
+        //已预订/等待配票的订单
+        ArrayList<JSONObject> list3 = new ArrayList<>();
+        //已退订/配票失败的订单
+        ArrayList<JSONObject> list4 = new ArrayList<>();
+        //已完成的订单
+        ArrayList<JSONObject> list5 = new ArrayList<>();
         for(int i=0;i<list.size();i++){
             Orders orders = (Orders) list.get(i);
+            String state = orders.getState();
+
             User user = userDao.findUserByUserid(orders.getUserid());
             JSONObject json = new JSONObject();
             json.put("time",orders.getOrdertime().substring(0,10));
             json.put("orderid",orders.getOrderid());
             json.put("institutionname",institutionDao.findInstitutionById(orders.getInstitutionid()).getInstitutionname());
             json.put("username",user.getUsername());
-            List list1 = planDao.getPlanByLessonId(orders.getLessonid());
-            Plans plans = (Plans) list1.get(0);
+            List planList = planDao.getPlanByLessonId(orders.getLessonid());
+            Plans plans = (Plans) planList.get(0);
             json.put("lessonname",plans.getLesson());
             json.put("type",orders.getType());
             json.put("classtype",orders.getClasstype());
             json.put("num",orders.getNum());
             json.put("price",orders.getPrice());
             json.put("actualpay",orders.getActualpay());
-            json.put("state",orders.getState());
+            json.put("state",state);
             json.put("begintime",plans.getBegin());
-            if(orders.getState().equals("未支付")){
+
+            list1.add(json);
+
+            if(state.equals("未支付")){
                 int level = user.getLevel();
                 if(orders.getPrice()*(1-level/100.0)==orders.getActualpay()){
                     json.put("checkbox","no");
                 }else{
                     json.put("checkbox","yes");
                 }
+                list2.add(json);
+            }else if(state.equals("已预订")||state.equals("等待配票")){
+                list3.add(json);
+            }else if(state.equals("已退订")||state.equals("配票失败")){
+                list4.add(json);
+            }else{
+                list5.add(json);
             }
-
-            List orderMessageList = orderDao.getOrderMessageListByOrderId(orders.getOrderid());
-            int length = orderMessageList.size();
-            String[] nameList = new String[length];
-            String[] genderList = new String[length];
-            String[] educationList = new String[length];
-            String[] classidList = new String[length];
-            for(int k=0;k<length;k++){
-                Ordermessage ordermessage = (Ordermessage) orderMessageList.get(k);
-                nameList[k] = ordermessage.getName();
-                genderList[k] = ordermessage.getGender();
-                educationList[k] = ordermessage.getEducation();
-                String state = orders.getState();
-                if(orders.getType().equals("选班级")){
-                    if(state.equals("已退订")){
-                        classidList[k] = "无";
-                    }else{
-                        classidList[k] = orders.getClasstype()+lessonDao.findLessonByLessonKey(new LessonKey(orders.getLessonid(),orders.getClasstype(),nameList[k])).getClassid()+"班";
-                    }
-                }else{
-                    if(state.equals("已预订")){
-                        Lesson lesson = lessonDao.findLessonByLessonidAndName(orders.getLessonid(),nameList[k]);
-                        classidList[k] = lesson.getClasstype()+lesson.getClassid()+"班";
-                    }else{
-                        classidList[k] = "尚未配班";
-                    }
-                }
-            }
-            json.put("nameList",nameList);
-            json.put("genderList",genderList);
-            json.put("educationList",educationList);
-            json.put("classidList",classidList);
-
-            jsonObjects[i] = json;
         }
-        return jsonObjects;
+        JSONObject json = new JSONObject();
+        json.put("all",list1.toArray());
+        json.put("not_pay",list2.toArray());
+        json.put("has_book",list3.toArray());
+        json.put("unsubscribe",list4.toArray());
+        json.put("finish",list5.toArray());
+        return json;
     }
 
     /**

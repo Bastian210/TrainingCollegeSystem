@@ -31,7 +31,14 @@ public interface OrderService {
      * @param userid
      * @return
      */
-    public JSONObject[] GetAllOrder(String userid);
+    public JSONObject GetAllOrder(String userid);
+
+    /**
+     * 根据orderid得到学员情况
+     * @param orderid
+     * @return
+     */
+    public JSONObject GetOrderMessage(String orderid);
 
     /**
      * 取消订单
@@ -56,5 +63,5 @@ public interface OrderService {
      * @param institutionid
      * @return
      */
-    public JSONObject[] GetAllInsOrder(String institutionid);
+    public JSONObject GetAllInsOrder(String institutionid);
 }

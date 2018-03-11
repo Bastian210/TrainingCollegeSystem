@@ -47,7 +47,6 @@ public class UserServiceImpl implements UserService {
             Param.setUserid(user.getUserid());
             result = "success";
         }
-        System.out.println("login:"+Param.getUserid());
         return result;
     }
 
@@ -132,7 +131,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void UnbindAccount(String userid, String payid) {
-        userDao.updatePayIdByUserId(userid,"");
+        userDao.updatePayIdByUserId(userid,null);
     }
 
     @Override

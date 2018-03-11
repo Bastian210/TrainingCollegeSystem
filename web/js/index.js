@@ -193,22 +193,28 @@ $(function () {
      */
     function displayLesson(data) {
         result = data["result"];
-        
-        var content = "<el-pagination background layout=\"total, prev, pager, next, jumper\" :page-size=\"5\" :total=\""+result.length+"\" @current-change=\"handleCurrentChange\">\n" +
-            "                </el-pagination>";
-        $("#my-pagination").html(content);
-        
-        var Main = {
-            methods: {
-                handleCurrentChange(val) {
-                    PagingDisplay(val);
-                }
-            }
-        }
-        var Ctor = Vue.extend(Main)
-        new Ctor().$mount('#my-pagination')
 
-        PagingDisplay(1);
+        if(result.length===0){
+            $("#lesson-list-div").html("<p>当前没有推荐的课程！</p>");
+        }else{
+            if(result.length>5){
+                var content = "<el-pagination background layout=\"total, prev, pager, next, jumper\" :page-size=\"5\" :total=\""+result.length+"\" @current-change=\"handleCurrentChange\">\n" +
+                    "                </el-pagination>";
+                $("#my-pagination").html(content);
+
+                var Main = {
+                    methods: {
+                        handleCurrentChange(val) {
+                            PagingDisplay(val);
+                        }
+                    }
+                }
+                var Ctor = Vue.extend(Main)
+                new Ctor().$mount('#my-pagination')
+            }
+
+            PagingDisplay(1);
+        }
     }
 
     /**
@@ -255,11 +261,7 @@ $(function () {
                 "                    </el-collapse>\n" +
                 "                    <button class=\"my-button\" onclick=\"book('"+json["lessonid"]+"')\">立即预订</button></div>";
         }
-        if(content==""){
-            $("#lesson-list-div").html("<p>当前没有推荐的课程！</p>");
-        }else{
-            $("#lesson-list-div").html(content);
-        }
+        $("#lesson-list-div").html(content);
         new Vue().$mount("#lesson-list-div");
     }
 });

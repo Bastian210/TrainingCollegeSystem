@@ -191,7 +191,9 @@ public class PlanServiceImpl implements PlanService {
         User user = userDao.findUserByUserid(userid);
         String education = user.getEducation();
         String[] subject;
-        if(education.equals("高中")){
+        if(education.equals("大学")){
+            subject = new String[]{"哲学","经济学","法学","教育学","文学","历史学","理学","工学","农学","医学","军事学","管理学","艺术学"};
+        }else if(education.equals("高中")){
             subject = new String[]{"语文", "数学", "英语", "物理", "化学", "政治", "历史", "地理", "生物"};
         }else if(education.equals("初中")){
             subject = new String[]{"语文", "数学", "英语", "物理", "化学"};

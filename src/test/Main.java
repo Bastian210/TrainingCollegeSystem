@@ -1,12 +1,15 @@
 package test;
 
+import org.json.JSONObject;
+import service.OrderService;
+import service.impl.OrderServiceImpl;
+
 public class Main {
     public static void main(String[] args) {
-//        BillDao billDao = new BillDaoImpl();
-//        LessonDao lessonDao = new LessonDaoImpl();
-//        System.out.println(lessonDao.findLessonByLessonKey(new LessonKey("10001","大班","冯超")));
-//        System.out.println(billDao.getBillByBillKey(new BillKey("500002","2017-10")).getIncome());
-//        List list = billDao.getBillListByUserid("500002");
-//        System.out.println(list);
+        OrderService service = new OrderServiceImpl();
+//        JSONObject json = service.GetAllOrder("500002");
+//        System.out.println(json);
+        JSONObject json = service.GetOrderMessage("10000007");
+        System.out.println(json);
     }
 }
