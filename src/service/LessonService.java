@@ -9,7 +9,7 @@ public interface LessonService {
      * @param userid
      * @return
      */
-    public JSONObject[] GetLessonByUserId(String userid);
+    public JSONObject GetLessonByUserId(String userid);
 
     /**
      * 得到一个机构的所有课程

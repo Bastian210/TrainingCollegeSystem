@@ -153,4 +153,14 @@ public class PlanDaoImpl implements PlanDao {
         session.close();
         return list;
     }
+
+    @Override
+    public int getPlanNumByInstitutionId(String id) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        String hql = String.format("select distinct lessonid from model.Plans as p where p.institutionid = '%s'", id);
+        Query query = session.createQuery(hql);
+        List list = query.list();
+        return list.size();
+    }
 }

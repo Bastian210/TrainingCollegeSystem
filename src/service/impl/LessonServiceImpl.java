@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import service.LessonService;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,7 +33,7 @@ public class LessonServiceImpl implements LessonService {
     private BillDao billDao;
 
     @Override
-    public JSONObject[] GetLessonByUserId(String userid) {
+    public JSONObject GetLessonByUserId(String userid) {
         User user = userDao.findUserByUserid(userid);
         List list = lessonDao.findLessonListByName(user.getUsername());
         return getLessonJsonMessage(list);
@@ -143,11 +144,22 @@ public class LessonServiceImpl implements LessonService {
         lessonDao.update(lesson);
     }
 
-    private JSONObject[] getLessonJsonMessage(List list){
-        JSONObject[] jsonObjects = new JSONObject[list.size()];
+    private JSONObject getLessonJsonMessage(List list){
+        //全部课程
+        ArrayList<JSONObject> list1 = new ArrayList<>();
+        //未开课的课程
+        ArrayList<JSONObject> list2 = new ArrayList<>();
+        //已退的课程
+        ArrayList<JSONObject> list3 = new ArrayList<>();
+        //正在上课的课程
+        ArrayList<JSONObject> list4 = new ArrayList<>();
+        //已经完结的课程
+        ArrayList<JSONObject> list5 = new ArrayList<>();
         for(int i=0;i<list.size();i++){
             Lesson lesson = (Lesson) list.get(i);
             JSONObject json = new JSONObject();
+
+            String state = lesson.getState();
             Plans plans = planDao.getPlanByPlanKey(new PlansKey(lesson.getLessonid(),lesson.getClasstype()));
             json.put("institutionname",institutionDao.findInstitutionById(plans.getInstitutionid()).getInstitutionname());
             json.put("type",plans.getType());
@@ -157,7 +169,7 @@ public class LessonServiceImpl implements LessonService {
             json.put("description",plans.getDescription());
             json.put("classtype",lesson.getClasstype()+lesson.getClassid()+"班");
             json.put("teacher",plans.getTeacher());
-            json.put("state",lesson.getState());
+            json.put("state",state);
             json.put("lessonid",lesson.getLessonid());
             double grade = lesson.getGrade();
             if(grade==0){
@@ -166,9 +178,24 @@ public class LessonServiceImpl implements LessonService {
                 json.put("grade",grade+"分");
             }
 
-            jsonObjects[i] = json;
+            list1.add(json);
+            if(state.equals("未开课")){
+                list2.add(json);
+            }else if(state.equals("已退课")){
+                list3.add(json);
+            }else if(state.equals("已开课")){
+                list4.add(json);
+            }else{
+                list5.add(json);
+            }
         }
 
-        return jsonObjects;
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("all",list1.toArray());
+        jsonObject.put("nostart",list2.toArray());
+        jsonObject.put("unsubscribe",list3.toArray());
+        jsonObject.put("ing",list4.toArray());
+        jsonObject.put("finish",list5.toArray());
+        return jsonObject;
     }
 }

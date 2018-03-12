@@ -33,9 +33,7 @@ public class LessonController {
     @ResponseBody
     @RequestMapping(value = "/myLesson.getAllUserLesson",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
     public String doGetAllUserLesson(){
-        JSONObject[] jsonObjects = getLessonService().GetLessonByUserId(Param.getUserid());
-        JSONObject json = new JSONObject();
-        json.put("result",jsonObjects);
+        JSONObject json = getLessonService().GetLessonByUserId(Param.getUserid());
         return json.toString();
     }
 

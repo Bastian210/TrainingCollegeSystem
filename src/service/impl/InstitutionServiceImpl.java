@@ -277,16 +277,17 @@ public class InstitutionServiceImpl implements InstitutionService {
         JSONObject[] jsonObjects = new JSONObject[list.size()];
         for(int i=0;i<list.size();i++){
             Institution institution = (Institution) list.get(i);
+            String id = institution.getInstitutionid();
+
             JSONObject json = new JSONObject();
-            json.put("id",institution.getInstitutionid());
+            json.put("id",id);
             json.put("name",institution.getInstitutionname());
             json.put("address",institution.getAddress());
             json.put("phone",institution.getPhone());
             json.put("consumption",institution.getConsumption());
 
-            List plansList = planDao.getPlanListByInstitutionId(institution.getInstitutionid());
-            json.put("plans",plansList.size());
-            List ordersList = orderDao.findOrderListByInstitutionId(institution.getInstitutionid());
+            json.put("plans",planDao.getPlanNumByInstitutionId(id));
+            List ordersList = orderDao.findOrderListByInstitutionId(id);
             json.put("orders",ordersList.size());
 
             jsonObjects[i] = json;

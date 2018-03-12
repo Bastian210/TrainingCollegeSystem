@@ -68,4 +68,11 @@ public interface PlanDao {
      * @return
      */
     public List getAllPlan();
+
+    /**
+     * 得到机构的计划数
+     * @param id
+     * @return
+     */
+    public int getPlanNumByInstitutionId(String id);
 }
