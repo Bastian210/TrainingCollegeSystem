@@ -8,6 +8,7 @@ var stunumlist = new Array(3);
 var pricelist = new Array(3);
 
 var vue;
+var options;
 
 /**
  * 根据选中的课程类型得到相应的教师名单
@@ -23,7 +24,7 @@ function GetTeacher(val) {
         },
         success: function (data) {
             var result = data["result"];
-            var options = [];
+            options = [];
             for(var i=0;i<result.length;i++){
                 options[i] = {
                     value: result[i],
@@ -41,7 +42,8 @@ function GetTeacher(val) {
  */
 function editClass(i) {
     var list = teacherslist[i].split(";");
-    vue.options = [];
+    vue.value = list;
+    vue.options = options;
     $("#select-class-type").val(typelist[i]);
     $("#enter-class-number input").val(classnumlist[i]);
     $("#enter-student-number input").val(stunumlist[i]);
