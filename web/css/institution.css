@@ -110,10 +110,20 @@
     cursor: pointer;
 }
 
+#enter-teachers{
+    margin-top: 10px;
+    float: left;
+}
+
 #select{
     margin-top: 10px;
     width: 150px;
     float: left;
+}
+
+#add-teacher-a{
+    position: relative;
+    top: 20px;
 }
 
 .el-icon-delete{

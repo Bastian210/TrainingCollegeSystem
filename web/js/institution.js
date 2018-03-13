@@ -7,6 +7,8 @@ var classnumlist = new Array(3);
 var stunumlist = new Array(3);
 var pricelist = new Array(3);
 
+var vue;
+
 /**
  * 根据选中的课程类型得到相应的教师名单
  * @constructor
@@ -21,12 +23,14 @@ function GetTeacher(val) {
         },
         success: function (data) {
             var result = data["result"];
-            var content = "";
+            var options = [];
             for(var i=0;i<result.length;i++){
-                content = content+"<option value='"+result[i]+"'>"+result[i]+"</option>";
+                options[i] = {
+                    value: result[i],
+                    label: result[i]
+                }
             }
-            $("#enter-teachers").html(content);
-            $('.selectpicker').selectpicker('refresh');
+            vue.options = options;
         }
     });
 }
@@ -37,8 +41,7 @@ function GetTeacher(val) {
  */
 function editClass(i) {
     var list = teacherslist[i].split(";");
-    $("#enter-teachers").selectpicker("val",list);
-    $("#enter-teachers").selectpicker("refresh");
+    vue.options = [];
     $("#select-class-type").val(typelist[i]);
     $("#enter-class-number input").val(classnumlist[i]);
     $("#enter-student-number input").val(stunumlist[i]);
@@ -329,8 +332,12 @@ $(function () {
 
         getAllPlan();
 
-        $(".selectpicker").selectpicker({
-            noneSelectedText : '请选择教师'
+        vue = new Vue({
+            el: "#enter-teachers",
+            data: {
+                options: [],
+                value: "",
+            },
         });
     });
 
@@ -408,8 +415,7 @@ $(function () {
     $("#cancel-edit-btn").click(function () {
         $("#edit-class-div").hide();
         $("#add-class-a").show();
-        $("#enter-teachers").selectpicker("val",[]);
-        $("#enter-teachers").selectpicker("refresh");
+        vue.options = [];
         $("#select-class-type").val("");
         $("#enter-class-number input").val(1);
         $("#enter-student-number input").val(1);
@@ -420,7 +426,8 @@ $(function () {
      * 保存添加/编辑
      */
     $("#save-class-btn").click(function () {
-        var list = $("#enter-teachers").val();
+        var list = vue.value;
+        console.log(list);
         var teachers = "";
         for(var i=0;i<list.length;i++){
             if(teachers==""){
@@ -485,8 +492,7 @@ $(function () {
             $("#add-class-a").show();
             displayAllClass();
 
-            $("#enter-teachers").selectpicker("val",[]);
-            $("#enter-teachers").selectpicker("refresh");
+            vue.options = [];
             $("#select-class-type").val("");
             $("#enter-class-number input").val(1);
             $("#enter-student-number input").val(1);

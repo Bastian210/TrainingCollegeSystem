@@ -89,9 +89,18 @@
                     </div>
                     <div id="edit-class-div">
                         <span hidden="hidden" id="type">add</span>
-                        <label>教师：</label>
-                        <select class="selectpicker" id="enter-teachers" multiple></select>
+                        <label class="float-left top10">教师：</label>
+                        <div id="enter-teachers">
+                            <template>
+                                <el-select v-model="value" multiple placeholder="请选择教师">
+                                    <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </template>
+                        </div>
                         <a id="add-teacher-a">添加教师</a>
+                        <br>
+                        <br>
                         <br>
                         <label class="float-left top10">班级类型：</label>
                         <div id="select">
