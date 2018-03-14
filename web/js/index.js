@@ -2,6 +2,9 @@
 
 var result;
 
+var vue;
+var vue1;
+
 /**
  * 保存lessonid到java静态变量中
  * @param lessonid
@@ -24,6 +27,43 @@ $(function () {
     $(document).ready(function () {
         $("#college-subject").hide();
 
+        var list1 = ["语文", "数学", "英语", "物理", "化学", "政治", "历史", "地理", "生物"];
+        var list2 = ["哲学","经济学","法学","教育学","文学","历史学","理学","工学","农学","医学","军事学","管理学","艺术学"];
+        var list3 = ["语文", "数学", "英语", "物理", "化学"];
+        var list4 = ["语文", "数学", "英语"];
+
+        vue1 = new Vue({
+            el: "#checkbox",
+            data: {
+                checkedSubjects: ["语文"],
+                subjects: list4
+            }
+        });
+
+        vue = new Vue({
+            el: "#radio",
+            data: {
+                radio: '小学',
+            },
+            methods: {
+                change(){
+                    if(this.radio==="大学"){
+                        vue1.checkedSubjects = [];
+                        vue1.subjects = list2;
+                    }else if(this.radio==="高中"){
+                        vue1.checkedSubjects = [];
+                        vue1.subjects = list1;
+                    }else if(this.radio==="初中"){
+                        vue1.checkedSubjects = [];
+                        vue1.subjects = list3;
+                    }else{
+                        vue1.checkedSubjects = [];
+                        vue1.subjects = list4;
+                    }
+                }
+            }
+        });
+
         $.ajax({
             url: "/index.getLessonList",
             type: "post",
@@ -33,144 +73,17 @@ $(function () {
             }
         });
     });
-    
-    $("#primary-school").click(function () {
-        if($("#primary-school input").prop("checked")){
-            $("#under-college-subject").show();
-            $("#college-subject").hide();
-
-            $("#physics input").attr("disabled",true);
-            $("#chemistry input").attr("disabled",true);
-            $("#politics input").attr("disabled",true);
-            $("#history input").attr("disabled",true);
-            $("#geography input").attr("disabled",true);
-            $("#biology input").attr("disabled",true);
-        }
-    });
-
-    $("#middle-school").click(function () {
-        if($("#middle-school input").prop("checked")){
-            $("#under-college-subject").show();
-            $("#college-subject").hide();
-
-            $("#physics input").removeAttr("disabled");
-            $("#chemistry input").removeAttr("disabled");
-            $("#politics input").attr("disabled",true);
-            $("#history input").attr("disabled",true);
-            $("#geography input").attr("disabled",true);
-            $("#biology input").attr("disabled",true);
-        }
-    });
-
-    $("#high-school").click(function () {
-        if($("#high-school input").prop("checked")){
-            $("#under-college-subject").show();
-            $("#college-subject").hide();
-
-            $("#physics input").removeAttr("disabled");
-            $("#chemistry input").removeAttr("disabled");
-            $("#politics input").removeAttr("disabled");
-            $("#history input").removeAttr("disabled");
-            $("#geography input").removeAttr("disabled");
-            $("#biology input").removeAttr("disabled");
-        }
-    });
-
-    $("#college").click(function () {
-        if($("#college input").prop("checked")){
-            $("#under-college-subject").hide();
-            $("#college-subject").show();
-        }
-    });
 
     /**
      * 搜索课程
      */
     $("#search-lesson-btn").click(function () {
         var lessonName = $("#enter-lesson-name").val();
-        var school = "";
-        if($("#primary-school input").prop("checked")){
-            school = "小学";
-        }
-        if($("#middle-school input").prop("checked")){
-            school = "初中";
-        }
-        if($("#high-school input").prop("checked")){
-            school = "高中";
-        }
-        if($("#college input").prop("checked")){
-            school = "大学";
-        }
-        var subject = new Array();
-        if(school=="大学"){
-            if($("#philosophy input").prop("checked")){
-                subject.push("哲学");
-            }
-            if($("#economy input").prop("checked")){
-                subject.push("经济学");
-            }
-            if($("#law input").prop("checked")){
-                subject.push("法学");
-            }
-            if($("#education input").prop("checked")){
-                subject.push("教育学");
-            }
-            if($("#literature input").prop("checked")){
-                subject.push("文学");
-            }
-            if($("#college-history input").prop("checked")){
-                subject.push("历史学");
-            }
-            if($("#science input").prop("checked")){
-                subject.push("理学");
-            }
-            if($("#engineering input").prop("checked")){
-                subject.push("工学");
-            }
-            if($("#agronomy input").prop("checked")){
-                subject.push("农学");
-            }
-            if($("#medical input").prop("checked")){
-                subject.push("医学");
-            }
-            if($("#military input").prop("checked")){
-                subject.push("军事学");
-            }
-            if($("#management input").prop("checked")){
-                subject.push("管理学");
-            }
-            if($("#art input").prop("checked")){
-                subject.push("艺术学");
-            }
-        }else{
-            if($("#chinese input").prop("checked")){
-                subject.push("语文");
-            }
-            if($("#math input").prop("checked")){
-                subject.push("数学");
-            }
-            if($("#english input").prop("checked")){
-                subject.push("英语");
-            }
-            if($("#physics input").prop("checked")){
-                subject.push("物理");
-            }
-            if($("#chemistry input").prop("checked")){
-                subject.push("化学");
-            }
-            if($("#politics input").prop("checked")){
-                subject.push("政治");
-            }
-            if($("#history input").prop("checked")){
-                subject.push("历史");
-            }
-            if($("#geography input").prop("checked")){
-                subject.push("地理");
-            }
-            if($("#biology input").prop("checked")){
-                subject.push("生物");
-            }
-        }
+        var school = vue.radio;
+        console.log(school);
+
+        var subject = vue1.checkedSubjects;
+        console.log(subject);
         
         $.ajax({
             url: "/index.searchLessonList",

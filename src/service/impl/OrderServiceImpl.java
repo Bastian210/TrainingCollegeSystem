@@ -24,25 +24,25 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
-    private OrderDao orderDao = new OrderDaoImpl();
+    private OrderDao orderDao;
 
     @Autowired
-    private PlanDao planDao = new PlanDaoImpl();
+    private PlanDao planDao;
 
     @Autowired
-    private LessonDao lessonDao = new LessonDaoImpl();
+    private LessonDao lessonDao;
 
     @Autowired
-    private UserDao userDao = new UserDaoImpl();
+    private UserDao userDao;
 
     @Autowired
-    private InstitutionDao institutionDao = new InstitutionDaoImpl();
+    private InstitutionDao institutionDao;
 
     @Autowired
-    private PaymentDao paymentDao = new PaymentDaoImpl();
+    private PaymentDao paymentDao;
 
     @Autowired
-    private BillDao billDao = new BillDaoImpl();
+    private BillDao billDao;
 
     @Override
     public JSONObject AddOrder(String userid, String lessonid, String institutionid, String type, String price, String actualpay, String classtype, String[] nameList, String[] genderList, String[] educationList) {

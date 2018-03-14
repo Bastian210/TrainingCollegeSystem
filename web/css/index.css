@@ -23,28 +23,18 @@
 
 .float-left{
     float: left;
-    height: 38px;
-    line-height: 38px;
     font-size: 16px;
     font-weight: 400;
     width: 100px;
     text-align: center;
 }
 
-.radio label{
-    margin-left: 30px;
+#radio{
+    font-size: 16px;
 }
 
-.checkbox label{
-    margin-left: 20px;
-}
-
-.radio{
-    margin: 10px 0 0 0;
-}
-
-.checkbox{
-    margin: 10px 0 0 0 ;
+#checkbox{
+    font-size: 16px;
 }
 
 .main-content {
