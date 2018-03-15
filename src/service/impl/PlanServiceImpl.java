@@ -259,43 +259,6 @@ public class PlanServiceImpl implements PlanService {
         return jsonObjects;
     }
 
-    @Override
-    public void CheckPlan() {
-        List list = planDao.getAllPlan();
-        for(int i=0;i<list.size();i++){
-            Plans plans = (Plans) list.get(i);
-            String begin = plans.getBegin();
-            String end = plans.getEnd();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = null;
-            Date date1 = null;
-            try {
-                date = sdf.parse(end);
-                date1 = sdf.parse(begin);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            Date now = new Date();
-            //如果当前时间已经到了正在售票的课程的开始时间，则将计划状态置为start，将课程状态置为已开课
-            if((date1.equals(now)||date1.before(now))&&plans.getState().equals("selling")){
-                plans.setState("start");
-                planDao.updatePlan(plans);
-                lessonDao.updateStateByLessonid(plans.getLessonid(),"已开课");
-            }
-            //如果当前时间已经到了待评估的课程的开始时间，则将计划状态置为outtime
-            if((date1.equals(now)||date1.before(now))&&plans.getState().equals("undetermined")){
-                plans.setState("outtime");
-                planDao.updatePlan(plans);
-            }
-            //如果当前时间已经到了已开课的课程的结束时间，则将计划状态置为end，将课程状态置为已结课
-            if((date.equals(now)||date.before(now))&&plans.getState().equals("start")){
-                plans.setState("end");
-                planDao.updatePlan(plans);
-                lessonDao.updateStateByLessonid(plans.getLessonid(),"已结课");
-            }
-        }
-    }
-
     private List getLessonId(List list){
         List result = new ArrayList();
         String lessonid = "";

@@ -200,25 +200,6 @@ $(function () {
     $(document).ready(function () {
         getRegisterApply();
         getChangeMessApply();
-
-        setTimeout(function () {
-            $.ajax({
-                url: "/amaldar.checkOrder",
-                type: "post",
-                dataType: "json",
-                success: function (data) {
-
-                }
-            });
-            $.ajax({
-                url: "/amaldar.checkPlan",
-                type: "post",
-                dataType: "json",
-                success: function (data) {
-
-                }
-            });
-        },5000);
     });
 
     $("#register-apply-a").click(function () {

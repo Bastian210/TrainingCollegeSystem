@@ -2,24 +2,29 @@
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns="http://www.springframework.org/schema/beans" xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:cache="http://www.springframework.org/schema/cache" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:task="http://www.springframework.org/schema/task"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
       http://www.springframework.org/schema/beans/spring-beans.xsd
-      http://www.springframework.org/schema/aop
-      http://www.springframework.org/schema/aop/spring-aop.xsd
       http://www.springframework.org/schema/context
       http://www.springframework.org/schema/context/spring-context.xsd
-      http://www.springframework.org/schema/tx
-      http://www.springframework.org/schema/tx/spring-tx.xsd
-      http://www.springframework.org/schema/cache
-      http://www.springframework.org/schema/cache/spring-cache.xsd">
+      http://www.springframework.org/schema/task
+      http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
-    <bean id="UserService" class="service.impl.UserServiceImpl"></bean>
-    <bean id="InstitutionService" class="service.impl.InstitutionServiceImpl"></bean>
-    <bean id="PlanService" class="service.impl.PlanServiceImpl"></bean>
-    <bean id="OrderService" class="service.impl.OrderServiceImpl"></bean>
-    <bean id="LessonService" class="service.impl.LessonServiceImpl"></bean>
+    <bean id="UserService" class="service.impl.UserServiceImpl"/>
+    <bean id="InstitutionService" class="service.impl.InstitutionServiceImpl"/>
+    <bean id="PlanService" class="service.impl.PlanServiceImpl"/>
+    <bean id="OrderService" class="service.impl.OrderServiceImpl"/>
+    <bean id="LessonService" class="service.impl.LessonServiceImpl"/>
+
+    <task:executor id="executor" pool-size="5" />
+    <task:scheduler id="scheduler" pool-size="10" />
+    <task:annotation-driven executor="executor" scheduler="scheduler" />
+
     <context:component-scan base-package="controller"/>
     <context:component-scan base-package="service"/>
     <context:component-scan base-package="dao"/>
+    <context:component-scan base-package="utils">
+        <context:exclude-filter type="regex" expression=".common.*" />
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
 </beans>

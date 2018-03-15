@@ -54,11 +54,6 @@ public interface OrderService {
     public void DeleteOrder(String orderid);
 
     /**
-     * 检查订单
-     */
-    public void CheckOrder();
-
-    /**
      * 根据机构id得到它内部所有的订单
      * @param institutionid
      * @return

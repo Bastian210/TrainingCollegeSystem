@@ -107,13 +107,4 @@ public class OrderController {
         JSONObject json = getOrderService().GetAllInsOrder(Param.getInstitutionid());
         return json.toString();
     }
-
-    @ResponseBody
-    @RequestMapping(value = "/amaldar.checkOrder",method = RequestMethod.POST)
-    public String CheckOrder(){
-        getOrderService().CheckOrder();
-        JSONObject json = new JSONObject();
-        json.put("result","success");
-        return json.toString();
-    }
 }
