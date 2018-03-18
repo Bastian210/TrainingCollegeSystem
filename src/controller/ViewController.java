@@ -37,6 +37,9 @@ public class ViewController {
 
     @RequestMapping(value = "/amaldar",method = RequestMethod.GET)
     public String getAmaldar(ModelMap model) {
+        if(Param.getManagerid()==null){
+            return "login";
+        }
         return "amaldar";
     }
 
@@ -106,6 +109,9 @@ public class ViewController {
 
     @RequestMapping(value = "/statistics",method = RequestMethod.GET)
     public String getStatistics(ModelMap model){
+        if(Param.getManagerid()==null){
+            return "login";
+        }
         return "statistics";
     }
 }

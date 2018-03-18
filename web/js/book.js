@@ -15,6 +15,8 @@ var actual = 0;
 
 var orderid = "";
 
+var vue;
+
 /**
  * 打开添加学员信息的div元素
  */
@@ -255,6 +257,26 @@ $(function () {
                 discount = parseInt(data["level"])/100;
             }
         });
+
+        vue = new Vue({
+            el: "#select",
+            data: {
+                options: [ {
+                    value: "选项4",
+                    label: "大学"
+                },{
+                    value: '选项1',
+                    label: '高中'
+                }, {
+                    value: '选项2',
+                    label: '初中'
+                }, {
+                    value: '选项3',
+                    label: '小学'
+                }],
+                value: ''
+            }
+        });
     });
 
     $("#switch div").click(function () {
@@ -331,7 +353,7 @@ $(function () {
         $("#enter-student-name").val("");
         $("#option-man").removeAttr("checked");
         $("#option-woman").removeAttr("checked");
-        $("#select input").val("");
+        vue.value = '';
     }
 
     /**

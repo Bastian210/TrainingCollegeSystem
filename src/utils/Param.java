@@ -7,6 +7,8 @@ public class Param {
 
     private static String lessonid;
 
+    private static String managerid;
+
     public static String getUserid() {
         return userid;
     }
@@ -29,5 +31,13 @@ public class Param {
 
     public static void setLessonid(String lessonid) {
         Param.lessonid = lessonid;
+    }
+
+    public static String getManagerid() {
+        return managerid;
+    }
+
+    public static void setManagerid(String managerid) {
+        Param.managerid = managerid;
     }
 }

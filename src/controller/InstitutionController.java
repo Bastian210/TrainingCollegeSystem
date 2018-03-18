@@ -220,4 +220,13 @@ public class InstitutionController {
         json.put("result",jsonObjects);
         return json.toString();
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/institution.logout",method = RequestMethod.POST)
+    public String doInsLogout(){
+        Param.setInstitutionid(null);
+        JSONObject json = new JSONObject();
+        json.put("result","success");
+        return json.toString();
+    }
 }

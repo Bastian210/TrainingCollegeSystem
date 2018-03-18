@@ -409,7 +409,16 @@ $(function () {
      */
     $("#add-teacher-a").click(function () {
         window.open("/insManagement");
+        leftTimer();
     });
+
+    function leftTimer() {
+        var type = $("#cascader input").attr("value");
+        GetTeacher(type);
+        setTimeout(function () {
+            leftTimer();
+        },2000);
+    }
 
     /**
      * 取消添加/编辑

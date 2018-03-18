@@ -35,7 +35,7 @@ $(function () {
         vue1 = new Vue({
             el: "#checkbox",
             data: {
-                checkedSubjects: ["语文"],
+                checkedSubjects: [],
                 subjects: list4
             }
         });
@@ -43,7 +43,7 @@ $(function () {
         vue = new Vue({
             el: "#radio",
             data: {
-                radio: '小学',
+                radio: '',
             },
             methods: {
                 change(){

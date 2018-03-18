@@ -316,4 +316,16 @@
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/statistics.getProfit</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/user.logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/institution.logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/manager.logout</url-pattern>
+    </servlet-mapping>
 </web-app>

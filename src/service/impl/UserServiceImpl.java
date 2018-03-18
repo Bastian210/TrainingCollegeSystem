@@ -59,6 +59,7 @@ public class UserServiceImpl implements UserService {
         if(!user.getPassword().equals(password)){
             return "wrong password";
         }
+        Param.setManagerid(id);
         return "success";
     }
 

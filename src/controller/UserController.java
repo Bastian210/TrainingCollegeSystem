@@ -181,4 +181,22 @@ public class UserController {
         json.put("profit",result.get("consume"));
         return json.toString();
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/user.logout",method = RequestMethod.POST)
+    public String doLogout(){
+        Param.setUserid(null);
+        JSONObject json = new JSONObject();
+        json.put("result","success");
+        return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/manager.logout",method = RequestMethod.POST)
+    public String doInsLogout(){
+        Param.setManagerid(null);
+        JSONObject json = new JSONObject();
+        json.put("result","success");
+        return json.toString();
+    }
 }
