@@ -4,8 +4,10 @@ import dao.OrderDao;
 import model.Ordermessage;
 import model.Orders;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import utils.HibernateUtil;
 
@@ -13,9 +15,17 @@ import java.util.List;
 
 @Repository
 public class OrderDaoImpl implements OrderDao {
+    
+    private final SessionFactory sessionFactory;
+
+    @Autowired
+    public OrderDaoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
     @Override
     public void save(Orders orders) {
-        Session session = HibernateUtil.getSession();
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         session.save(orders);
         transaction.commit();
@@ -24,7 +34,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public void update(Orders orders) {
-        Session session = HibernateUtil.getSession();
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         session.update(orders);
         transaction.commit();
@@ -33,7 +43,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public void delete(String orderid) {
-        Session session = HibernateUtil.getSession();
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         Orders orders = session.get(Orders.class,orderid);
         session.delete(orders);
@@ -43,7 +53,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public Orders findOrderByOrderId(String orderid) {
-        Session session = HibernateUtil.getSession();
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         Orders orders = session.get(Orders.class,orderid);
         transaction.commit();
@@ -53,7 +63,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public String getMaxId() {
-        Session session = HibernateUtil.getSession();
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         String hql = "from model.Orders";
         Query query = session.createQuery(hql);
@@ -69,7 +79,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List findOrderListByUserId(String userid) {
-        Session session = HibernateUtil.getSession();
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         String hql = String.format("from model.Orders as o where o.userid = '%s' order by o.ordertime desc", userid);
         Query query = session.createQuery(hql);
@@ -81,7 +91,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public void saveOrderMessage(Ordermessage ordermessage) {
-        Session session = HibernateUtil.getSession();
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         session.save(ordermessage);
         transaction.commit();
@@ -90,7 +100,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List getOrderMessageListByOrderId(String orderid) {
-        Session session = HibernateUtil.getSession();
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         String hql = String.format("from model.Ordermessage as om where om.orderid = '%s'", orderid);
         Query query = session.createQuery(hql);
@@ -102,7 +112,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public void deleteOrderMessageByOrderId(String orderid) {
-        Session session = HibernateUtil.getSession();
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         String hql = String.format("from model.Ordermessage as om where om.orderid = '%s'", orderid);
         Query query = session.createQuery(hql);
@@ -117,7 +127,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List findOrderListByState(String state) {
-        Session session = HibernateUtil.getSession();
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         String hql = String.format("from model.Orders as o where o.state = '%s' order by o.ordertime desc", state);
         Query query = session.createQuery(hql);
@@ -129,7 +139,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List findOrderListByInstitutionId(String institutionid) {
-        Session session = HibernateUtil.getSession();
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         String hql = String.format("from model.Orders as o where o.institutionid = '%s' order by o.ordertime desc", institutionid);
         Query query = session.createQuery(hql);

@@ -4,8 +4,10 @@ import dao.PlanDao;
 import model.Plans;
 import model.key.PlansKey;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import utils.HibernateUtil;
 
@@ -13,9 +15,17 @@ import java.util.List;
 
 @Repository
 public class PlanDaoImpl implements PlanDao {
+
+    private final SessionFactory sessionFactory;
+
+    @Autowired
+    public PlanDaoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
     @Override
     public void save(Plans plans) {
-        Session session = HibernateUtil.getSession();
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         session.save(plans);
         transaction.commit();
@@ -24,7 +34,7 @@ public class PlanDaoImpl implements PlanDao {
 
     @Override
     public void delete(String lessonid) {
-        Session session = HibernateUtil.getSession();
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         String hql = new StringBuilder().append("from model.Plans as p where p.lessonid = '").append(lessonid).append("'").toString();
         Query query = session.createQuery(hql);
@@ -41,7 +51,7 @@ public class PlanDaoImpl implements PlanDao {
 
     @Override
     public String getMaxId() {
-        Session session = HibernateUtil.getSession();
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         String hql = "from model.Plans";
         Query query = session.createQuery(hql);
@@ -61,7 +71,7 @@ public class PlanDaoImpl implements PlanDao {
 
     @Override
     public List getPlanListByInstitutionId(String institutionid) {
-        Session session = HibernateUtil.getSession();
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         String hql = String.format("from model.Plans as p where p.institutionid = '%s' order by p.begin desc", institutionid);
         Query query = session.createQuery(hql);
@@ -73,7 +83,7 @@ public class PlanDaoImpl implements PlanDao {
 
     @Override
     public List getPlanByLessonId(String lessonid) {
-        Session session = HibernateUtil.getSession();
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         String hql = String.format("from model.Plans as p where p.lessonid = '%s' order by p.price", lessonid);
         Query query = session.createQuery(hql);
@@ -85,7 +95,7 @@ public class PlanDaoImpl implements PlanDao {
 
     @Override
     public void updateStateByLessonId(String lessonid, String state) {
-        Session session = HibernateUtil.getSession();
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         String hql = String.format("from model.Plans as p where p.lessonid = '%s'", lessonid);
         Query query = session.createQuery(hql);
@@ -101,7 +111,7 @@ public class PlanDaoImpl implements PlanDao {
 
     @Override
     public List getLessonByNameAndType(String name, String[] type) {
-        Session session = HibernateUtil.getSession();
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         String hql = new StringBuilder().append("from model.Plans as p where p.state = 'selling' and p.lesson like '%").append(name).append("%'").toString();
         if(type!=null){
@@ -125,7 +135,7 @@ public class PlanDaoImpl implements PlanDao {
 
     @Override
     public Plans getPlanByPlanKey(PlansKey plansKey) {
-        Session session = HibernateUtil.getSession();
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         Plans plans = session.get(Plans.class,plansKey);
         transaction.commit();
@@ -135,7 +145,7 @@ public class PlanDaoImpl implements PlanDao {
 
     @Override
     public void updatePlan(Plans plans) {
-        Session session = HibernateUtil.getSession();
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         session.update(plans);
         transaction.commit();
@@ -144,7 +154,7 @@ public class PlanDaoImpl implements PlanDao {
 
     @Override
     public List getAllPlan() {
-        Session session = HibernateUtil.getSession();
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         String hql = "from model.Plans";
         Query query = session.createQuery(hql);
@@ -156,7 +166,7 @@ public class PlanDaoImpl implements PlanDao {
 
     @Override
     public int getPlanNumByInstitutionId(String id) {
-        Session session = HibernateUtil.getSession();
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         String hql = String.format("select distinct lessonid from model.Plans as p where p.institutionid = '%s'", id);
         Query query = session.createQuery(hql);

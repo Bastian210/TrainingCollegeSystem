@@ -451,7 +451,7 @@ $(function () {
         }
     });
 
-    var minute = 15;
+    var minute = 3;
     var second = 0;
     function leftTimer() {
         var time = minute*60+second;

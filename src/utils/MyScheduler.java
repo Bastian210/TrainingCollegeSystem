@@ -4,6 +4,8 @@ import dao.*;
 import dao.impl.*;
 import model.*;
 import model.key.BillKey;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -21,16 +23,23 @@ import java.util.logging.Logger;
 @Component
 @EnableScheduling
 public class MyScheduler {
-    private OrderDao orderDao = new OrderDaoImpl();
-    private PlanDao planDao = new PlanDaoImpl();
-    private BillDao billDao = new BillDaoImpl();
-    private UserDao userDao = new UserDaoImpl();
-    private LessonDao lessonDao = new LessonDaoImpl();
-    private PaymentDao paymentDao = new PaymentDaoImpl();
-    private InstitutionDao institutionDao = new InstitutionDaoImpl();
+    @Autowired
+    private OrderDao orderDao;
+    @Autowired
+    private PlanDao planDao;
+    @Autowired
+    private BillDao billDao;
+    @Autowired
+    private UserDao userDao;
+    @Autowired
+    private LessonDao lessonDao;
+    @Autowired
+    private PaymentDao paymentDao;
+    @Autowired
+    private InstitutionDao institutionDao;
 
-    @Scheduled(cron = "0 0 2 * * ?")
-    public void CheckOrder(){
+    @Scheduled(cron="0/20 * *  * * ? ")   //每20秒执行一次
+    public void CheckNotpayOrder(){
         //检测未支付订单
         List list1 = orderDao.findOrderListByState("未支付");
         for(int i=0;i<list1.size();i++){
@@ -48,7 +57,10 @@ public class MyScheduler {
                 e.printStackTrace();
             }
         }
+    }
 
+    @Scheduled(cron = "0 0 2 * * ?")
+    public void CheckOrder(){
         //检测需要自动配票的订单
         List list2 = orderDao.findOrderListByState("等待配票");
         for(int i=0;i<list2.size();i++){

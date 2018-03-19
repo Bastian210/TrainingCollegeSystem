@@ -8,6 +8,16 @@
       http://www.springframework.org/schema/task
       http://www.springframework.org/schema/task/spring-task-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
+    <bean id="UserService" class="service.impl.UserServiceImpl"/>
+    <bean id="InstitutionService" class="service.impl.InstitutionServiceImpl"/>
+    <bean id="PlanService" class="service.impl.PlanServiceImpl"/>
+    <bean id="OrderService" class="service.impl.OrderServiceImpl"/>
+    <bean id="LessonService" class="service.impl.LessonServiceImpl"/>
+
+    <context:component-scan base-package="controller"/>
+    <context:component-scan base-package="service"/>
+    <context:component-scan base-package="dao"/>
+
     <context:component-scan base-package="utils">
         <context:exclude-filter type="regex" expression=".common.*" />
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
@@ -16,4 +26,34 @@
     <task:executor id="executor" pool-size="5" />
     <task:scheduler id="scheduler" pool-size="10" />
     <task:annotation-driven executor="executor" scheduler="scheduler" />
+
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <property name="jdbcUrl"
+                  value="jdbc:mysql://localhost:3306/trainingcollege?characterEncoding=UTF8"/>
+        <property name="user" value="root"/>
+        <property name="password" value="000000"/>
+    </bean>
+
+    <!-- 配置sessionFactory -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="packagesToScan" value="model"/>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+                <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.connection.autocommit">true</prop>
+            </props>
+        </property>
+
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <!-- 定义 Autowired 自动注入 bean -->
+    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
 </beans>

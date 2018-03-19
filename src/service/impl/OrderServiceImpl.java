@@ -53,7 +53,7 @@ public class OrderServiceImpl implements OrderService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Calendar now= Calendar.getInstance();
         String time = sdf.format(now.getTimeInMillis());
-        now.add(Calendar.MINUTE,15);
+        now.add(Calendar.MINUTE,3);
         String deadline = sdf.format(now.getTimeInMillis());
         String state = "未支付";
 

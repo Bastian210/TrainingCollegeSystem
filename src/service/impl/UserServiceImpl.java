@@ -115,6 +115,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public void ChangeUserMessage(String userid, String username, String gender, String education) {
         userDao.updateMessageByUserId(userid, username, gender, education);
+        User user = userDao.findUserByUserid(userid);
+        List list = lessonDao.findLessonListByName(user.getUsername());
+        for(int i=0;i<list.size();i++){
+            Lesson lesson = (Lesson) list.get(i);
+            lesson.setName(username);
+            lessonDao.update(lesson);
+        }
     }
 
     @Override

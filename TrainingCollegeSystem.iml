@@ -18,6 +18,7 @@
       <configuration>
         <datasource-map>
           <unit-entry name="hibernate.cfg.xml" value="79c77bc1-cdc7-4003-9216-328ecc31111e" />
+          <unit-entry name="sessionFactory" />
         </datasource-map>
         <naming-strategy-map>
           <unit-entry name="hibernate.cfg.xml" />
